@@ -176,14 +176,20 @@
 	\begin{flushleft}
 	}
 	
+\if@preprint
+		\postauthor{%
+		\end{flushleft}%
+		\vskip -.5em
+		\printcreditifnotempty
+		\par
+		}
+\else
 	\postauthor{%
 	\end{flushleft}%
 	\vskip -.5em
-	\if@preprint
-		\printcreditifnotempty
-	\fi
 	\par
-}
+	}
+\fi
 \predate{}
 \postdate{}
 \date{}
