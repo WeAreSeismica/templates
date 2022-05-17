@@ -36,11 +36,11 @@
 \definecolor{seismicacolor2}{RGB}{77,185,123}
 \definecolor{seismicacolor3}{RGB}{222,60,75}
 \RequirePackage[unicode,
-				bookmarks=true,
-				linkcolor=seismicacolor1light,
-				citecolor=seismicacolor1light,
-				hidelinks,
-				hyperfootnotes=false]{hyperref}
+bookmarks=true,
+linkcolor=seismicacolor1light,
+citecolor=seismicacolor1light,
+hidelinks,
+hyperfootnotes=false]{hyperref}
 \hypersetup{colorlinks,linkcolor=seismicacolor1light}
 \hypersetup{colorlinks,citecolor=seismicacolor1light}
 \hypersetup{colorlinks,urlcolor=gray}
@@ -70,30 +70,28 @@
 \RequirePackage{physics}
 
 % fonts and math
+\RequirePackage{amsmath}
 \RequirePackage{lmodern}
 \RequirePackage[opentype,
-				default,
-				tabular,
-				lining]{sourcesanspro}
+default,
+tabular,
+lining]{sourcesanspro}
 \RequirePackage[opentype,
-				default,
-				tabular,
-				lining]{sourceserifpro}
-\RequirePackage{amsmath}
+default,
+tabular,
+lining]{sourceserifpro}
 \if@breakmath
-	\RequirePackage{breqn}
-	\renewenvironment{equation}{%
-		\begin{dmath}}{%
-		\end{dmath}}
-\else
-	\RequirePackage{unicode-math} % in conflict with breqn
-	\setmathfont{latinmodern-math.otf}
+\RequirePackage{breqn}
+\renewenvironment{equation}{%
+	\begin{dmath}}{%
+\end{dmath}}
+\newcommand{\mathbfup}[1]{\mathord{\textnormal{\textbf{#1}}}}
+% \else
+% 	\RequirePackage{unicode-math} % in conflict with breqn
 \fi
 
-\newcommand{\mathbfup}[1]{\mathord{\textnormal{\textbf{#1}}}}
-\setmainfont{SourceSerifPro-Regular.otf}
-\renewcommand{\sfdefault}{\sourcesanspro}
-\renewcommand{\rmdefault}{\sourceserifpro}
+\newcommand{\sff}{\sourcesanspro}
+\newcommand{\rmf}{\sourceserifpro}
 \newcommand{\sflight}{\sourcesansprolight}
 \newcommand{\rmlight}{\sourceserifprolight}
 
@@ -104,10 +102,10 @@
 
 % proof watermark
 \if@proof
-	\RequirePackage{draftwatermark}
-	\SetWatermarkText{PROOF}
-	\SetWatermarkScale{1}
-	\SetWatermarkColor[gray]{0.85}
+\RequirePackage{draftwatermark}
+\SetWatermarkText{PROOF}
+\SetWatermarkScale{1}
+\SetWatermarkColor[gray]{0.85}
 \fi
 
 %-------------------------------------------------------------------------------
@@ -118,7 +116,7 @@
 \renewcommand*{\Authsep}{, }
 \renewcommand*{\Authand}{, }
 \renewcommand*{\Authands}{, }
-\renewcommand*{\Authfont}{\bfseries\sfdefault}    % make author names boldface    
+\renewcommand*{\Authfont}{\bfseries\sff}    % make author names boldface    
 \setlength{\affilsep}{0.2cm}   % set the space between author and affiliation
 \renewcommand*{\Affilfont}{\normalfont\sflight\small}
 \renewcommand\AB@affilsepx{, \protect\Affilfont}
@@ -154,6 +152,8 @@
 \editorname{}
 \def\copyedname#1{\def\@copyedname{#1}}
 \copyedname{}
+\def\suppmat#1{\def\@suppmat{#1}}
+\suppmat{}
 
 \newcommand{\@insert@metadata}{%
 	\begin{textblock*}{3cm}[1,1](\dimexpr\textwidth-\oddsidemargin\relax,\dimexpr\paperheight-\zposy{loc:end_abstract}sp\relax)
@@ -170,8 +170,8 @@
 	{}% if #3 is empty
 	\else
 	%	\begin{flushright}
-	{\raggedleft\sflight \textcolor{gray}{#1: }{#2}\sfdefault \textcolor{gray}{#3}#4}% if #2 is not empty
-	%	\end{flushright}
+		{\raggedleft\sflight \textcolor{gray}{#1: }{#2}\sff \textcolor{gray}{#3}#4}% if #2 is not empty
+		%	\end{flushright}
 	\fi
 }
 
@@ -191,13 +191,13 @@
 	\ifdim\DTLrowcount{credits}pt=0pt
 	\else
 	\vskip .5em
-	\footnotesize\raggedright\sfdefault\textcolor{seismicacolor1}{Author contributions:} \DTLforeach*{credits}{\Credrole=credrole, \Credauthor=credauthor}{\textcolor{seismicacolor1}{ \sflight\textit{ \Credrole}: \Credauthor.} }
+	\footnotesize\raggedright\sff\textcolor{seismicacolor1}{Author contributions:} \DTLforeach*{credits}{\Credrole=credrole, \Credauthor=credauthor}{\textcolor{seismicacolor1}{ \sflight\textit{ \Credrole}: \Credauthor.} }
 	\fi
 }
 
 \pretitle{
 	\begin{flushleft}
-		\fontsize{21pt}{1em}\bfseries\sfdefault
+		\fontsize{21pt}{1em}\bfseries\sff
 	}
 	\posttitle{%
 	\end{flushleft}%
@@ -207,8 +207,8 @@
 	\lineskip 0.2cm%
 	\begin{flushleft}
 	}
-
-\postauthor{%
+	
+	\postauthor{%
 	\end{flushleft}%
 	\vskip -.5em
 	\printcreditifnotempty
@@ -233,7 +233,7 @@
 	\includegraphics[width=\textwidth]{\banner}
 	
 	{\vspace*{-1.3cm} \hspace{0.2cm} 
-		\href{https://doi.org/\@dois}{\sfdefault \color{white} \small doi:\@dois} }
+		\href{https://doi.org/\@dois}{\sff \color{white} \small doi:\@dois} }
 	
 	\vspace*{1.7cm}
 }
@@ -248,7 +248,7 @@
 %                Configuration for asbtract
 %-------------------------------------------------------------------------------
 
-\newcommand*{\abstracttitlestyle}[1]{{\sfdefault \large \bfseries #1}}
+\newcommand*{\abstracttitlestyle}[1]{{\sff \large \bfseries #1}}
 
 \let\oldthanks\thanks
 \renewcommand{\thanks}[1]{\oldthanks{\small \sflight #1}}
@@ -259,7 +259,7 @@
 	\vspace{0.3cm}
 	\par
 	\noindent \abstracttitlestyle{#1} \hspace{0.2cm}
-	\sfdefault 
+	\sff 
 }%
 {
 }
@@ -291,17 +291,17 @@
 %                Configuration for sections
 %-------------------------------------------------------------------------------
 
-\titleformat{\section}{\fontsize{14pt}{1em}\bfseries\sfdefault}{\thesection}{1em}{}
+\titleformat{\section}{\fontsize{14pt}{1em}\bfseries\sff}{\thesection}{1em}{}
 %\titlespacing\section{0pt}{8pt plus 4pt minus 2pt}{6pt plus 2pt minus 2pt}
-\titleformat{\subsection}{\fontsize{12pt}{0.3em}\bfseries\sfdefault}{\thesubsection}{1em}{}
+\titleformat{\subsection}{\fontsize{12pt}{0.3em}\bfseries\sff}{\thesubsection}{1em}{}
 %\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
-\titleformat{\subsubsection}{\fontsize{11pt}{0.1em}\bfseries\sfdefault}{\thesubsubsection}{1em}{}
+\titleformat{\subsubsection}{\fontsize{11pt}{0.1em}\bfseries\sff}{\thesubsubsection}{1em}{}
 %\titlespacing\subsubsection{0pt}{8pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
 
 \if@report
-	\setcounter{secnumdepth}{0}
+\setcounter{secnumdepth}{0}
 \else
-	\setcounter{secnumdepth}{3}
+\setcounter{secnumdepth}{3}
 \fi
 
 \newenvironment{acknowledgements}
@@ -322,7 +322,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyfoot{}
-\fancyfoot[L]{\sfdefault\bfseries\footnotesize \thepage}
+\fancyfoot[L]{\sff\bfseries\footnotesize \thepage}
 \fancyfoot[R]{\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA} | volume \@thevolume.\@thenumber  |  \@theyear}
 \fancyhead[L]{\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA} | {\scshape \bfseries \articletype} | \@title}
 %\fancyhead[R]{\footnotesize \@author[1]}
@@ -348,16 +348,16 @@
 % equations
 \if@breakmath
 \renewcommand{\eqnumcolor}{\color{gray}}
-\renewcommand{\eqnumfont}{\sfdefault}
+\renewcommand{\eqnumfont}{\sff}
 \else
 \renewcommand{\eqref}[1]{\textup{\eqreftagform@{\ref{#1}}}}
 \let\eqreftagform@\tagform@
 \def\tagform@#1{%
-	\maketag@@@{\color{gray}\sfdefault(\ignorespaces#1\unskip\@@italiccorr)}%
+	\maketag@@@{\color{gray}\sff(\ignorespaces#1\unskip\@@italiccorr)}%
 }
 \fi
 
-\renewcommand{\theequation}{\color{gray}\sfdefault\arabic{equation}}
+\renewcommand{\theequation}{\color{gray}\sff\arabic{equation}}
 
 
 %
@@ -381,8 +381,8 @@
 	\arrayrulecolor{gray}
 	\sflight\small
 	\begin{center}
-	\begin{tabular}{#1}\thickhline\rule{0pt}{2ex} }{%
-		\thickhline\end{tabular}\end{center}\vspace*{-0.7cm}}
+		\begin{tabular}{#1}\thickhline\rule{0pt}{2ex} }{%
+			\thickhline\end{tabular}\end{center}\vspace*{-0.7cm}}
 
 %%-------------------------------------------------------------------------------
 %%                Configuration for footnotes
