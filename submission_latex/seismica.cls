@@ -160,7 +160,7 @@
 	\ifdim\DTLrowcount{credits}pt=0pt
 	\else
 	\vskip .5em
-	\sffamily\footnotesize\raggedright\textcolor{seismicacolor1}{Author contributions:} \DTLforeach*{credits}{\Credrole=credrole, \Credauthor=credauthor}{\textcolor{seismicacolor1}{ \sflight\textit{ \Credrole}: \Credauthor.} }
+	\sffamily\footnotesize\raggedright\textcolor{seismicacolor1}{Author contributions:} \DTLforeach*{credits}{\Credrole=credrole, \Credauthor=credauthor}{\textcolor{seismicacolor1}{ \textit{ \Credrole}: \Credauthor.} }
 	\fi
 }
 
