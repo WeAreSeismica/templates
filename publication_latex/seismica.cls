@@ -68,6 +68,8 @@ hyperfootnotes=false]{hyperref}
 \RequirePackage{datatool}
 \RequirePackage{etoolbox}
 \RequirePackage{physics}
+\RequirePackage{comment}
+\RequirePackage{listings}
 
 % fonts and math
 \RequirePackage{amsmath}
@@ -395,10 +397,29 @@ lining]{sourceserifpro}
 %%                Configuration for references
 %%-------------------------------------------------------------------------------
 
-
 \setlength{\bibsep}{3pt} %espacement entre les references biblio
 \renewcommand{\bibsection}{\section*{References}}
 \def\bibfont{\small\sffamily}
 \renewcommand*{\doi}[1]{doi: \href{http://doi.org/#1}{#1}}
+
+%%-------------------------------------------------------------------------------
+%%                Configuration for code
+%%-------------------------------------------------------------------------------
+
+% in-line code words
+\def\code#1{\texttt{#1}}
+
+% TODO: Make layout decisions for code here:
+\lstset{
+	tabsize=4,
+	captionpos=t,
+	frame=lines,
+	breaklines=true,
+	showstringspaces=false,
+	basicstyle=\ttfamily,
+	keywordstyle=\color{seismicacolor1},
+	commentstyle=\color{gray},
+	stringstyle=\color{seismicacolor2}
+}
 
 % end of seismica.cls 

@@ -106,7 +106,25 @@
 	\end{seistable}
 	\caption{Use the command seistable for tables, instead of tabular}
 \end{table}
+
+
+		\subsection{Code}
 	
+	Code examples should be concise and descriptive. They should introduce core functionality or specific syntax and should be included using the \code{lstlisting} environment. Note that lines longer than 38 characters will be broken when using the prepress option. Extended examples or use cases should be uploaded separately. Individual words of code can be written inline, for example:
+	
+	To improve stability of the inversion, the \code{Model} object accepts the \code{strict} keyword, which disables piecewise linear approximation of the target function (Listing~\ref{code}).
+	
+	\begin{lstlisting}[caption=Example use of \code{Model}, label=code, language=Python]
+		#2 4 6 8 0 2 4 6 8 0 2 4 6 8 0 2 4 6 8
+		import mymodule as mm
+		
+		model = mm.Model(strict=True)
+		mdls = model.perturb()
+		
+		for mdl in mdls:
+		var = mdl.get_variance()
+	\end{lstlisting}
+
 	
 \begin{acknowledgements}
 	Thank all relevant parties and acknowledge funding sources, if any.
