@@ -335,7 +335,7 @@
 %%-------------------------------------------------------------------------------
 
 % in-line code words
-\def\code#1{\texttt{#1}}
+\def\code#1{\colorbox{codebackcolor}{\texttt{#1}}}
 
 % TODO: Make layout decisions for code here:
 \lstset{
