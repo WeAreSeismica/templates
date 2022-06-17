@@ -85,6 +85,7 @@
 \RequirePackage{etoolbox}
 \RequirePackage{comment}
 \RequirePackage{physics}
+\RequirePackage{listings}
 
 % fonts and math
 \RequirePackage{amsmath}
@@ -159,7 +160,7 @@
 	\ifdim\DTLrowcount{credits}pt=0pt
 	\else
 	\vskip .5em
-	\sffamily\footnotesize\raggedright\textcolor{seismicacolor1}{Author contributions:} \DTLforeach*{credits}{\Credrole=credrole, \Credauthor=credauthor}{\textcolor{seismicacolor1}{ \sflight\textit{ \Credrole}: \Credauthor.} }
+	\sffamily\footnotesize\raggedright\textcolor{seismicacolor1}{Author contributions:} \DTLforeach*{credits}{\Credrole=credrole, \Credauthor=credauthor}{\textcolor{seismicacolor1}{ \textit{ \Credrole}: \Credauthor.} }
 	\fi
 }
 
@@ -216,7 +217,7 @@
 }
 
 %-------------------------------------------------------------------------------
-%                Configuration for asbtract
+%                Configuration for abstract
 %-------------------------------------------------------------------------------
 
 \newcommand*{\abstracttitlestyle}[1]{{\sffamily\large \bfseries #1}}
@@ -283,7 +284,6 @@
 \fancyfoot{}
 \fancyfoot[L]{\sffamily\bfseries\footnotesize \thepage}
 \fancyhead[L]{\sffamily\footnotesize This is a non-peer reviewed manuscript submitted to {\scshape \bfseries\href{https://seismica.org/}{\color{seismicacolor1}SEISMICA}} }
-%\fancyhead[R]{\footnotesize \@author[1]}
 \renewcommand{\headrule}{}
 
 \fancypagestyle{plain}{%
@@ -321,9 +321,29 @@
 %%                Configuration for references
 %%-------------------------------------------------------------------------------
 
-\setlength{\bibsep}{3pt} %espacement entre les references biblio
+\setlength{\bibsep}{3pt}
 \renewcommand{\bibsection}{\section*{References}}
 \def\bibfont{\sffamily\small}
 \renewcommand*{\doi}[1]{\href{http://doi.org/#1}{doi:~#1}}
+
+%%-------------------------------------------------------------------------------
+%%                Configuration for code
+%%-------------------------------------------------------------------------------
+
+% in-line code words
+\def\code#1{\texttt{#1}}
+
+% TODO: Make layout decisions for code here:
+\lstset{
+  tabsize=4,
+  captionpos=t,
+  frame=lines,
+  breaklines=true,
+  showstringspaces=false,
+  basicstyle=\ttfamily,
+  keywordstyle=\color{seismicacolor1},
+  commentstyle=\color{gray},
+  stringstyle=\color{seismicacolor2}
+  }
 
 % end of seismica.cls 
