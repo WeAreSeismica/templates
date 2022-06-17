@@ -58,6 +58,8 @@
 \definecolor{linkblue}{RGB}{38,81,143}
 \definecolor{seismicacolor1}{RGB}{18,52,103}
 \definecolor{seismicacolor2}{RGB}{77,185,123}
+\definecolor{seismicacolor3}{RGB}{222,60,75}
+\definecolor{codebackcolor}{RGB}{243,243,243}
 \RequirePackage[unicode,
 				bookmarks=true,
 				linkcolor=linkblue,
@@ -113,8 +115,10 @@
 	\setmainlanguages[]{english}
 	\RequirePackage[opentype,default,tabular,lining]{sourcesanspro}
 	\RequirePackage[opentype,default,tabular,lining]{sourceserifpro}
+	\RequirePackage[opentype,default,tabular,lining]{sourcecodepro}
 \else
 	\RequirePackage[regular]{sourcesanspro}
+	\RequirePackage[regular]{sourcecodepro}
 	\RequirePackage[default,regular]{sourceserifpro}
 	\RequirePackage[T1]{fontenc}
 \fi
@@ -335,15 +339,18 @@
 
 % TODO: Make layout decisions for code here:
 \lstset{
-  tabsize=4,
-  captionpos=t,
-  frame=lines,
-  breaklines=true,
-  showstringspaces=false,
-  basicstyle=\ttfamily,
-  keywordstyle=\color{seismicacolor1},
-  commentstyle=\color{gray},
-  stringstyle=\color{seismicacolor2}
-  }
+	tabsize=4,
+	captionpos=t,
+	breaklines=true,
+	showstringspaces=false,
+	basicstyle=\fontsize{9}{10}\ttfamily,
+	keywordstyle=\color{seismicacolor2},
+	commentstyle=\color{gray},
+	stringstyle=\color{seismicacolor1},
+	emphstyle=\color{seismicacolor3},
+	%	frameshape={RYR}{Y}{Y}{RYR},
+	backgroundcolor=\color{codebackcolor},   
+	rulecolor=\color{codebackcolor}
+}
 
 % end of seismica.cls 

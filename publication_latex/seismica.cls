@@ -35,6 +35,7 @@
 \definecolor{seismicacolor1}{RGB}{18,52,103}
 \definecolor{seismicacolor2}{RGB}{77,185,123}
 \definecolor{seismicacolor3}{RGB}{222,60,75}
+\definecolor{codebackcolor}{RGB}{243,243,243}
 \RequirePackage[unicode,
 bookmarks=true,
 linkcolor=seismicacolor1light,
@@ -82,6 +83,10 @@ lining]{sourcesanspro}
 default,
 tabular,
 lining]{sourceserifpro}
+\RequirePackage[opentype,
+default,
+tabular,
+lining]{sourcecodepro}
 \if@breakmath
 \RequirePackage{breqn}
 \renewenvironment{equation}{%
@@ -413,13 +418,16 @@ lining]{sourceserifpro}
 \lstset{
 	tabsize=4,
 	captionpos=t,
-	frame=lines,
 	breaklines=true,
 	showstringspaces=false,
-	basicstyle=\ttfamily,
-	keywordstyle=\color{seismicacolor1},
+	basicstyle=\fontsize{9}{10}\ttfamily,
+	keywordstyle=\color{seismicacolor2},
 	commentstyle=\color{gray},
-	stringstyle=\color{seismicacolor2}
+	stringstyle=\color{seismicacolor1},
+	emphstyle=\color{seismicacolor3},
+%	frameshape={RYR}{Y}{Y}{RYR},
+	backgroundcolor=\color{codebackcolor},   
+	rulecolor=\color{codebackcolor}
 }
 
 % end of seismica.cls 
