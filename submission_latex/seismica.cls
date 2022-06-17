@@ -335,7 +335,8 @@
 %%-------------------------------------------------------------------------------
 
 % in-line code words
-\def\code#1{\colorbox{codebackcolor}{\texttt{#1}}}
+\def\code#1{\fontsize{9}{10}\colorbox{codebackcolor}{\texttt{#1}}}
+\setlength{\fboxsep}{1pt}
 
 % TODO: Make layout decisions for code here:
 \lstset{
