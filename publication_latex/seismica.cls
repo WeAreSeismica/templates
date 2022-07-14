@@ -11,6 +11,10 @@
 \@reportfalse
 \DeclareOption{report}{\@reporttrue}
 
+\newif\if@invited
+\@invitedfalse
+\DeclareOption{invited}{\@invitedtrue}
+
 \newif\if@breakmath
 \@breakmathfalse
 \DeclareOption{breakmath}{\@breakmathtrue}
@@ -61,7 +65,7 @@ hyperfootnotes=false]{hyperref}
 \RequirePackage[round]{natbib}
 \bibliographystyle{abbrvnat_seismica}
 \RequirePackage{doi}
-\RequirePackage{orcidlink}
+\RequirePackage{academicons}
 \RequirePackage[noblocks]{authblk}
 \setcounter{Maxaffil}{0}
 \RequirePackage{adjustbox}
@@ -85,7 +89,6 @@ tabular,
 lining]{sourceserifpro}
 \RequirePackage[opentype,
 default,
-tabular,
 lining]{sourcecodepro}
 \if@breakmath
 \RequirePackage{breqn}
@@ -235,15 +238,45 @@ lining]{sourcecodepro}
 \dois{}
 
 
+\if@invited
 \renewcommand\maketitlehooka{%
 	\vspace{-1.5cm}
 	\includegraphics[width=\textwidth]{\banner}
 	
-	{\vspace*{-1.3cm} \hspace{0.2cm} 
+	{\vspace*{-1.75cm} \hspace{0.2cm} 
+		\sff \color{white} \bfseries \textit{INVITED}}
+	
+	{\vspace*{0.03cm} \hspace{0.2cm} 
 		\href{https://doi.org/\@dois}{\sff \color{white} \small doi:\@dois} }
 	
 	\vspace*{1.7cm}
 }
+\else
+	\if@report
+	\renewcommand\maketitlehooka{%
+		\vspace{-1.5cm}
+		\includegraphics[width=\textwidth]{\banner}
+		
+		{\vspace*{-1.75cm} \hspace{0.2cm} 
+			\sff \color{white} \bfseries \textit{REPORT}}
+		
+		{\vspace*{0.03cm} \hspace{0.2cm} 
+			\href{https://doi.org/\@dois}{\sff \color{white} \small doi:\@dois} }
+		
+		\vspace*{1.7cm}
+	}
+	\else
+	\renewcommand\maketitlehooka{%
+		\vspace{-1.5cm}
+		\includegraphics[width=\textwidth]{\banner}
+		
+		{\vspace*{-1.3cm} \hspace{0.2cm} 
+			\href{https://doi.org/\@dois}{\sff \color{white} \small doi:\@dois} }
+		
+		\vspace*{1.7cm}
+	}
+	\fi
+\fi
 
 \renewcommand\maketitlehookd{%
 	\pagestyle{fancy}
@@ -322,16 +355,24 @@ lining]{sourcecodepro}
 
 \if@report
 \newcommand{\articletype}{\color{seismicacolor2}REPORT}
-\else
-\newcommand{\articletype}{RESEARCH ARTICLE}
+\else 
+	\if@invited
+	\newcommand{\articletype}{INVITED RESEARCH ARTICLE}
+	\else
+	\newcommand{\articletype}{RESEARCH ARTICLE}
+	\fi
 \fi
+
+\def\shorttitle@internal{}
+\newcommand{\shorttitle}[1]{\gdef\shorttitle@internal{#1}}
+\newcommand{\insertshorttitle}{\shorttitle@internal}
 
 \pagestyle{fancy}
 \fancyhf{}
 \fancyfoot{}
 \fancyfoot[L]{\sff\bfseries\footnotesize \thepage}
 \fancyfoot[R]{\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA} | volume \@thevolume.\@thenumber  |  \@theyear}
-\fancyhead[L]{\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA} | {\scshape \bfseries \articletype} | \@title}
+\fancyhead[L]{\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA} | {\scshape \bfseries \articletype} | \insertshorttitle}
 %\fancyhead[R]{\footnotesize \@author[1]}
 \renewcommand{\headrule}{}
 
