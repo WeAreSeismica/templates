@@ -61,7 +61,7 @@ hyperfootnotes=false]{hyperref}
 \RequirePackage[round]{natbib}
 \bibliographystyle{abbrvnat_seismica}
 \RequirePackage{doi}
-\RequirePackage{academicons}
+\RequirePackage{orcidlink}
 \RequirePackage[noblocks]{authblk}
 \setcounter{Maxaffil}{0}
 \RequirePackage{adjustbox}
@@ -412,9 +412,9 @@ lining]{sourcecodepro}
 %%-------------------------------------------------------------------------------
 
 % in-line code words
-\def\code#1{\texttt{#1}}
+\def\code#1{\fontsize{9}{10}\colorbox{codebackcolor}{\texttt{#1}}}
+\setlength{\fboxsep}{1pt}
 
-% TODO: Make layout decisions for code here:
 \lstset{
 	tabsize=4,
 	captionpos=t,
@@ -425,7 +425,7 @@ lining]{sourcecodepro}
 	commentstyle=\color{gray},
 	stringstyle=\color{seismicacolor1},
 	emphstyle=\color{seismicacolor3},
-%	frameshape={RYR}{Y}{Y}{RYR},
+	%	frameshape={RYR}{Y}{Y}{RYR},
 	backgroundcolor=\color{codebackcolor},   
 	rulecolor=\color{codebackcolor}
 }
