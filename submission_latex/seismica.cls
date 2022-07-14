@@ -313,11 +313,16 @@
 %                Configuration for header and footer
 %-------------------------------------------------------------------------------
 
+\def\shorttitle@internal{}
+\newcommand{\shorttitle}[1]{\gdef\shorttitle@internal{#1}}
+\newcommand{\insertshorttitle}{\shorttitle@internal}
+
 \pagestyle{fancy}
 \fancyhf{}
 \fancyfoot{}
 \fancyfoot[L]{\sffamily\bfseries\footnotesize \thepage}
 \fancyhead[L]{\sffamily\footnotesize This is a non-peer reviewed manuscript submitted to {\scshape \bfseries\href{https://seismica.org/}{\color{seismicacolor1}SEISMICA}} }
+\fancyhead[R]{\sffamily\footnotesize \color{seismicacolor1}\insertshorttitle}
 \renewcommand{\headrule}{}
 
 \fancypagestyle{plain}{%
