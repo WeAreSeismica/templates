@@ -60,15 +60,17 @@
 %%      and will need to use lualatex instead of pdflatex to compile the document.
 %% We will use luatex, polyglossia and fontspec for the compilation of the accepted version. 
 %% Feel free to use any polyglossia command.
-
-%\usepackage{polyglossia}
-%\usepackage{fontspec}
-%\setmainlanguage[]{english}
 %\setotherlanguages{french,thai}  % replace with your language(s), per polyglossia
 %% if an additional font is needed for the abstract, load it with:
 %\newfontfamily\thaifont[Script=Thai]{Noto Serif Thai}
 %% also see https://www.overleaf.com/latex/examples/how-to-write-multilingual-text-with-different-scripts-in-latex/wfdxqhcyyjxz for reference
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Several abstracts
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% the command \makeseistitle does not allow page breaks in preprint mode. If you have
+%%		many abstracts, you can use the command \addsummaries. It will induce a pagebreak.
 
 \begin{document}
 	
@@ -76,26 +78,31 @@
 	%% For other languages in the second and third optional abstracts, you might have to define 
 	%%      additional font(s) in preamble above
 	%% You can also include a non-technical summary in addition to the abstract(s)
-	\makeseistitle{%
-		\begin{summary}{Abstract}
-			The text for the first abstract goes here. This should be in English, no longer than 200 words, and should not include references.
-		\end{summary}
-		%    \begin{french}
-		%    \begin{summary}{Résumé}
-		%            An optional second-languag abstract may go here. This should be no longer than 200 words. Please replace "Résumé" and "french" with the appropriate term and language.
-		%    \end{summary}
-		%    \end{french}
-		\begin{summary}{Non-technical summary}
-			Seismica encourages authors to include a summary of their paper intended for a non-specialist audience. This should be no longer than 200 words and should avoid jargon as much as possible.
-		\end{summary}
-	}
-	%    \begin{thai}
-	%    \begin{summary}{นามธรรม}
-	%            คอรัปชันจุ๊ยโปรดิวเซอร์ สถาปัตย์จ๊าบ แจ็กพ็อต ม้าหินอ่อน ซากุระคันถธุระ ฟีดสตาร์ท งี้ บอยคอตอิ่มแปร้สังโฆคำสาปแฟนซี ศิลปวัฒนธรรมไฟลท์จิ๊กโก๋กับดัก เจลพล็อตมาม่าซากุระดีลเลอร์ ซีนดัมพ์ แฮปปี้ เอ๊าะอุรังคธาตุซิม ฟินิกซ์เทรลเล่อร์อวอร์ด แคนยอนสมาพันธ์ ครัวซองฮัมอาข่าเอ็กซ์เพรส 
-	%    \end{summary}
-	%    \end{thai}
-	%    }
-	
+	\makeseistitle{
+	\begin{summary}{Abstract}
+	The text for the first abstract goes here. This should be in English, no longer than 200 words, and should not include references.
+	\end{summary}
+%	 \begin{thai}
+%	 \begin{summary}{นามธรรม}
+%	คอรัปชันจุ๊ยโปรดิวเซอร์ สถาปัตย์จ๊าบ แจ็กพ็อต ม้าหินอ่อน ซากุระคันถธุระ ฟีดสตาร์ท งี้ บอยคอตอิ่มแปร้สังโฆคำสาปแฟนซี ศิลปวัฒนธรรมไฟลท์จิ๊กโก๋กับดัก เจลพล็อตมาม่าซากุระดีลเลอร์ ซีนดัมพ์ แฮปปี้ เอ๊าะอุรังคธาตุซิม ฟินิกซ์เทรลเล่อร์อวอร์ด แคนยอนสมาพันธ์ ครัวซองฮัมอาข่าเอ็กซ์เพรส 
+%	 \end{summary}
+%	 \end{thai}
+%	\begin{summary}{Non-technical summary}
+%	The text goes here. Again, no longer than 200 words.
+%	\end{summary}
+ }  %% don't forget this one!
+ 
+ %%%% In preprint mode, in case you have too many abstracts and need a page break, use this:
+%\addsummaries{
+%	\begin{french}
+%	\begin{summary}{Résumé} 
+%	The text goes here. Again, no longer than 200 words.
+%	\end{summary}
+%	\end{french}
+%	\begin{summary}{Non-technical summary}
+%	The text goes here. Again, no longer than 200 words.
+%	\end{summary}
+%}  %% don't forget this one!
 	
 	\section{Section name}
 	
@@ -105,7 +112,6 @@
 	
 	\subsection{Bibliographic citations}
 	In the text of an article, citations may either be in-line, as in the case of citing \citet{metropolis_monte_1949}, or in parentheses \citep[e.g.,][]{metropolis_monte_1949}, as appropriate. All citations in the text must be listed in the references section, and all listed references must be cited at least once in the text.
-	
 	
 	\subsection{Headings}
 	\subsubsection{Subsubsection}

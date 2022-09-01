@@ -1,4 +1,8 @@
 % Documentclass seismica.cls
+% for Seismica, a community-driven, Diamond Open Access journal publishing peer-reviewed research in seismology and earthquake science.
+% Current version with inputs from:
+% Théa Ragon, Hannah Mark, Wasja Bloch, Thomas Lecocq
+
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{seismica}[2022 LaTeX2e document class]
@@ -83,12 +87,12 @@
 %\RequirePackage{orcidlink}
 \RequirePackage[noblocks]{authblk}
 \setcounter{Maxaffil}{0}
-\RequirePackage{adjustbox}
 \RequirePackage{datatool}
 \RequirePackage{etoolbox}
 \RequirePackage{comment}
 \RequirePackage{physics}
 \RequirePackage{listings}
+\RequirePackage{changepage}
 
 % fonts and math
 \RequirePackage{amsmath}
@@ -113,7 +117,8 @@
 \if@languages
 	\RequirePackage{polyglossia}
 	\RequirePackage{fontspec}
-	\setmainlanguages[]{english}
+	\setmainlanguage[]{english}
+	\RequirePackage[autostyle=false, style=english]{csquotes}
 	\RequirePackage[opentype,default,tabular,lining]{sourcesanspro}
 	\RequirePackage[opentype,default,tabular,lining]{sourceserifpro}
 	\RequirePackage[opentype,default,tabular,lining]{sourcecodepro}
@@ -122,6 +127,7 @@
 	\RequirePackage[regular]{sourcecodepro}
 	\RequirePackage[default,regular]{sourceserifpro}
 	\RequirePackage[T1]{fontenc}
+	\RequirePackage[autostyle=false, style=english]{csquotes}
 \fi
 
 %-------------------------------------------------------------------------------
@@ -261,33 +267,46 @@
 
 \newenvironment{summary}[1]
 {
-	%	\pdfbookmark{#1}{#1}
-	\vspace{0.3cm}
 	\par
 	\noindent \abstracttitlestyle{#1} \hspace{0.2cm}\sffamily
-}%
-{
-}
+}{
+	\vspace{0.3cm}}%
+
+\newenvironment{abswidth}{\begin{adjustwidth}{}{0.18\paperwidth}}{\end{adjustwidth}}
 
 \if@onecolumn
 \newcommand*{\makeseistitle}[1]{%
 	\maketitle
-	\begin{adjustbox}{minipage=0.68\paperwidth}
+	\begin{abswidth}
+	#1
+	\end{abswidth}
+	\vspace{0.3cm}
+}
+\newcommand*{\addsummaries}[1]{%
+	\begin{abswidth}
 		#1
-	\end{adjustbox}
-	\vspace{1cm}
+	\end{abswidth}
+	\vspace{0.3cm}
 }
 \else
 \newcommand*{\makeseistitle}[1]{%
-	\twocolumn[%
+	\twocolumn[
 	\maketitle
-	\begin{adjustbox}{minipage=0.68\paperwidth}
+	\begin{abswidth}
 		#1
-	\end{adjustbox}
-	\vspace{1cm}
-	]
+	\end{abswidth}
 	\saythanks
+	]
+		\vspace{0.3cm}
 }
+\newcommand*{\addsummaries}[1]{%
+	\twocolumn[
+	\begin{abswidth}
+	#1
+	\end{abswidth}
+	]
+	\vspace{0.3cm}
+	}
 \fi
 
 %-------------------------------------------------------------------------------
