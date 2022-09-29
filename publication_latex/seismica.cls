@@ -369,9 +369,15 @@ lining]{sourcecodepro}
 %-------------------------------------------------------------------------------
 %                Configuration for header and footer
 %-------------------------------------------------------------------------------
+\def\reportheader#1{\def\@reportheader{#1}}
+\reportheader{}
 
 \if@report
-\newcommand{\articletype}{\color{seismicacolor2}REPORT}
+	\ifx\reportheader\editorname %% check if reportheader empty
+	\newcommand{\articletype}{\color{seismicacolor2}REPORT}
+	\else
+	\newcommand{\articletype}{{\color{seismicacolor2}\MakeUppercase{\@reportheader}}}
+	\fi
 \else 
 	\if@invited
 	\newcommand{\articletype}{INVITED RESEARCH ARTICLE}
