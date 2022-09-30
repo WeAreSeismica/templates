@@ -314,13 +314,15 @@ lining]{sourcecodepro}
 			\zsavepos{loc:beg_abstract}
 		#1
 	\end{abswidth}
-	\vspace{0.3cm}
+
+	\vspace*{0.7cm}
 }
 \newcommand*{\addsummaries}[1]{%
 	\begin{abswidth}
 		#1
 	\end{abswidth}
-	\vspace{0.3cm}
+
+	\vspace*{0.7cm}
 }
 \else
 \newcommand*{\makeseistitle}[1]{%
@@ -331,16 +333,18 @@ lining]{sourcecodepro}
 		#1
 	\end{abswidth}
 	\saythanks
+	
+	\vspace*{0.7cm}
 	]
-	\vspace{0.3cm}
 }
 \newcommand*{\addsummaries}[1]{%
 	\twocolumn[
 	\begin{abswidth}
 		#1
 	\end{abswidth}
+
+	\vspace*{0.7cm}
 	]
-	\vspace{0.3cm}
 }
 \fi
 
@@ -394,7 +398,7 @@ lining]{sourcecodepro}
 \fancyhf{}
 \fancyfoot{}
 \fancyfoot[L]{\sff\bfseries\footnotesize \thepage}
-\fancyfoot[R]{\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA} | volume \@thevolume.\@thenumber  |  \@theyear}
+\fancyfoot[R]{\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA}~|~volume \@thevolume.\@thenumber~|~\@theyear}
 \fancyhead[L]{\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA} | {\scshape \bfseries \articletype} | \insertshorttitle}
 %\fancyhead[R]{\footnotesize \@author[1]}
 \renewcommand{\headrule}{}
