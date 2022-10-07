@@ -79,6 +79,7 @@ hyperfootnotes=false]{hyperref}
 \RequirePackage{comment}
 \RequirePackage{listings}
 \RequirePackage[autostyle=false, style=english]{csquotes}
+\RequirePackage{newunicodechar}
 
 % fonts and math
 \RequirePackage{amsmath}
@@ -108,6 +109,9 @@ lining]{sourcecodepro}
 \newcommand{\rmf}{\sourceserifpro}
 \newcommand{\sflight}{\sourcesansprolight}
 \newcommand{\rmlight}{\sourceserifprolight}
+
+% source sans pro does not handle +2010
+\newunicodechar{^^^^2010}{-}
 
 % Redefine thanks symbol for compatibility with fonts
 \def\@fnsymbol#1{\ensuremath{\ifcase#1\or *\or \dagger\or \ddagger\or
