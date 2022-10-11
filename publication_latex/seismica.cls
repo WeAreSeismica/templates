@@ -109,6 +109,7 @@ lining]{sourcecodepro}
 \newcommand{\rmf}{\sourceserifpro}
 \newcommand{\sflight}{\sourcesansprolight}
 \newcommand{\rmlight}{\sourceserifprolight}
+\urlstyle{sf}
 
 % source sans pro does not handle +2010
 \newunicodechar{^^^^2010}{-}
