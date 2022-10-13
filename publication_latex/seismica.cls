@@ -167,8 +167,10 @@ lining]{sourcecodepro}
 \def\theyear#1{\def\@theyear{#1}}
 
 % Volunteers names
-\def\editorname#1{\def\@editorname{#1}}
-\editorname{}
+\def\prodedname#1{\def\@prodedname{#1}}
+\prodedname{}
+\def\prodedname#1{\def\@handedname{#1}}
+\handedname{}
 \def\copyedname#1{\def\@copyedname{#1}}
 \copyedname{}
 \def\suppmat#1{\def\@suppmat{#1}}
@@ -195,8 +197,9 @@ lining]{sourcecodepro}
 }
 
 \newcommand{\more@metadata}{%
-	\printifnotempty{Edited by}{\\}{\@editorname}{\\}
-	\printifnotempty{Typeset by}{\\}{\@copyedname}{\par}
+	\printifnotempty{Production Editor:}{\\}{\@prodedname}{\\}
+	\printifnotempty{Handling Editor:}{\\}{\@handedname}{\\}
+	\printifnotempty{Copy \& Layout Editor:}{\\}{\@copyedname}{\par}
 	\printifnotempty{Received}{\\}{\@receiveddate}{\\}
 	\printifnotempty{Accepted}{\\}{\@accepteddate}{\\}
 	\printifnotempty{Published}{\\}{\@publisheddate}{\par}
@@ -382,7 +385,7 @@ lining]{sourcecodepro}
 \reportheader{}
 
 \if@report
-	\ifx\reportheader\editorname %% check if reportheader empty
+	\ifx\reportheader\prodedname %% check if reportheader empty
 	\newcommand{\articletype}{\color{seismicacolor2}REPORT}
 	\else
 	\newcommand{\articletype}{{\color{seismicacolor2}\MakeUppercase{\@reportheader}}}
