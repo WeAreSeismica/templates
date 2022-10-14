@@ -66,7 +66,8 @@ hyperfootnotes=false]{hyperref}
 %\RequirePackage[natbibapa,sectionbib,doi]{apacite}   ### TO DO!! Conflict with... ???
 %\bibliographystyle{apacite}
 \RequirePackage[round]{natbib}
-\bibliographystyle{abbrvnat_seismica}
+\bibliographystyle{abbrvnat_seismica_upcasetitle}
+%\bibliographystyle{abbrvnat_seismica}
 \RequirePackage{doi}
 \RequirePackage{academicons}
 \RequirePackage[noblocks]{authblk}
@@ -169,7 +170,7 @@ lining]{sourcecodepro}
 % Volunteers names
 \def\prodedname#1{\def\@prodedname{#1}}
 \prodedname{}
-\def\prodedname#1{\def\@handedname{#1}}
+\def\handedname#1{\def\@handedname{#1}}
 \handedname{}
 \def\copyedname#1{\def\@copyedname{#1}}
 \copyedname{}
