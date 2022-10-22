@@ -285,10 +285,12 @@ FUNCTION {format.doi}
 }
 
 FUNCTION {format.title}
-{ title empty$
-    { "" }
-    { title "t" change.case$ }
-  if$
+{ 
+%title empty$
+%    { "" }
+%    { title "t" change.case$ }
+%  if$
+title
 }
 
 FUNCTION {format.full.names}

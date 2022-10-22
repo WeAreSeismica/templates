@@ -82,7 +82,7 @@
 \RequirePackage{bookmark}
 \RequirePackage{caption} 
 \RequirePackage[round]{natbib}
-\IfFileExists{abbrvnat_seismica.bst}{\bibliographystyle{abbrvnat_seismica}}{\bibliographystyle{abbrvnat}}
+\IfFileExists{abbrvnat_seismica_upcasetitle.bst}{\bibliographystyle{abbrvnat_seismica}}{\bibliographystyle{abbrvnat}}
 \RequirePackage{doi}
 %\RequirePackage{orcidlink}
 \RequirePackage[noblocks]{authblk}
