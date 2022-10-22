@@ -93,6 +93,7 @@
 \RequirePackage{physics}
 \RequirePackage{listings}
 \RequirePackage{changepage}
+\RequirePackage{setspace}
 
 % fonts and math
 \RequirePackage{amsmath}
@@ -111,6 +112,7 @@
 \RequirePackage{lineno} %% loaded here because incompatibility with breqn
 \if@review
 \linenumbers
+\doublespacing
 \fi
 
 
@@ -129,6 +131,13 @@
 	\RequirePackage[T1]{fontenc}
 	\RequirePackage[autostyle=false, style=english]{csquotes}
 \fi
+
+\newcommand{\sff}{\sourcesanspro}
+\newcommand{\rmf}{\sourceserifpro}
+\newcommand{\sflight}{\sourcesansprolight}
+\newcommand{\rmlight}{\sourceserifprolight}
+\urlstyle{sf}
+
 
 %-------------------------------------------------------------------------------
 %                Configuration for authors
@@ -245,9 +254,13 @@
 	\vspace{-1.5cm}
 	\href{https://seismica.org/}{\includegraphics[width=\textwidth]{\banner}}
 	
-	{\vspace*{-1.3cm} \hspace{0.1cm} 
+	\if@review
+	{\vspace*{-1.6cm} \hspace{0.1cm} 
 		\href{https://seismica.org/}{\color{black} \sffamily\small Non-peer reviewed manuscript submitted to} }
-	
+	\else
+		{\vspace*{-1.3cm} \hspace{0.1cm} 
+		\href{https://seismica.org/}{\color{black} \sffamily\small Non-peer reviewed manuscript submitted to} }
+	\fi
 	\vspace*{1.7cm}
 }
 

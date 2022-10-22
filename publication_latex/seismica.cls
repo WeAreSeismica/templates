@@ -198,9 +198,9 @@ lining]{sourcecodepro}
 }
 
 \newcommand{\more@metadata}{%
-	\printifnotempty{Production Editor:}{\\}{\@prodedname}{\\}
-	\printifnotempty{Handling Editor:}{\\}{\@handedname}{\\}
-	\printifnotempty{Copy \& Layout Editor:}{\\}{\@copyedname}{\par}
+	\printifnotempty{Production Editor}{\\}{\@prodedname}{\\}
+	\printifnotempty{Handling Editor}{\\}{\@handedname}{\\}
+	\printifnotempty{Copy \& Layout Editor}{\\}{\@copyedname}{\par}
 	\printifnotempty{Received}{\\}{\@receiveddate}{\\}
 	\printifnotempty{Accepted}{\\}{\@accepteddate}{\\}
 	\printifnotempty{Published}{\\}{\@publisheddate}{\par}
