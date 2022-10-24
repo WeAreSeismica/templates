@@ -287,30 +287,41 @@
 
 \newenvironment{abswidth}{\begin{adjustwidth}{}{0.18\paperwidth}}{\end{adjustwidth}}
 
+%% abstract.sty specs, needed for saythanks
+\setlength{\absleftindent}{0}
+\setlength{\absrightindent}{0}
+\renewcommand{\abstractname}{}   
+\renewcommand{\absnamepos}{empty} 
+\addto\captionsenglish{\renewcommand{\abstractname}{}} % necessary to remove abstract title... don't know why
+
 \if@onecolumn
 \newcommand*{\makeseistitle}[1]{%
 	\maketitle
 	\begin{abswidth}
 	#1
 	\end{abswidth}
-	\vspace{0.3cm}
+	\vspace{0.7cm}
+	\thanks
 }
 \newcommand*{\addsummaries}[1]{%
 	\begin{abswidth}
 		#1
 	\end{abswidth}
-	\vspace{0.3cm}
+	\vspace{0.7cm}
 }
 \else
 \newcommand*{\makeseistitle}[1]{%
 	\twocolumn[
 	\maketitle
 	\begin{abswidth}
+	\begin{onecolabstract}
+		\zsavepos{loc:beg_abstract}		
 		#1
-	\end{abswidth}
-	\saythanks
-	]
-		\vspace{0.3cm}
+	\end{onecolabstract}
+\end{abswidth}
+\vspace*{0.7cm}
+]
+\saythanks
 }
 \newcommand*{\addsummaries}[1]{%
 	\twocolumn[
@@ -318,7 +329,7 @@
 	#1
 	\end{abswidth}
 	]
-	\vspace{0.3cm}
+	\vspace{0.7cm}
 	}
 \fi
 

@@ -316,6 +316,13 @@ lining]{sourcecodepro}
 
 \newenvironment{abswidth}{\begin{adjustwidth}{}{0.18\paperwidth}}{\end{adjustwidth}}
 
+%% abstract.sty specs, needed for saythanks
+\setlength{\absleftindent}{0}
+\setlength{\absrightindent}{0}
+\renewcommand{\abstractname}{}   
+\renewcommand{\absnamepos}{empty} 
+\addto\captionsenglish{\renewcommand{\abstractname}{}} % necessary to remove abstract title... don't know why
+
 \if@onecolumn
 \newcommand*{\makeseistitle}[1]{%
 	\maketitle
@@ -338,10 +345,11 @@ lining]{sourcecodepro}
 	\twocolumn[
 	\maketitle
 	\begin{abswidth}
+	\begin{onecolabstract}
 	\zsavepos{loc:beg_abstract}		
 		#1
+	\end{onecolabstract}
 	\end{abswidth}
-	
 	\vspace*{0.7cm}
 	]
 	\saythanks
