@@ -317,8 +317,8 @@ lining]{sourcecodepro}
 \newenvironment{abswidth}{\begin{adjustwidth}{}{0.18\paperwidth}}{\end{adjustwidth}}
 
 %% abstract.sty specs, needed for saythanks
-\setlength{\absleftindent}{0}
-\setlength{\absrightindent}{0}
+\setlength{\absleftindent}{0pt}
+\setlength{\absrightindent}{0pt}
 \renewcommand{\abstractname}{}   
 \renewcommand{\absnamepos}{empty} 
 \addto\captionsenglish{\renewcommand{\abstractname}{}} % necessary to remove abstract title... don't know why
