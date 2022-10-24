@@ -5,12 +5,12 @@ Contains Latex template for publication, returns PDF galley
 
 ### Requirements
 You can either use the class on your machine:
-- TeX v??
-- LuaTeX
+- Compiler: LuaLaTex 
+- TeX Liver version: 2022 and older
 
 Or on Overleaf, options to set:
-- Tex v??
-- LuaTex 
+- Compiler: LuaLaTex 
+- TeX Liver version: 2022 and older
 
 
 ## Submission_latex
