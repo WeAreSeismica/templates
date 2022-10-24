@@ -323,7 +323,7 @@ lining]{sourcecodepro}
 			\zsavepos{loc:beg_abstract}
 		#1
 	\end{abswidth}
-
+	\thanks
 	\vspace*{0.7cm}
 }
 \newcommand*{\addsummaries}[1]{%
@@ -341,10 +341,10 @@ lining]{sourcecodepro}
 	\zsavepos{loc:beg_abstract}		
 		#1
 	\end{abswidth}
-	\saythanks
 	
 	\vspace*{0.7cm}
 	]
+	\saythanks
 }
 \newcommand*{\addsummaries}[1]{%
 	\twocolumn[
