@@ -85,17 +85,13 @@ hyperfootnotes=false]{hyperref}
 % fonts and math
 \RequirePackage{amsmath}
 \RequirePackage{lmodern}
-\RequirePackage[opentype,
+\RequirePackage[otf,
 default,
-tabular,
-lining]{sourcesanspro}
-\RequirePackage[opentype,
-default,
-tabular,
-lining]{sourceserifpro}
-\RequirePackage[opentype,
-default,
-lining]{sourcecodepro}
+tabular]{sourceserifpro}
+\RequirePackage[otf,
+tabular]{sourcecodepro}
+\RequirePackage[otf,
+tabular]{sourcesanspro}
 \if@breakmath
 \RequirePackage{breqn}
 \renewenvironment{equation}{%

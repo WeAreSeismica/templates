@@ -121,13 +121,21 @@
 	\RequirePackage{fontspec}
 	\setmainlanguage[]{english}
 	\RequirePackage[autostyle=false, style=english]{csquotes}
-	\RequirePackage[opentype,default,tabular,lining]{sourcesanspro}
-	\RequirePackage[opentype,default,tabular,lining]{sourceserifpro}
-	\RequirePackage[opentype,default,tabular,lining]{sourcecodepro}
+\RequirePackage[otf,
+default,
+tabular]{sourceserifpro}
+\RequirePackage[otf,
+tabular]{sourcecodepro}
+\RequirePackage[otf,
+tabular]{sourcesanspro}
 \else
-	\RequirePackage[regular]{sourcesanspro}
-	\RequirePackage[regular]{sourcecodepro}
-	\RequirePackage[default,regular]{sourceserifpro}
+\RequirePackage[otf,
+default,
+tabular]{sourceserifpro}
+\RequirePackage[otf,
+tabular]{sourcecodepro}
+\RequirePackage[otf,
+tabular]{sourcesanspro}
 	\RequirePackage[T1]{fontenc}
 	\RequirePackage[autostyle=false, style=english]{csquotes}
 \fi
