@@ -1,0 +1,151 @@
+\documentclass{article}
+
+\input{regression-test}
+\AtBeginDocument{\START}
+%\AtEndDocument{\END}
+
+\usepackage{functional}
+\Functional{tracing=true}
+
+\begin{document}
+
+\BEGINTEST{Testing \intEval}
+\intEval {(1+4)*(2-3)/5}
+\intEval {\strCount{12\TeX34} - \tlCount{12\TeX34}}
+\ENDTEST
+
+\BEGINTEST{Testing \intMathAdd}
+\intMathAdd {7} {3}
+\intMathAdd {8-1} {2+1}
+\ENDTEST
+
+\BEGINTEST{Testing \intMathSub}
+\intMathSub {7} {3}
+\intMathSub {8-1} {2+1}
+\ENDTEST
+
+\BEGINTEST{Testing \intMathMult}
+\intMathMult {7} {3}
+\intMathMult {8-1} {2+1}
+\ENDTEST
+
+\BEGINTEST{Testing \intMathDiv}
+\intMathDiv {8} {3}
+\intMathDiv {9-1} {2+1}
+\ENDTEST
+
+\BEGINTEST{Testing \intMathDivTruncate}
+\intMathDivTruncate {8} {3}
+\intMathDivTruncate {9-1} {2+1}
+\ENDTEST
+
+\BEGINTEST{Testing \intMathSign}
+\intMathSign {5}
+\intMathSign {-2}
+\ENDTEST
+
+\BEGINTEST{Testing \intMathAbs}
+\intMathAbs {5}
+\intMathAbs {-2}
+\ENDTEST
+
+\BEGINTEST{Testing \intMathMax}
+\intMathMax {5} {2}
+\ENDTEST
+
+\BEGINTEST{Testing \intMathMin}
+\intMathMin {5} {2}
+\ENDTEST
+
+\BEGINTEST{Testing \intMathMod}
+\intMathMod {28} {5}
+\ENDTEST
+
+%\BEGINTEST{Testing \intMathRand}
+%\intMathRand {1} {9}
+%\intMathRand {1} {9}
+%\intMathRand {1} {9}
+%\ENDTEST
+
+\BEGINTEST{Testing \intConst}
+\intConst \cFooSomeInt {3*5}
+\intUse \cFooSomeInt
+\ENDTEST
+
+\BEGINTEST{Testing \intLog}
+\intLog {3 + 2}
+\ENDTEST
+
+\BEGINTEST{Testing \intSet}
+\intSet \lTmpaInt {3+5}
+\intUse \lTmpaInt
+\ENDTEST
+
+\BEGINTEST{Testing \intSetEq}
+\intZeroNew \lFooSomeInt
+\intSetEq \lFooSomeInt \cOneInt
+\intUse \lFooSomeInt
+\ENDTEST
+
+\BEGINTEST{Testing \intZero}
+\intSet \lTmpaInt {5}
+\intZero \lTmpaInt
+\intUse \lTmpaInt
+\ENDTEST
+
+\BEGINTEST{Testing \intZeroNew}
+\intZeroNew \lFooSomeInt
+\intUse \lFooSomeInt
+\ENDTEST
+
+\BEGINTEST{Testing \intReplicate}
+\intReplicate {4} {Hello}
+\tlSet \lTmpaTl {\intReplicate {3} {\qNoValue}}
+\ENDTEST
+
+\BEGINTEST{Testing \intStepInline}
+\IgnoreSpacesOn
+\tlClear \lTmpaTl
+\intStepInline {1} {3} {30} {
+  \tlPutRight \lTmpaTl {[#1]}
+}
+\prgReturn {\expValue\lTmpaTl}
+\IgnoreSpacesOff
+\ENDTEST
+
+\BEGINTEST{Testing \intStepOneInline}
+\IgnoreSpacesOn
+\tlClear \lTmpaTl
+\intStepOneInline {1} {10} {
+  \tlPutRight \lTmpaTl {[#1]}
+}
+\expValue \lTmpaTl
+\IgnoreSpacesOff
+\ENDTEST
+
+\BEGINTEST{Testing \intIfExist}
+\intIfExistTF \lTmpaInt {\prgReturn{Yes}} {\prgReturn{No}}
+\intIfExistTF \lFooUndefinedInt {\prgReturn{Yes}} {\prgReturn{No}}
+\ENDTEST
+
+\BEGINTEST{Testing \intIfOdd}
+\intIfOddTF {3+2} {\prgReturn{Yes}} {\prgReturn{No}}
+\ENDTEST
+
+\BEGINTEST{Testing \intIfEven}
+\intIfEvenTF {3+2} {\prgReturn{Yes}} {\prgReturn{No}}
+\ENDTEST
+
+\BEGINTEST{Testing \intCaseF}
+\IgnoreSpacesOn
+\intCaseF { 2 * 5 }
+  {
+    { 5 }       { Small }
+    { 4 + 6 }   { Medium }
+    { -2 * 10 } { Negative }
+  }
+  { No idea! }
+\IgnoreSpacesOff
+\ENDTEST
+
+\end{document}

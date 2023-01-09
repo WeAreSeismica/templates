@@ -1,0 +1,872 @@
+% -*- coding: utf-8 -*-
+% !TEX program = lualatex
+\documentclass[oneside]{book}
+
+\input{manual.sty}
+\CodeHigh{lite}
+
+\begin{document}
+
+\chapter{Sequences and Stacks (\texttt{Seq})}
+
+\section{Constant and Scratch Sequences}
+
+\begin{variable}{\cEmptySeq}
+Constant that is always empty.
+\end{variable}
+
+\begin{variable}{\lTmpaSeq,\lTmpbSeq,\lTmpcSeq,\lTmpiSeq,\lTmpjSeq,\lTmpkSeq}
+Scratch sequences for local assignment. These are never used by
+the \verb!functional! package, and so are safe for use with any
+function. However, they may be overwritten by other
+code and so should only be used for short-term storage.
+\end{variable}
+
+\begin{variable}{\gTmpaSeq,\gTmpbSeq,\gTmpcSeq,\gTmpiSeq,\gTmpjSeq,\gTmpkSeq}
+Scratch sequences for global assignment. These are never used by
+the \verb!functional! package, and so are safe for use with any
+function. However, they may be overwritten by other
+code and so should only be used for short-term storage.
+\end{variable}
+
+\section{Creating and Using Sequences}
+
+\begin{function}{\seqNew}
+\begin{syntax}
+\cs{seqNew} \meta{sequence}
+\end{syntax}
+Creates a new \meta{sequence} or raises an error if the name is
+already taken. The declaration is global. The \meta{sequence}
+initially contains no items.
+\begin{codehigh}
+\seqNew \lFooSomeSeq
+\end{codehigh}
+\end{function}
+
+\begin{function}{\seqConstFromClist}
+\begin{syntax}
+\cs{seqConstFromClist} \meta{seq var} \Arg{comma-list}
+\end{syntax}
+Creates a new constant \meta{seq var} or raises an error if the name
+is already taken. The \meta{seq var} is set globally to contain the
+items in the \meta{comma list}.
+\begin{codehigh}
+\seqConstFromClist \cFooSomeSeq {one,two,three}
+\end{codehigh}
+\end{function}
+
+\begin{function}{\seqVarJoin}
+\begin{syntax}
+\cs{seqVarJoin} \meta{seq var} \Arg{separator}
+\end{syntax}
+Returns the contents of the \meta{seq var}, with
+the \meta{separator} between the items.  If the sequence has
+a single item, it is returned with no \meta{separator},
+and an empty sequence returns nothing.  An error is raised if
+the variable does not exist or if it is invalid.
+\begin{demohigh}
+\seqSetSplit \lTmpaSeq {|} {a|b|c|{de}|f}
+\seqVarJoin \lTmpaSeq { and }
+\end{demohigh}
+%\begin{texnote}
+%The result is returned within the \tn{unexpanded}
+%primitive (\cs{exp_not:n}), which means that the \meta{items}
+%do not expand further when appearing in an \texttt{x}-type
+%or \texttt{e}-type argument expansion.
+%\end{texnote}
+\end{function}
+
+\begin{function}{\seqVarJoinExtended}
+\begin{syntax}
+\cs{seqVarJoinExtended} \meta{seq var} \Arg{separator between two} \Arg{separator between more than two} \Arg{separator between final two}
+\end{syntax}
+Returns the contents of the \meta{seq var}, with
+the appropriate \meta{separator} between the items.  Namely, if the
+sequence has more than two items, the \meta{separator between more
+than two} is placed between each pair of items except the last,
+for which the \meta{separator between final two} is used.  If the
+sequence has exactly two items, then they are joined
+with the \meta{separator between two} and returned. If the sequence has
+a single item, it is returned, and an empty sequence
+returns nothing.  An error is raised if the variable does
+not exist or if it is invalid.
+\begin{demohigh}
+\seqSetSplit \lTmpaSeq {|} {a|b|c|{de}|f}
+\seqVarJoinExtended \lTmpaSeq { and } {, } {, and }
+\end{demohigh}
+The first separator argument is not used in this case
+because the sequence has more than $2$ items.
+%\begin{texnote}
+%The result is returned within the \tn{unexpanded}
+%primitive (\cs{exp_not:n}), which means that the \meta{items}
+%do not expand further when appearing in an \texttt{x}-type
+%or \texttt{e}-type argument expansion.
+%\end{texnote}
+\end{function}
+
+\section{Viewing Sequences}
+
+\begin{function}{\seqVarLog}
+\begin{syntax}
+\cs{seqVarLog} \meta{sequence}
+\end{syntax}
+Writes the entries in the \meta{sequence} in the log file.
+\begin{codehigh}
+\seqVarLog \lFooSomeSeq
+\end{codehigh}
+\end{function}
+
+\begin{function}{\seqVarShow}
+\begin{syntax}
+\cs{seqVarShow} \meta{sequence}
+\end{syntax}
+Displays the entries in the \meta{sequence} in the terminal.
+\begin{codehigh}
+\seqVarShow \lFooSomeSeq
+\end{codehigh}
+\end{function}
+
+\section{Setting Sequences}
+
+\begin{function}{\seqSetFromClist}
+\begin{syntax}
+\cs{seqSetFromClist} \meta{sequence} \meta{comma-list}
+\end{syntax}
+Converts the data in the \meta{comma list} into a \meta{sequence}:
+the original \meta{comma list} is unchanged.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {one,two,three}
+\seqVarJoin \lTmpaSeq { and }
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqSetSplit}
+\begin{syntax}
+\cs{seqSetSplit} \meta{sequence} \Arg{delimiter} \Arg{token list}
+\end{syntax}
+Splits the \meta{token list} into \meta{items} separated
+by \meta{delimiter}, and assigns the result to the \meta{sequence}.
+Spaces on both sides of each \meta{item} are ignored,
+then one set of outer braces is removed (if any);
+this space trimming behaviour is identical to that of
+\pkg{Clist} functions. Empty \meta{items} are preserved by
+\cs{seqSetSplit}, and can be removed afterwards using
+\cs{seqVarRemoveAll} \meta{sequence} \verb|{}|.
+The \meta{delimiter} may not contain \verb|{|, \verb|}| or \verb|#|
+(assuming \TeX{}'s normal category code r\'egime).
+If the \meta{delimiter} is empty, the \meta{token list} is split
+into \meta{items} as a \meta{token list}.
+%See also \cs{seqSetSplitKeepSpaces}, which omits space stripping.
+\begin{demohigh}
+\seqSetSplit \lTmpaSeq {,} {1,2,3}
+\seqVarJoin \lTmpaSeq { and }
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqSetEq}
+\begin{syntax}
+\cs{seqSetEq} \meta{sequence_1} \meta{sequence_2}
+\end{syntax}
+Sets the content of \meta{sequence_1} equal to that of
+\meta{sequence_2}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {one,two,three,four}
+\seqSetEq \lTmpbSeq \lTmpaSeq
+\seqVarJoin \lTmpbSeq { and }
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqClear}
+\begin{syntax}
+\cs{seqClear} \meta{sequence}
+\end{syntax}
+Clears all items from the \meta{sequence}.
+\begin{codehigh}
+\seqClear \lTmpaSeq
+\end{codehigh}
+\end{function}
+
+\begin{function}{\seqClearNew}
+\begin{syntax}
+\cs{seqClearNew} \meta{sequence}
+\end{syntax}
+Ensures that the \meta{sequence} exists globally by applying
+\cs{seqNew} if necessary, then applies \cs{seqClear} to leave
+the \meta{sequence} empty.
+\begin{demohigh}
+\seqClearNew \lFooSomeSeq
+\seqSetFromClist \lFooSomeSeq {one,two,three}
+\seqVarJoin \lFooSomeSeq { and }
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqConcat}
+\begin{syntax}
+\cs{seqConcat} \meta{sequence_1} \meta{sequence_2} \meta{sequence_3}
+\end{syntax}
+Concatenates the content of \meta{sequence_2} and \meta{sequence_3}
+together and saves the result in \meta{sequence_1}. The items in
+\meta{sequence_2} are placed at the left side of the new sequence.
+\begin{demohigh}
+\seqSetFromClist \lTmpbSeq {one,two}
+\seqSetFromClist \lTmpcSeq {three,four}
+\seqConcat \lTmpaSeq \lTmpbSeq \lTmpcSeq
+\seqVarJoin \lTmpaSeq {, }
+\end{demohigh}
+\end{function}
+
+%\begin{function}{\seqSetSplitKeepSpaces}
+%\begin{syntax}
+%\cs{seqSetSplitKeepSpaces} \meta{sequence} \Arg{delimiter} \Arg{token list}
+%\end{syntax}
+%Splits the \meta{token list} into \meta{items} separated
+%by \meta{delimiter}, and assigns the result to the \meta{sequence}.
+%One set of outer braces is removed (if any) but any surrounding spaces
+%are retained: any braces \emph{inside} one or more spaces are
+%therefore kept. Empty \meta{items} are preserved by
+%\cs{seqSetSplitKeepSpaces}, and can be removed afterwards using
+%\cs{seqVarRemoveAll} \meta{sequence} \verb|{}|.
+%The \meta{delimiter} may not contain \verb|{|, \verb|}| or \verb|#|
+%(assuming \TeX{}'s normal category code r\'egime).
+%If the \meta{delimiter} is empty, the \meta{token list} is split
+%into \meta{items} as a \meta{token list}.
+%%See also \cs{seqSetSplit}, which removes spaces around the delimiters.
+%\end{function}
+
+\begin{function}{\seqPutLeft}
+\begin{syntax}
+\cs{seqPutLeft} \meta{sequence} \Arg{item}
+\end{syntax}
+Appends the \meta{item} to the left of the \meta{sequence}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {one,two}
+\seqPutLeft \lTmpaSeq {zero}
+\seqVarJoin \lTmpaSeq { and }
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqPutRight}
+\begin{syntax}
+\cs{seqPutRight} \meta{sequence} \Arg{item}
+\end{syntax}
+Appends the \meta{item} to the right of the \meta{sequence}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {one,two}
+\seqPutRight \lTmpaSeq {three}
+\seqVarJoin \lTmpaSeq { and }
+\end{demohigh}
+\end{function}
+
+\section{Modifying Sequences}
+
+While sequences are normally used as ordered lists, it may be
+necessary to modify the content. The functions here may be used
+to update sequences, while retaining the order of the unaffected
+entries.
+
+\begin{function}{\seqVarRemoveDuplicates}
+\begin{syntax}
+\cs{seqVarRemoveDuplicates} \meta{sequence}
+\end{syntax}
+Removes duplicate items from the \meta{sequence}, leaving the
+left most copy of each item in the \meta{sequence}.  The \meta{item}
+comparison takes place on a token basis, as for \cs{tlIfEqTF}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {one,two,one,two,three}
+\seqVarRemoveDuplicates \lTmpaSeq
+\seqVarJoin \lTmpaSeq {,}
+\end{demohigh}
+%\begin{texnote}
+%This function iterates through every item in the \meta{sequence} and
+%does a comparison with the \meta{items} already checked. It is therefore
+%relatively slow with large sequences.
+%\end{texnote}
+\end{function}
+
+\begin{function}{\seqVarRemoveAll}
+\begin{syntax}
+\cs{seqVarRemoveAll} \meta{sequence} \Arg{item}
+\end{syntax}
+Removes every occurrence of \meta{item} from the \meta{sequence}.
+The \meta{item} comparison takes place on a token basis, as for \cs{tlIfEqTF}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {one,two,one,two,three}
+\seqVarRemoveAll \lTmpaSeq {two}
+\seqVarJoin \lTmpaSeq {,}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqVarReverse}
+\begin{syntax}
+\cs{seqVarReverse} \meta{sequence}
+\end{syntax}
+Reverses the order of the items stored in the \meta{sequence}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {one,two,one,two,three}
+\seqVarReverse \lTmpaSeq
+\seqVarJoin \lTmpaSeq {,}
+\end{demohigh}
+\end{function}
+
+%\begin{function}{\seqVarSort}
+%\begin{syntax}
+%\cs{seqVarSort} \meta{sequence} \Arg{comparison code}
+%\end{syntax}
+%Sorts the items in the \meta{sequence} according to the
+%\meta{comparison code}, and assigns the result to
+%\meta{sequence}. The details of sorting comparison are
+%described in Section \ref{sec:l3sort:mech}.
+%\end{function}
+
+%\begin{function}{\seqVarShuffle}
+%\begin{syntax}
+%\cs{seqVarShuffle} \meta{seq var}
+%\end{syntax}
+%Sets the \meta{seq var} to the result of placing the items of the
+%\meta{seq var} in a random order.  Each item is (roughly) as likely
+%to end up in any given position.
+%\begin{texnote}
+%For sequences with more than $13$ items or so, only a small
+%proportion of all possible permutations can be reached, because
+%the random seed \cs{sys_rand_seed:} only has $28$-bits.  The use
+%of \tn{toks} internally means that sequences with more than
+%$32767$ or $65535$ items (depending on the engine) cannot be
+%shuffled.
+%\end{texnote}
+%\end{function}
+
+\section{Working with the Contents of Sequences}
+
+\begin{function}{\seqVarCount}
+\begin{syntax}
+\cs{seqVarCount} \meta{sequence}
+\end{syntax}
+Returns the number of items in the \meta{sequence}
+as an \meta{integer denotation}. The total number of items
+in a \meta{sequence} includes those which are empty and duplicates,
+\emph{i.e.} every item in a \meta{sequence} is unique.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {one,two,three,four}
+\seqVarCount \lTmpaSeq
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqVarItem}
+\begin{syntax}
+\cs{seqVarItem} \meta{sequence} \Arg{integer expression}
+\end{syntax}
+Indexing items in the \meta{sequence} from $1$ at the top (left), this
+function evaluates the \meta{integer expression} and returns the
+appropriate item from the sequence. If the
+\meta{integer expression} is negative, indexing occurs from the
+bottom (right) of the sequence. If the \meta{integer expression}
+is larger than the number of items in the \meta{sequence} (as
+calculated by \cs{seqVarCount}) then the function returns nothing.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {one,two,three,four}
+\tlSet \lTmpaTl {\seqVarItem \lTmpaSeq {3}}
+\tlUse \lTmpaTl
+\end{demohigh}
+%\begin{texnote}
+%The result is returned within the \tn{unexpanded}
+%primitive (\cs{exp_not:n}), which means that the \meta{item}
+%does not expand further when appearing in an \texttt{x}-type
+%or \texttt{e}-type argument expansion.
+%\end{texnote}
+\end{function}
+
+\begin{function}{\seqVarRandItem}
+\begin{syntax}
+\cs{seqVarRandItem} \meta{seq var}
+\end{syntax}
+Selects a pseudo-random item of the \meta{sequence}. If the
+\meta{sequence} is empty the result is empty.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {one,two,three,four,five,six}
+\tlSet \lTmpaTl {\seqVarRandItem \lTmpaSeq}
+\tlUse \lTmpaTl
+\tlSet \lTmpaTl {\seqVarRandItem \lTmpaSeq}
+\tlUse \lTmpaTl
+\end{demohigh}
+%This is not available in older versions of \XeTeX{}.
+%\begin{texnote}
+%The result is returned within the \tn{unexpanded}
+%primitive (\cs{exp_not:n}), which means that the \meta{item}
+%does not expand further when appearing in an \texttt{x}-type
+%or \texttt{e}-type argument expansion.
+%\end{texnote}
+\end{function}
+
+\section{Sequences as Stacks}
+
+Sequences can be used as stacks, where data is pushed to and popped
+from the top of the sequence. (The left of a sequence is the top, for
+performance reasons.) The stack functions for sequences are not
+intended to be mixed with the general ordered data functions detailed
+in the previous section: a sequence should either be used as an
+ordered data type or as a stack, but not in both ways.
+
+\begin{function}{\seqGet}
+\begin{syntax}
+\cs{seqGet} \meta{sequence} \meta{token list variable}
+\end{syntax}
+Reads the top item from a \meta{sequence} into the
+\meta{token list variable} without removing it from the
+\meta{sequence}. The \meta{token list variable} is assigned locally.
+If \meta{sequence} is empty the \meta{token list variable} is set to
+the special marker \cs{qNoValue}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {two,three,four}
+\seqGet \lTmpaSeq \lTmpaTl
+\tlUse \lTmpaTl
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqGetT,\seqGetF,\seqGetTF}
+\begin{syntax}
+\cs{seqGetT} \meta{sequence} \meta{token list variable} \Arg{true code}
+\cs{seqGetF} \meta{sequence} \meta{token list variable} \Arg{false code}
+\cs{seqGetTF} \meta{sequence} \meta{token list variable} \Arg{true code} \Arg{false code}
+\end{syntax}
+If the \meta{sequence} is empty, leaves the \meta{false code} in the
+input stream.  The value of the \meta{token list variable} is
+not defined in this case and should not be relied upon.  If the
+\meta{sequence} is non-empty, stores the top item from a
+\meta{sequence} in the \meta{token list variable} without removing it from
+the \meta{sequence}. The \meta{token list variable} is assigned locally.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {two,three,four}
+\seqGetTF \lTmpaSeq \lTmpaTl {\prgReturn{Yes}} {\prgReturn{No}}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqPop}
+\begin{syntax}
+\cs{seqPop} \meta{sequence} \meta{token list variable}
+\end{syntax}
+Pops the top item from a \meta{sequence} into the
+\meta{token list variable}. the \meta{token list variable} is assigned locally.
+If \meta{sequence} is empty the \meta{token list variable} is set to
+the special marker \cs{qNoValue}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {two,three,four}
+\seqPop \lTmpaSeq \lTmpaTl
+\seqVarJoin \lTmpaSeq {,}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqPopT,\seqPopF,\seqPopTF}
+\begin{syntax}
+\cs{seqPopT} \meta{sequence} \meta{token list variable} \Arg{true code}
+\cs{seqPopF} \meta{sequence} \meta{token list variable} \Arg{false code}
+\cs{seqPopTF} \meta{sequence} \meta{token list variable} \Arg{true code} \Arg{false code}
+\end{syntax}
+If the \meta{sequence} is empty, leaves the \meta{false code} in the
+input stream.  The value of the \meta{token list variable} is
+not defined in this case and should not be relied upon.  If the
+\meta{sequence} is non-empty, pops the top item from the \meta{sequence}
+in the \meta{token list variable}, \emph{i.e.} removes the item from the
+\meta{sequence}. The \meta{token list variable} is assigned locally.
+\begin{demohigh}
+\seqPopTF \cEmptySeq \lTmpaTl {\prgReturn{Yes}} {\prgReturn{No}}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqPush}
+\begin{syntax}
+\cs{seqPush} \meta{sequence} \Arg{item}
+\end{syntax}
+Adds the \Arg{item} to the top of the \meta{sequence}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {two,three,four}
+\seqPush \lTmpaSeq {one}
+\seqVarJoin \lTmpaSeq {|}
+\end{demohigh}
+You can only push one item to the \meta{sequence} with \cs{seqPush},
+which is different from \cs{ClistPush}.
+\end{function}
+
+\section{Recovering Items from Sequences}
+
+Items can be recovered from either the left or the right of sequences.
+For implementation reasons, the actions at the left of the sequence are
+faster than those acting on the right. These functions all assign the
+recovered material locally.
+
+\begin{function}{\seqGetLeft}
+\begin{syntax}
+\cs{seqGetLeft} \meta{sequence} \meta{token list variable}
+\end{syntax}
+Stores the left-most item from a \meta{sequence} in the
+\meta{token list variable} without removing it from the
+\meta{sequence}. The \meta{token list variable} is assigned locally.
+If \meta{sequence} is empty the \meta{token list variable}
+is set to the special marker \cs{qNoValue}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {two,three,four}
+\seqGetLeft \lTmpaSeq \lTmpaTl
+\tlUse \lTmpaTl
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqGetLeftT,\seqGetLeftF,\seqGetLeftTF}
+\begin{syntax}
+\cs{seqGetLeftT} \meta{sequence} \meta{token list variable} \Arg{true code}
+\cs{seqGetLeftF} \meta{sequence} \meta{token list variable} \Arg{false code}
+\cs{seqGetLeftTF} \meta{sequence} \meta{token list variable} \Arg{true code} \Arg{false code}
+\end{syntax}
+If the \meta{sequence} is empty, leaves the \meta{false code} in the
+input stream.  The value of the \meta{token list variable} is
+not defined in this case and should not be relied upon.  If the
+\meta{sequence} is non-empty, stores the left-most item from the
+\meta{sequence}
+in the \meta{token list variable} without removing it from the
+\meta{sequence}, then leaves the \meta{true code} in the input stream.
+The \meta{token list variable} is assigned locally.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {two,three,four}
+\seqGetLeftTF \lTmpaSeq \lTmpaTl {\prgReturn{Yes}} {\prgReturn{No}}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqGetRight}
+\begin{syntax}
+\cs{seqGetRight} \meta{sequence} \meta{token list variable}
+\end{syntax}
+Stores the right-most item from a \meta{sequence} in the
+\meta{token list variable} without removing it from the
+\meta{sequence}. The \meta{token list variable} is assigned locally.
+If \meta{sequence} is empty the \meta{token list variable}
+is set to the special marker \cs{qNoValue}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {two,three,four}
+\seqGetRight \lTmpaSeq \lTmpaTl
+\tlUse \lTmpaTl
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqGetRightT,\seqGetRightF,\seqGetRightTF}
+\begin{syntax}
+\cs{seqGetRightT} \meta{sequence} \meta{token list variable} \Arg{true code}
+\cs{seqGetRightF} \meta{sequence} \meta{token list variable} \Arg{false code}
+\cs{seqGetRightTF} \meta{sequence} \meta{token list variable} \Arg{true code} \Arg{false code}
+\end{syntax}
+If the \meta{sequence} is empty, leaves the \meta{false code} in the
+input stream.  The value of the \meta{token list variable} is
+not defined in this case and should not be relied upon.  If the
+\meta{sequence} is non-empty, stores the right-most item from the
+\meta{sequence}
+in the \meta{token list variable} without removing it from the
+\meta{sequence}, then leaves the \meta{true code} in the input stream.
+The \meta{token list variable} is assigned locally.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {two,three,four}
+\seqGetRightTF \lTmpaSeq \lTmpaTl {\prgReturn{Yes}} {\prgReturn{No}}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqPopLeft}
+\begin{syntax}
+\cs{seqPopLeft} \meta{sequence} \meta{token list variable}
+\end{syntax}
+Pops the left-most item from a \meta{sequence} into the
+\meta{token list variable}, \emph{i.e.} removes the item from the
+sequence and stores it in the \meta{token list variable}.
+The assignment of the \meta{token list variable} is local.
+If \meta{sequence} is empty the \meta{token list variable}
+is set to the special marker \cs{qNoValue}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {two,three,four}
+\seqPopLeft \lTmpaSeq \lTmpaTl
+\seqVarJoin \lTmpaSeq {,}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqPopLeftT,\seqPopLeftF,\seqPopLeftTF}
+\begin{syntax}
+\cs{seqPopLeftT} \meta{sequence} \meta{token list variable} \Arg{true code}
+\cs{seqPopLeftF} \meta{sequence} \meta{token list variable} \Arg{false code}
+\cs{seqPopLeftTF} \meta{sequence} \meta{token list variable} \Arg{true code} \Arg{false code}
+\end{syntax}
+If the \meta{sequence} is empty, leaves the \meta{false code} in the
+input stream.  The value of the \meta{token list variable} is
+not defined in this case and should not be relied upon.  If the
+\meta{sequence} is non-empty, pops the left-most item from the \meta{sequence}
+in the \meta{token list variable}, \emph{i.e.} removes the item from the
+\meta{sequence}, then leaves the \meta{true code} in the input stream.
+The \meta{token list variable} is assigned locally.
+\begin{demohigh}
+\seqPopLeftTF \cEmptySeq \lTmpaTl {\prgReturn{Yes}} {\prgReturn{No}}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqPopRight}
+\begin{syntax}
+\cs{seqPopRight} \meta{sequence} \meta{token list variable}
+\end{syntax}
+Pops the right-most item from a \meta{sequence} into the
+\meta{token list variable}, \emph{i.e.} removes the item from the
+sequence and stores it in the \meta{token list variable}.
+The assignment of the \meta{token list variable} is local.
+If \meta{sequence} is empty the \meta{token list variable}
+is set to the special marker \cs{qNoValue}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {two,three,four}
+\seqPopRight \lTmpaSeq \lTmpaTl
+\seqVarJoin \lTmpaSeq {,}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqPopRightT,\seqPopRightF,\seqPopRightTF}
+\begin{syntax}
+\cs{seqPopRightT} \meta{sequence} \meta{token list variable} \Arg{true code}
+\cs{seqPopRightF} \meta{sequence} \meta{token list variable} \Arg{false code}
+\cs{seqPopRightTF} \meta{sequence} \meta{token list variable} \Arg{true code} \Arg{false code}
+\end{syntax}
+If the \meta{sequence} is empty, leaves the \meta{false code} in the
+input stream.  The value of the \meta{token list variable} is
+not defined in this case and should not be relied upon.  If the
+\meta{sequence} is non-empty, pops the right-most item from the \meta{sequence}
+in the \meta{token list variable}, \emph{i.e.} removes the item from the
+\meta{sequence}, then leaves the \meta{true code} in the input stream.
+The \meta{token list variable} is assigned locally.
+\begin{demohigh}
+\seqPopRightTF \cEmptySeq \lTmpaTl {\prgReturn{Yes}} {\prgReturn{No}}
+\end{demohigh}
+\end{function}
+
+\section{Mapping over Sequences}
+
+%All mappings are done at the current group level, \emph{i.e.} any
+%local assignments made by the \meta{function} or \meta{code} discussed
+%below remain in effect after the loop.
+
+%\begin{function}{\seqVarMapFunction}
+%\begin{syntax}
+%\cs{seqVarMapFunction} \meta{sequence} \meta{function}
+%\end{syntax}
+%Applies \meta{function} to every \meta{item} stored in the
+%\meta{sequence}. The \meta{function} will receive one argument for
+%each iteration. The \meta{items} are returned from left to right.
+%To pass further arguments to the \meta{function}, see \cs{seqVarMapTokens}.
+%The function \cs{seqVarMapInline} is faster than
+%\cs{seqVarMapFunction} for sequences with more than about $10$ items.
+%\end{function}
+
+\begin{function}{\seqVarMapInline}
+\begin{syntax}
+\cs{seqVarMapInline} \meta{sequence} \Arg{inline function}
+\end{syntax}
+Applies \meta{inline function} to every \meta{item} stored
+within the \meta{sequence}. The \meta{inline function} should
+consist of code which will receive the \meta{item} as \verb|#1|.
+The \meta{items} are returned from left to right.
+\begin{demohigh}
+\IgnoreSpacesOn
+\seqSetFromClist \lTmpkSeq {one,two,three}
+\tlClear \lTmpaTl
+\seqVarMapInline \lTmpkSeq {
+  \tlPutRight \lTmpaTl {(#1)}
+}
+\tlUse \lTmpaTl
+\IgnoreSpacesOff
+\end{demohigh}
+\end{function}
+
+%\begin{function}{\seqVarMapTokens}
+%\begin{syntax}
+%\cs{seqVarMapTokens} \meta{sequence} \Arg{code}
+%\end{syntax}
+%Analogue of \cs{seqVarMapFunction} which maps several tokens
+%instead of a single function.  The \meta{code} receives each item in
+%the \meta{sequence} as a trailing brace group. For instance,
+%\begin{verbatim}
+%\seqVarMapTokens \lMySeq { \prgReplicate { 2 } }
+%\end{verbatim}
+%expands to twice each item in the \meta{sequence}: for each item in
+%\verb|\l_my_seq| the function \cs{PrgReplicate} receives \verb|2| and
+%\meta{item} as its two arguments.  The function
+%\cs{seqVarMapInline} is typically faster but it is not expandable.
+%\end{function}
+
+\begin{function}{\seqVarMapVariable}
+\begin{syntax}
+\cs{seqVarMapVariable} \meta{sequence} \meta{variable} \Arg{code}
+\end{syntax}
+Stores each \meta{item} of the \meta{sequence} in turn in the (token
+list) \meta{variable} and applies the \meta{code}.  The \meta{code}
+will usually make use of the \meta{variable}, but this is not
+enforced.  The assignments to the \meta{variable} are local.  Its
+value after the loop is the last \meta{item} in the \meta{sequence},
+or its original value if the \meta{sequence} is empty.  The
+\meta{items} are returned from left to right.
+\begin{demohigh}
+\IgnoreSpacesOn
+\intZero \lTmpaInt
+\seqSetFromClist \lTmpaSeq {1,3,7}
+\seqVarMapVariable \lTmpaSeq \lTmpiTl {
+  \intAdd \lTmpaInt {\lTmpiTl*\lTmpiTl}
+}
+\intUse \lTmpaInt
+\IgnoreSpacesOff
+\end{demohigh}
+\end{function}
+
+%\begin{function}{\seqVarMapIndexedFunction}
+%\begin{syntax}
+%\cs{seqVarMapIndexedFunction} \meta{seq var} \meta{function}
+%\end{syntax}
+%Applies \meta{function} to every entry in the \meta{sequence
+%variable}.  The \meta{function} should have signature |:nn|.  It
+%receives two arguments for each iteration: the \meta{index} (namely
+%\verb|1| for the first entry, then \verb|2| and so on) and the \meta{item}.
+%\end{function}
+
+%\begin{function}{\seqVarMapIndexedInline}
+%\begin{syntax}
+%\cs{seqVarMapIndexedInline} \meta{seq var} \Arg{inline function}
+%\end{syntax}
+%Applies \meta{inline function} to every entry in the \meta{sequence
+%variable}.  The \meta{inline function} should consist of code which
+%receives the \meta{index} (namely \verb|1| for the first entry, then \verb|2|
+%and so on) as \verb|#1| and the \meta{item} as \verb|#2|.
+%\end{function}
+
+%\begin{function}{\seqMapBreak}
+%\begin{syntax}
+%\cs{seqMapBreak}
+%\end{syntax}
+%Used to terminate a seq map function before all
+%entries in the \meta{sequence} have been processed. This
+%normally takes place within a conditional statement, for example
+%\begin{verbatim}
+%\seq_map_inline:Nn \l_my_seq
+%{
+%\str_if_eq:nnTF { #1 } { bingo }
+%{ \seq_map_break: }
+%{
+%Do something useful
+%}
+%}
+%\end{verbatim}
+%Use outside of a seq map scenario leads to low
+%level \TeX{} errors.
+%\begin{texnote}
+%When the mapping is broken, additional tokens may be inserted
+%before further items are taken
+%from the input stream. This depends on the design of the mapping
+%function.
+%\end{texnote}
+%\end{function}
+
+%\begin{function}{\seqMapBreakDo}
+%\begin{syntax}
+%\cs{seqMapBreakDo} \Arg{code}
+%\end{syntax}
+%Used to terminate a seq map function before all
+%entries in the \meta{sequence} have been processed, inserting
+%the \meta{code} after the mapping has ended. This
+%normally takes place within a conditional statement, for example
+%\begin{verbatim}
+%\seq_map_inline:Nn \l_my_seq
+%{
+%\str_if_eq:nnTF { #1 } { bingo }
+%{ \seq_map_break:n { <code> } }
+%{
+%Do something useful
+%}
+%}
+%\end{verbatim}
+%Use outside of a seq map scenario leads to low
+%level \TeX{} errors.
+%\begin{texnote}
+%When the mapping is broken, additional tokens may be inserted
+%before the \meta{code} is
+%inserted into the input stream.
+%This depends on the design of the mapping function.
+%\end{texnote}
+%\end{function}
+
+%\begin{function}
+%{\seq_set_map:NNn, \seq_gset_map:NNn}
+%\begin{syntax}
+%\cs{seq_set_map:NNn} \meta{sequence_1} \meta{sequence_2} \Arg{inline function}
+%\end{syntax}
+%Applies \meta{inline function} to every \meta{item} stored
+%within the \meta{sequence_2}. The \meta{inline function} should
+%consist of code which will receive the \meta{item} as \verb|#1|.
+%The sequence resulting applying \meta{inline function} to each
+%\meta{item} is assigned to \meta{sequence_1}.
+%\begin{texnote}
+%Contrarily to other mapping functions, \cs{seq_map_break:} cannot
+%be used in this function, and would lead to low-level \TeX{} errors.
+%\end{texnote}
+%\end{function}
+
+%\begin{function}[added = 2020-07-16]
+%{\seq_set_map_x:NNn, \seq_gset_map_x:NNn}
+%\begin{syntax}
+%\cs{seq_set_map_x:NNn} \meta{sequence_1} \meta{sequence_2} \Arg{inline function}
+%\end{syntax}
+%Applies \meta{inline function} to every \meta{item} stored
+%within the \meta{sequence_2}. The \meta{inline function} should
+%consist of code which will receive the \meta{item} as \verb|#1|.
+%The sequence resulting from \texttt{x}-expanding
+%\meta{inline function} applied to each \meta{item}
+%is assigned to \meta{sequence_1}. As such, the code
+%in \meta{inline function} should be expandable.
+%\begin{texnote}
+%Contrarily to other mapping functions, \cs{seq_map_break:} cannot
+%be used in this function, and would lead to low-level \TeX{} errors.
+%\end{texnote}
+%\end{function}
+
+\section{Sequence Conditionals}
+
+\begin{function}{\seqIfExist,\seqIfExistT,\seqIfExistF,\seqIfExistTF}
+\begin{syntax}
+\cs{seqIfExist} \meta{sequence}
+\cs{seqIfExistT} \meta{sequence} \Arg{true code}
+\cs{seqIfExistF} \meta{sequence} \Arg{false code}
+\cs{seqIfExistTF} \meta{sequence} \Arg{true code} \Arg{false code}
+\end{syntax}
+Tests whether the \meta{sequence} is currently defined.  This does not
+check that the \meta{sequence} really is a sequence variable.
+\begin{demohigh}
+\seqIfExistTF \lTmpaSeq {\prgReturn{Yes}} {\prgReturn{No}}
+\seqIfExistTF \lFooUndefinedSeq {\prgReturn{Yes}} {\prgReturn{No}}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqVarIfEmpty,\seqVarIfEmptyT,\seqVarIfEmptyF,\seqVarIfEmptyTF}
+\begin{syntax}
+\cs{seqVarIfEmpty} \meta{sequence}
+\cs{seqVarIfEmptyT} \meta{sequence} \Arg{true code}
+\cs{seqVarIfEmptyF} \meta{sequence} \Arg{false code}
+\cs{seqVarIfEmptyTF} \meta{sequence} \Arg{true code} \Arg{false code}
+\end{syntax}
+Tests if the \meta{sequence} is empty (containing no items).
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {one,two}
+\seqVarIfEmptyTF \lTmpaSeq {\prgReturn{Empty}} {\prgReturn{NonEmpty}}
+\seqClear \lTmpaSeq
+\seqVarIfEmptyTF \lTmpaSeq {\prgReturn{Empty}} {\prgReturn{NonEmpty}}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\seqVarIfIn,\seqVarIfInT,\seqVarIfInF,\seqVarIfInTF}
+\begin{syntax}
+\cs{seqVarIfIn} \meta{sequence} \Arg{item}
+\cs{seqVarIfInT} \meta{sequence} \Arg{item} \Arg{true code}
+\cs{seqVarIfInF} \meta{sequence} \Arg{item} \Arg{false code}
+\cs{seqVarIfInTF} \meta{sequence} \Arg{item} \Arg{true code} \Arg{false code}
+\end{syntax}
+Tests if the \meta{item} is present in the \meta{sequence}.
+\begin{demohigh}
+\seqSetFromClist \lTmpaSeq {one,two}
+\seqVarIfInTF \lTmpaSeq {one} {\prgReturn{Yes}} {\prgReturn{Not}}
+\seqVarIfInTF \lTmpaSeq {three} {\prgReturn{Yes}} {\prgReturn{Not}}
+\end{demohigh}
+\end{function}
+
+\end{document}

@@ -1,0 +1,209 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: Testing \boolConst 
+============================================================
+    [I] \intCompare{3}>{2}
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+[I] \boolConst{\cFooSomeBool }{\cTrueBool }
+[O] 
+[I] \boolVarLog{\cFooSomeBool }
+> \cFooSomeBool=true.
+[O] 
+============================================================
+============================================================
+TEST 2: Testing \boolSet 
+============================================================
+    [I] \intCompare{3}<{4}
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+[I] \boolSet{\lTmpaBool }{\cTrueBool }
+[O] 
+[I] \boolVarLog{\lTmpaBool }
+> \lTmpaBool=true.
+[O] 
+    [I] \intCompare{3}<{4}
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+    [I] \strIfEq{abc}{uvw}
+        [I] \prgReturn{\cFalseBool }
+        [O] \cFalseBool 
+    [O] \cFalseBool 
+[I] \boolSet{\lTmpaBool }{\cTrueBool &&\cFalseBool }
+[O] 
+[I] \boolVarLog{\lTmpaBool }
+> \lTmpaBool=false.
+[O] 
+============================================================
+============================================================
+TEST 3: Testing \boolSetTrue 
+============================================================
+[I] \boolSetTrue{\lTmpaBool }
+[O] 
+[I] \boolVarIfTF{\lTmpaBool }{\prgReturn {True!}}{\prgReturn {False!}}
+    [I] \boolVarIf{\lTmpaBool }
+        [I] \prgReturn{\lTmpaBool }
+        [O] \lTmpaBool 
+    [O] \lTmpaBool 
+    [I] \prgReturn{True!}
+    [O] True!
+[O] True!
+============================================================
+============================================================
+TEST 4: Testing \boolSetFalse 
+============================================================
+[I] \boolSetFalse{\lTmpaBool }
+[O] 
+[I] \boolVarIfTF{\lTmpaBool }{\prgReturn {True!}}{\prgReturn {False!}}
+    [I] \boolVarIf{\lTmpaBool }
+        [I] \prgReturn{\lTmpaBool }
+        [O] \lTmpaBool 
+    [O] \lTmpaBool 
+    [I] \prgReturn{False!}
+    [O] False!
+[O] False!
+============================================================
+============================================================
+TEST 5: Testing \boolSetEq 
+============================================================
+[I] \boolSetTrue{\lTmpaBool }
+[O] 
+[I] \boolSetEq{\lTmpbBool }{\lTmpaBool }
+[O] 
+[I] \boolVarLog{\lTmpbBool }
+> \lTmpbBool=true.
+[O] 
+============================================================
+============================================================
+TEST 6: Testing \boolLog 
+============================================================
+[I] \boolLog{\lTmpaBool }
+> \lTmpaBool =false.
+[O] 
+============================================================
+============================================================
+TEST 7: Testing \boolIfExist 
+============================================================
+[I] \boolIfExistTF{\lTmpaBool }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \boolIfExist{\lTmpaBool }
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+    [I] \prgReturn{Yes}
+    [O] Yes
+[O] Yes
+[I] \boolIfExistTF{\lFooUndefinedBool }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \boolIfExist{\lFooUndefinedBool }
+        [I] \prgReturn{\cFalseBool }
+        [O] \cFalseBool 
+    [O] \cFalseBool 
+    [I] \prgReturn{No}
+    [O] No
+[O] No
+============================================================
+============================================================
+TEST 8: Testing \boolVarIf 
+============================================================
+[I] \boolSetTrue{\lTmpaBool }
+[O] 
+[I] \boolVarIfTF{\lTmpaBool }{\prgReturn {True!}}{\prgReturn {False!}}
+    [I] \boolVarIf{\lTmpaBool }
+        [I] \prgReturn{\lTmpaBool }
+        [O] \lTmpaBool 
+    [O] \lTmpaBool 
+    [I] \prgReturn{True!}
+    [O] True!
+[O] True!
+[I] \boolSetFalse{\lTmpaBool }
+[O] 
+[I] \boolVarIfTF{\lTmpaBool }{\prgReturn {True!}}{\prgReturn {False!}}
+    [I] \boolVarIf{\lTmpaBool }
+        [I] \prgReturn{\lTmpaBool }
+        [O] \lTmpaBool 
+    [O] \lTmpaBool 
+    [I] \prgReturn{False!}
+    [O] False!
+[O] False!
+============================================================
+============================================================
+TEST 9: Testing \boolVarNot 
+============================================================
+    [I] \intCompare{3}>{2}
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+[I] \boolVarNotTF{\cTrueBool }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \boolVarNot{\cTrueBool }
+        [I] \prgReturn{\cFalseBool }
+        [O] \cFalseBool 
+    [O] \cFalseBool 
+    [I] \prgReturn{No}
+    [O] No
+[O] No
+============================================================
+============================================================
+TEST 10: Testing \boolVarAnd 
+============================================================
+    [I] \intCompare{3}>{2}
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+    [I] \intCompare{3}>{4}
+        [I] \prgReturn{\cFalseBool }
+        [O] \cFalseBool 
+    [O] \cFalseBool 
+[I] \boolVarAndTF{\cTrueBool }{\cFalseBool }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \boolVarAnd{\cTrueBool }{\cFalseBool }
+        [I] \prgReturn{\cFalseBool }
+        [O] \cFalseBool 
+    [O] \cFalseBool 
+    [I] \prgReturn{No}
+    [O] No
+[O] No
+============================================================
+============================================================
+TEST 11: Testing \boolVarOr 
+============================================================
+    [I] \intCompare{3}>{2}
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+    [I] \intCompare{3}>{4}
+        [I] \prgReturn{\cFalseBool }
+        [O] \cFalseBool 
+    [O] \cFalseBool 
+[I] \boolVarOrTF{\cTrueBool }{\cFalseBool }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \boolVarOr{\cTrueBool }{\cFalseBool }
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+    [I] \prgReturn{Yes}
+    [O] Yes
+[O] Yes
+============================================================
+============================================================
+TEST 12: Testing \boolVarXor 
+============================================================
+    [I] \intCompare{3}>{2}
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+    [I] \intCompare{3}>{4}
+        [I] \prgReturn{\cFalseBool }
+        [O] \cFalseBool 
+    [O] \cFalseBool 
+[I] \boolVarXorTF{\cTrueBool }{\cFalseBool }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \boolVarXor{\cTrueBool }{\cFalseBool }
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+    [I] \prgReturn{Yes}
+    [O] Yes
+[O] Yes
+============================================================
+[1
+] (module-bool.aux)

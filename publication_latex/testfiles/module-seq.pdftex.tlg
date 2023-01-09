@@ -1,0 +1,416 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: Testing \seqNew 
+============================================================
+[I] \seqNew{\lFooSomeSeq }
+[O] 
+[I] \seqSetFromClist{\lFooSomeSeq }{one,two,three}
+[O] 
+============================================================
+============================================================
+TEST 2: Testing \seqConstFromClist 
+============================================================
+[I] \seqConstFromClist{\cFooSomeSeq }{one,two,three}
+[O] 
+============================================================
+============================================================
+TEST 3: Testing \seqVarJoin 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two,three}
+[O] 
+[I] \seqVarJoin{\lTmpaSeq }{ and }
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq { and }}
+    [O] one and two and three
+[O] one and two and three
+============================================================
+============================================================
+TEST 4: Testing \seqVarJoinExtended 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two}
+[O] 
+[I] \seqVarJoinExtended{\lTmpaSeq }{ and }{, }{, and }
+    [I] \expWhole{\seq_use:Nnnn \lTmpaSeq { and }{, }{, and }}
+    [O] one and two
+[O] one and two
+[I] \seqSetFromClist{\lTmpbSeq }{one,two,three}
+[O] 
+[I] \seqVarJoinExtended{\lTmpbSeq }{ and }{, }{, and }
+    [I] \expWhole{\seq_use:Nnnn \lTmpbSeq { and }{, }{, and }}
+    [O] one, two, and three
+[O] one, two, and three
+============================================================
+============================================================
+TEST 5: Testing \seqVarLog 
+============================================================
+[I] \seqVarLog{\cEmptySeq }
+The sequence \cEmptySeq is empty
+> .
+[O] 
+============================================================
+============================================================
+TEST 6: Testing \seqSetEq 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two,three,four}
+[O] 
+[I] \seqSetEq{\lTmpbSeq }{\lTmpaSeq }
+[O] 
+[I] \seqVarJoin{\lTmpbSeq }{ and }
+    [I] \expWhole{\seq_use:Nn \lTmpbSeq { and }}
+    [O] one and two and three and four
+[O] one and two and three and four
+============================================================
+============================================================
+TEST 7: Testing \seqSetSplit 
+============================================================
+[I] \seqSetSplit{\lTmpaSeq }{,}{1,2,3}
+[O] 
+[I] \seqVarJoin{\lTmpaSeq }{ and }
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq { and }}
+    [O] 1 and 2 and 3
+[O] 1 and 2 and 3
+============================================================
+============================================================
+TEST 8: Testing \seqConcat 
+============================================================
+[I] \seqSetFromClist{\lTmpbSeq }{one,two}
+[O] 
+[I] \seqSetFromClist{\lTmpcSeq }{three,four}
+[O] 
+[I] \seqConcat{\lTmpaSeq }{\lTmpbSeq }{\lTmpcSeq }
+[O] 
+[I] \seqVarJoin{\lTmpaSeq }{, }
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq {, }}
+    [O] one, two, three, four
+[O] one, two, three, four
+============================================================
+============================================================
+TEST 9: Testing \seqClear 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two,three,four}
+[O] 
+[I] \seqClear{\lTmpaSeq }
+[O] 
+[I] \seqVarJoin{\lTmpaSeq }{ and }
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq { and }}
+    [O] 
+[O] 
+============================================================
+============================================================
+TEST 10: Testing \seqClearNew 
+============================================================
+[I] \seqClearNew{\lFooSomeSeq }
+[O] 
+[I] \seqSetFromClist{\lFooSomeSeq }{one,two,three}
+[O] 
+[I] \seqVarJoin{\lFooSomeSeq }{ and }
+    [I] \expWhole{\seq_use:Nn \lFooSomeSeq { and }}
+    [O] one and two and three
+[O] one and two and three
+============================================================
+============================================================
+TEST 11: Testing \seqPutLeft 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two}
+[O] 
+[I] \seqPutLeft{\lTmpaSeq }{zero}
+[O] 
+[I] \seqVarJoin{\lTmpaSeq }{ and }
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq { and }}
+    [O] zero and one and two
+[O] zero and one and two
+============================================================
+============================================================
+TEST 12: Testing \seqPutRight 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two}
+[O] 
+[I] \seqPutRight{\lTmpaSeq }{three}
+[O] 
+[I] \seqVarJoin{\lTmpaSeq }{ and }
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq { and }}
+    [O] one and two and three
+[O] one and two and three
+============================================================
+============================================================
+TEST 13: Testing \seqVarRemoveDuplicates 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two,one,two,three}
+[O] 
+[I] \seqVarRemoveDuplicates{\lTmpaSeq }
+[O] 
+[I] \seqVarJoin{\lTmpaSeq }{,}
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq {,}}
+    [O] one,two,three
+[O] one,two,three
+============================================================
+============================================================
+TEST 14: Testing \seqVarRemoveAll 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two,one,two,three}
+[O] 
+[I] \seqVarRemoveAll{\lTmpaSeq }{two}
+[O] 
+[I] \seqVarJoin{\lTmpaSeq }{,}
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq {,}}
+    [O] one,one,three
+[O] one,one,three
+============================================================
+============================================================
+TEST 15: Testing \seqVarReverse 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two,one,two,three}
+[O] 
+[I] \seqVarReverse{\lTmpaSeq }
+[O] 
+[I] \seqVarJoin{\lTmpaSeq }{,}
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq {,}}
+    [O] three,two,one,two,one
+[O] three,two,one,two,one
+============================================================
+============================================================
+TEST 16: Testing \seqVarCount 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two,three,four}
+[O] 
+[I] \seqVarCount{\lTmpaSeq }
+    [I] \expWhole{\seq_count:N \lTmpaSeq }
+    [O] 4
+[O] 4
+============================================================
+============================================================
+TEST 17: Testing \seqVarItem 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two,three,four}
+[O] 
+    [I] \seqVarItem{\lTmpaSeq }{3}
+        [I] \expWhole{\seq_item:Nn \lTmpaSeq {3}}
+        [O] three
+    [O] three
+[I] \tlSet{\lTmpaTl }{three}
+[O] 
+[I] \tlUse{\lTmpaTl }
+        [I] \expValue{\lTmpaTl }
+        [O] three
+    [I] \prgReturn{three}
+    [O] three
+[O] three
+============================================================
+============================================================
+TEST 18: Testing \seqGet 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{two,three,four}
+[O] 
+[I] \seqGetTF{\lTmpaSeq }{\lTmpaTl }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \prgReturn{Yes}
+    [O] Yes
+[O] Yes
+[I] \tlUse{\lTmpaTl }
+        [I] \expValue{\lTmpaTl }
+        [O] two
+    [I] \prgReturn{two}
+    [O] two
+[O] two
+============================================================
+============================================================
+TEST 19: Testing \seqPop 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{two,three,four}
+[O] 
+[I] \seqPopTF{\lTmpaSeq }{\lTmpaTl }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \prgReturn{Yes}
+    [O] Yes
+[O] Yes
+[I] \seqVarJoin{\lTmpaSeq }{,}
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq {,}}
+    [O] three,four
+[O] three,four
+============================================================
+============================================================
+TEST 20: Testing \seqPush 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{two,three,four}
+[O] 
+[I] \seqPush{\lTmpaSeq }{one}
+[O] 
+[I] \seqVarJoin{\lTmpaSeq }{|}
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq {|}}
+    [O] one|two|three|four
+[O] one|two|three|four
+============================================================
+============================================================
+TEST 21: Testing \seqGetLeft 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{two,three,four}
+[O] 
+[I] \seqGetLeftTF{\lTmpaSeq }{\lTmpaTl }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \prgReturn{Yes}
+    [O] Yes
+[O] Yes
+[I] \tlUse{\lTmpaTl }
+        [I] \expValue{\lTmpaTl }
+        [O] two
+    [I] \prgReturn{two}
+    [O] two
+[O] two
+============================================================
+============================================================
+TEST 22: Testing \seqGetRight 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{two,three,four}
+[O] 
+[I] \seqGetRightTF{\lTmpaSeq }{\lTmpaTl }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \prgReturn{Yes}
+    [O] Yes
+[O] Yes
+[I] \tlUse{\lTmpaTl }
+        [I] \expValue{\lTmpaTl }
+        [O] four
+    [I] \prgReturn{four}
+    [O] four
+[O] four
+============================================================
+============================================================
+TEST 23: Testing \seqPopLeft 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{two,three,four}
+[O] 
+[I] \seqPopLeftTF{\lTmpaSeq }{\lTmpaTl }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \prgReturn{Yes}
+    [O] Yes
+[O] Yes
+[I] \seqVarJoin{\lTmpaSeq }{,}
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq {,}}
+    [O] three,four
+[O] three,four
+============================================================
+============================================================
+TEST 24: Testing \seqPopRight 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{two,three,four}
+[O] 
+[I] \seqPopRightTF{\lTmpaSeq }{\lTmpaTl }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \prgReturn{Yes}
+    [O] Yes
+[O] Yes
+[I] \seqVarJoin{\lTmpaSeq }{,}
+    [I] \expWhole{\seq_use:Nn \lTmpaSeq {,}}
+    [O] two,three
+[O] two,three
+============================================================
+============================================================
+TEST 25: Testing \seqVarMapInline 
+============================================================
+[I] \seqSetFromClist{\lTmpkSeq }{one,two,three}
+[O] 
+[I] \tlClear{\lTmpaTl }
+[O] 
+[I] \seqVarMapInline{\lTmpkSeq }{\tlPutRight \lTmpaTl {(##1)}}
+    [I] \tlPutRight{\lTmpaTl }{(one)}
+    [O] 
+    [I] \tlPutRight{\lTmpaTl }{(two)}
+    [O] 
+    [I] \tlPutRight{\lTmpaTl }{(three)}
+    [O] 
+[O] 
+    [I] \tlUse{\lTmpaTl }
+            [I] \expValue{\lTmpaTl }
+            [O] (one)(two)(three)
+        [I] \prgReturn{(one)(two)(three)}
+        [O] (one)(two)(three)
+    [O] (one)(two)(three)
+[I] \prgReturn{(one)(two)(three)}
+[O] (one)(two)(three)
+============================================================
+============================================================
+TEST 26: Testing \seqVarMapVariable 
+============================================================
+[I] \intZero{\lTmpaInt }
+[O] 
+[I] \seqSetFromClist{\lTmpaSeq }{1,3,7}
+[O] 
+[I] \seqVarMapVariable{\lTmpaSeq }{\lTmpiTl }{\intAdd \lTmpaInt {\lTmpiTl *\lTmpiTl }}
+    [I] \intAdd{\lTmpaInt }{\lTmpiTl *\lTmpiTl }
+    [O] 
+    [I] \intAdd{\lTmpaInt }{\lTmpiTl *\lTmpiTl }
+    [O] 
+    [I] \intAdd{\lTmpaInt }{\lTmpiTl *\lTmpiTl }
+    [O] 
+[O] 
+    [I] \intUse{\lTmpaInt }
+            [I] \expValue{\lTmpaInt }
+            [O] 59
+        [I] \prgReturn{59}
+        [O] 59
+    [O] 59
+[I] \prgReturn{59}
+[O] 59
+============================================================
+============================================================
+TEST 27: Testing \seqIfExist 
+============================================================
+[I] \seqIfExistTF{\lTmpaSeq }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \seqIfExist{\lTmpaSeq }
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+    [I] \prgReturn{Yes}
+    [O] Yes
+[O] Yes
+[I] \seqIfExistTF{\lFooUndefinedSeq }{\prgReturn {Yes}}{\prgReturn {No}}
+    [I] \seqIfExist{\lFooUndefinedSeq }
+        [I] \prgReturn{\cFalseBool }
+        [O] \cFalseBool 
+    [O] \cFalseBool 
+    [I] \prgReturn{No}
+    [O] No
+[O] No
+============================================================
+============================================================
+TEST 28: Testing \seqVarIfEmpty 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two}
+[O] 
+[I] \seqVarIfEmptyTF{\lTmpaSeq }{\prgReturn {Empty}}{\prgReturn {NonEmpty}}
+    [I] \seqVarIfEmpty{\lTmpaSeq }
+        [I] \prgReturn{\cFalseBool }
+        [O] \cFalseBool 
+    [O] \cFalseBool 
+    [I] \prgReturn{NonEmpty}
+    [O] NonEmpty
+[O] NonEmpty
+[I] \seqClear{\lTmpaSeq }
+[O] 
+[I] \seqVarIfEmptyTF{\lTmpaSeq }{\prgReturn {Empty}}{\prgReturn {NonEmpty}}
+    [I] \seqVarIfEmpty{\lTmpaSeq }
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+    [I] \prgReturn{Empty}
+    [O] Empty
+[O] Empty
+============================================================
+============================================================
+TEST 29: Testing \seqVarIfIn 
+============================================================
+[I] \seqSetFromClist{\lTmpaSeq }{one,two}
+[O] 
+[I] \seqVarIfInTF{\lTmpaSeq }{one}{\prgReturn {Yes}}{\prgReturn {Not}}
+    [I] \seqVarIfIn{\lTmpaSeq }{one}
+        [I] \prgReturn{\cTrueBool }
+        [O] \cTrueBool 
+    [O] \cTrueBool 
+    [I] \prgReturn{Yes}
+    [O] Yes
+[O] Yes
+[I] \seqVarIfInTF{\lTmpaSeq }{three}{\prgReturn {Yes}}{\prgReturn {Not}}
+    [I] \seqVarIfIn{\lTmpaSeq }{three}
+        [I] \prgReturn{\cFalseBool }
+        [O] \cFalseBool 
+    [O] \cFalseBool 
+    [I] \prgReturn{Not}
+    [O] Not
+[O] Not
+============================================================
+[1
+] (module-seq.aux)

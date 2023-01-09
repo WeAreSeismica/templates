@@ -85,13 +85,9 @@ hyperfootnotes=false]{hyperref}
 % fonts and math
 \RequirePackage{amsmath}
 \RequirePackage{lmodern}
-\RequirePackage[otf,
-default,
-tabular]{sourceserifpro}
-\RequirePackage[otf,
-tabular]{sourcecodepro}
-\RequirePackage[otf,
-tabular]{sourcesanspro}
+\RequirePackage[opentype,default,tabular,lining]{sourcesanspro}
+\RequirePackage[opentype,default,tabular,lining]{sourceserifpro}
+\RequirePackage[opentype,default,lining]{sourcecodepro}
 \if@breakmath
 \RequirePackage{breqn}
 \renewenvironment{equation}{%
@@ -124,6 +120,48 @@ tabular]{sourcesanspro}
 \SetWatermarkColor[gray]{0.85}
 \fi
 
+
+%-------------------------------------------------------------------------------
+%              Checking ORCIDS, by Tom Lecocq
+%                NOT WORKING !!!!!!
+%-------------------------------------------------------------------------------
+%\RequirePackage{xstring}
+%\RequirePackage{xintexpr}
+%
+%\newcommand\GOODORCID[1]{test}
+%\newcommand\BADORCID[1]{\textcolor{red}{ORCID #1 is invalid}}
+%%\newcommand\BADORCIDLEN[1]{ORCID #1 does not have 16 digits}
+%
+%%\def\tempstring{}
+%\newcommand\repStr[1]{%
+%	\StrSubstitute{#1}{-}{}}
+%
+%\newcommand\checkORCID[1]{
+%%\StrDel{#1}{-}[\tempstring]
+%%\StrDel{\tempstring}{X}[\tempstring]
+%%\expandafter\StrLen\expandafter{\tempstring}[\tempstring@length]
+%%\def\x{\xintListWithSep{,}{\tempstring }}
+%tempstring is \repStr{#1}
+%% Received information: #1 \\
+%% Sanitized information: \tempstring \\
+%% Length: \tempstring@length\\
+%% Input ORCID: \x \\
+%}
+%\def \checksum{\xinttheiiexpr iter(0; @ * 2 + i, i=\x) \relax}
+%
+%\ifnum \tempstring@length=15
+%\def\bubu{\xinttheiiexpr \checksum * 2 + 10 \relax}
+%\else 
+%\def\bubu{\checksum}
+%\fi
+%\def \finalcheck{\xinttheiiexpr \bubu 'mod' 11 \relax}
+%\ifnum \finalcheck=1 
+%\GOODORCID{#1} 
+%\else 
+%\BADORCID{#1} 
+%\fi
+%}
+
 %-------------------------------------------------------------------------------
 %                Configuration for authors
 %-------------------------------------------------------------------------------
@@ -138,7 +176,9 @@ tabular]{sourcesanspro}
 \renewcommand\AB@affilsepx{, \protect\Affilfont}
 
 % package academicons
-\newcommand{\orcid}[1]{\href{https://orcid.org/#1}{\textcolor[HTML]{A6CE39}{\aiOrcid}}}
+\newcommand{\orcid}[1]{
+	\href{https://orcid.org/#1}{\textcolor[HTML]{A6CE39}{\aiOrcid}} 
+}
 
 % Credit
 \DTLgnewdb{credits}
@@ -235,7 +275,8 @@ tabular]{sourcesanspro}
 		\zsavepos{loc:end_authors}
 }
 \predate{}
-\postdate{}
+\postdate{
+}
 \date{}
 
 \if@report
@@ -361,6 +402,29 @@ tabular]{sourcesanspro}
 }
 \fi
 
+
+%-------------------------------------------------------------------------------
+%                Configuration for license
+%-------------------------------------------------------------------------------
+
+% get first authors, from https://tex.stackexchange.com/questions/371787/how-to-get-author-name-in-header-et-al
+\ExplSyntaxOn\makeatletter
+\seq_new:N\l__john_tmpa_seq
+\cs_new_protected:Nn \john_getfirst_authblk:n
+{
+	\regex_extract_once:nnN 
+	{ \c{Authfont}([^\c{protect}]+)}
+	{#1}\l__john_tmpa_seq
+	\seq_item:Nn \l__john_tmpa_seq {2}  
+}
+\newcommand\ABfirstauthor{%
+	\exp_args:No \john_getfirst_authblk:n{\AB@authlist}
+}
+\ExplSyntaxOff
+
+\AtEndDocument{\vspace*{.5cm} \fontsize{10pt}{1em}\sff \noindent The article \textit{\@title}~© \@theyear~by \ABfirstauthor is licensed under \href{http://creativecommons.org/licenses/by/4.0/}{CC BY 4.0}.}
+
+
 %-------------------------------------------------------------------------------
 %                Configuration for sections
 %-------------------------------------------------------------------------------
@@ -419,6 +483,9 @@ tabular]{sourcesanspro}
 \fancypagestyle{plain}{%
 	\fancyhead{}
 	\renewcommand{\headrule}{}
+	\fancyfoot{}
+	\fancyfoot[L]{\sff\bfseries\footnotesize \thepage}
+	\fancyfoot[R]{\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA}~|~ISSN 2816-9387~|~volume \@thevolume.\@thenumber~|~\@theyear}
 }
 
 %

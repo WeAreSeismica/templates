@@ -1,0 +1,365 @@
+% -*- coding: utf-8 -*-
+% !TEX program = lualatex
+\documentclass[oneside]{book}
+
+\input{manual.sty}
+\CodeHigh{lite}
+
+\begin{document}
+
+\chapter{Overview of Features}
+
+\section{Evaluation from Inside to Outside}
+
+We will compare our first example with a similar \verb!Lua! example:
+
+\begin{minipage}{0.55\textwidth}
+\begin{codehigh}
+\IgnoreSpacesOn
+\prgNewFunction \mathSquare { m } {
+  \intSet \lTmpaInt {\intEval {#1 * #1}}
+  \prgReturn {\expValue \lTmpaInt}
+}
+\IgnoreSpacesOff
+\mathSquare{5}
+\mathSquare{\mathSquare{5}}
+\end{codehigh}
+\end{minipage}%
+\begin{minipage}{0.45\textwidth}
+\begin{code}
+-- define a function --
+function MathSquare (arg)
+  local lTmpaInt = arg * arg
+  return lTmpaInt
+end
+-- use the function --
+print(MathSquare(5))
+print(MathSquare(MathSquare(5)))
+\end{code}
+\end{minipage}
+
+%\IgnoreSpacesOn
+%\prgNewFunction \mathSquare { m }{
+%  \intSet \lTmpaInt { \intEval { #1 * #1 } }
+%  \prgReturn { \expValue \lTmpaInt }
+%}
+%\IgnoreSpacesOff
+%\mathSquare{5}
+%\mathSquare{\mathSquare{5}}
+
+%\IgnoreSpacesOn
+%\prgNewFunction \mathCubic { m }
+%  {
+%    \intSet \lTmpaInt { \intEval { #1 * #1 * #1 } }
+%    \prgReturn { \expValue \lTmpaInt }
+%  }
+%\IgnoreSpacesOff
+%\mathCubic{2}
+%\mathCubic{\mathCubic{2}}
+
+Both examples calculate first the square of $5$ and produce $25$,
+then calculate the square of $25$ and produce $625$.
+In contrast to \verb!expl3!, this \verb!functional! package
+does evaluation of functions from inside to outside,
+which means composition of functions works like othe programming languages
+such as \verb!Lua! or \verb!JavsScript!.
+
+You can define new functions with \cs{prgNewFunction} command.
+To make composition of functions work as expected,
+every function \emph{must not} insert directly any token to the input stream.
+Instead, a function \emph{must} pass the result (if any) to \verb!functional! package
+with \cs{prgReturn} command. And \verb!functional! package is responsible for
+inserting result tokens to the input stream at the appropriate time.
+
+To remove space tokens inside function code in defining functions,
+you'd better put function definitions inside \verb!\IgnoreSpacesOn! and
+\verb!\IgnoreSpacesOff! block. Within this block, \verb!~! is used to input a space.
+
+At the end of this section,
+we will compare our factorial example with a similar \verb!Lua! example:
+
+\begin{minipage}{0.68\textwidth}
+\begin{codehigh}
+\IgnoreSpacesOn
+\prgNewFunction \mathFact { m } {
+  \intCompareTF {#1} = {0} {
+    \prgReturn {1}
+  }{
+    \prgReturn {\intEval{#1*\mathFact{\intEval{#1-1}}}}
+  }
+}
+\IgnoreSpacesOff
+\mathFact{4}
+\end{codehigh}
+\end{minipage}%
+\begin{minipage}{0.32\textwidth}
+\begin{code}
+-- define a function --
+function Fact (n)
+  if n == 0 then
+    return 1
+  else
+    return n * Fact(n-1)
+  end
+end
+-- use the function --
+print(Fact(4))
+\end{code}
+\end{minipage}
+
+%\IgnoreSpacesOn
+%\prgNewFunction \Factorial { m } {
+%  \intCompareTF {#1} = {0} {
+%    \prgReturn {1}
+%  }{
+%    \prgReturn { \intMathMult {#1} { \Factorial { \intMathSub{#1}{1} } } }
+%  }
+%}
+%\IgnoreSpacesOff
+%\Factorial{0}
+%\Factorial{4}
+
+\section{Group Scoping of Functions}
+
+In \verb!Lua! language, a function or a condition expression makes a block,
+and the values of local variables will be reset after a block.
+In \verb!functional! package, a condition expression is in fact a function,
+and you can make every function become a group by setting
+\verb!\Functional{scoping=true}!. For example
+
+\begin{minipage}{0.58\textwidth}
+\begin{codehigh}
+\Functional{scoping=true}
+\IgnoreSpacesOn
+\intSet \lTmpaInt {1}
+\intVarLog \lTmpaInt            % ---- 1
+\prgNewFunction \someFun { } {
+  \intSet \lTmpaInt {2}
+  \intVarLog \lTmpaInt          % ---- 2
+  \intCompareTF {1} > {0} {
+    \intSet \lTmpaInt {3}
+    \intVarLog \lTmpaInt        % ---- 3
+  }{ }
+  \intVarLog \lTmpaInt          % ---- 2
+}
+\someFun
+\intVarLog \lTmpaInt            % ---- 1
+\IgnoreSpacesOff
+\end{codehigh}
+\end{minipage}%
+\begin{minipage}{0.42\textwidth}
+\begin{code}
+-- lua code --
+-- begin example --
+local a = 1
+print(a)            ---- 1
+function SomeFun()
+  local a = 2
+  print(a)          ---- 2
+  if 1 > 0 then
+    local a = 3
+    print(a)        ---- 3
+  end
+  print(a)          ---- 2
+end
+SomeFun()
+print(a)            ---- 1
+-- end example --
+\end{code}
+\end{minipage}
+
+Same as \verb!expl3!, the names of local variables \emph{must} start with \verb!l!,
+while names of global variables \emph{must} start with \verb!g!.
+The difference is that \verb!functional! package provides only one function for setting
+both local and global varianbles of the same type,
+by checking leading letters of their names. So for integer variables, you can write
+\verb!\intSet\lTmpaInt{1}! and \verb!\intSet\gTmpbInt{2}!.
+
+The previous example will produce different result
+if we change variable from \verb!\lTmpaInt! to \verb!\gTmpaInt!.
+
+\begin{minipage}{0.58\textwidth}
+\begin{codehigh}
+\Functional{scoping=true}
+\IgnoreSpacesOn
+\intSet \gTmpaInt {1}
+\intVarLog \gTmpaInt            % ---- 1
+\prgNewFunction \someFun { } {
+  \intSet \gTmpaInt {2}
+  \intVarLog \gTmpaInt          % ---- 2
+  \intCompareTF {1} > {0} {
+    \intSet \gTmpaInt {3}
+    \intVarLog \gTmpaInt        % ---- 3
+  }{ }
+  \intVarLog \gTmpaInt          % ---- 3
+}
+\someFun
+\intVarLog \gTmpaInt            % ---- 3
+\IgnoreSpacesOff
+\end{codehigh}
+\end{minipage}%
+\begin{minipage}{0.42\textwidth}
+\begin{code}
+-- lua code --
+-- begin example --
+a = 1
+print(a)            ---- 1
+function SomeFun()
+  a = 2
+  print(a)          ---- 2
+  if 1 > 0 then
+    a = 3
+    print(a)        ---- 3
+  end
+  print(a)          ---- 3
+end
+SomeFun()
+print(a)            ---- 3
+-- end example --
+\end{code}
+\end{minipage}
+
+As you can see, the values of global variables will never be reset after a group.
+
+\section{Tracing Evaluation of Functions}
+
+Since every function in \verb!functional! package will pass its return value to
+the package, it is quite easy to debug your code.
+You can turn on the tracing by setting \verb!\Functional{tracing=true}!.
+For example, the tracing log of the first example in this chapter will be the following:
+
+% FIXME: spaces at the first line will be removed
+%\begin{codehigh}[]
+%    [I] \mathSquare{5}
+%            [I] \intEval{5*5}
+%                    [I] \expWhole{\int_eval:n {5*5}}
+%                    [O] 25
+%                [I] \prgReturn{25}
+%                [O] 25
+%            [O] 25
+%        [I] \intSet\lTmpaInt {25}
+%        [O]
+%            [I] \expValue\lTmpaInt
+%            [O] 25
+%        [I] \prgReturn{25}
+%        [O] 25
+%    [O] 25
+%\end{codehigh}
+\begin{codehigh}[]
+[I] \mathSquare{5}
+        [I] \intEval{5*5}
+                [I] \expWhole{\int_eval:n {5*5}}
+                [O] 25
+            [I] \prgReturn{25}
+            [O] 25
+        [O] 25
+    [I] \intSet{\lTmpaInt }{25}
+    [O]
+        [I] \expValue{\lTmpaInt }
+        [O] 25
+    [I] \prgReturn{25}
+    [O] 25
+[O] 25
+[I] \mathSquare{25}
+        [I] \intEval{25*25}
+                [I] \expWhole{\int_eval:n {25*25}}
+                [O] 625
+            [I] \prgReturn{625}
+            [O] 625
+        [O] 625
+    [I] \intSet{\lTmpaInt }{625}
+    [O]
+        [I] \expValue{\lTmpaInt }
+        [O] 625
+    [I] \prgReturn{625}
+    [O] 625
+[O] 625
+\end{codehigh}
+
+\section{Definitions of Functions}
+
+Within \verb!expl3!, there are eight commands for defining new functions,
+which is good for power users.
+
+\begin{minipage}{0.5\textwidth}
+\begin{code}[language=latex/latex3]
+\cs_new:Npn
+\cs_new_nopar:Npn
+\cs_new_protected:Npn
+\cs_new_protected_nopar:Npn
+\end{code}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+\begin{code}[language=latex/latex3]
+\cs_new:Nn
+\cs_new_nopar:Nn
+\cs_new_protected:Nn
+\cs_new_protected_nopar:Nn
+\end{code}
+\end{minipage}
+
+Within \verb!functional! package, there is only one command (\cs{prgNewFunction})
+for defining new functions, which is good for regular users.
+The created functions are always protected and accept \verb!\par! in their arguments.
+
+Since \verb!functional! package gets the results of functions by evaluation
+(including expansion and execution by \TeX), it is natural to protect all functions.
+
+\section{Variants of Arguments}
+
+Within \verb!expl3!, there are several expansion variants for arguments,
+and many expansion functions for expanding them, which are necessary for power users.
+
+\begin{minipage}{0.5\textwidth}
+\begin{code}[language=latex/latex3]
+\module_foo:c
+\module_bar:e
+\module_bar:x
+\module_bar:f
+\module_bar:o
+\module_bar:V
+\module_bar:v
+\end{code}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+\begin{code}[language=latex/latex3]
+\exp_args:Nc
+\exp_args:Ne
+\exp_args:Nx
+\exp_args:Nf
+\exp_args:No
+\exp_args:NV
+\exp_args:Nv
+\end{code}
+\end{minipage}
+
+Within \verb!functional! package, there are only three variants
+(\verb!c!, \verb!e!, \verb!V!) are provided, and these variants are defined
+as functions (\cs{expName}, \cs{expWhole}, \cs{expValue}, respetively),
+which are easier to use for regular users.
+
+\begin{demohigh}
+\newcommand\test{uvw}
+\expName{test}
+\end{demohigh}
+
+\begin{demohigh}
+\newcommand\test{uvw}
+\expWhole{111\test222}
+\end{demohigh}
+
+\begin{demohigh}
+\intSet\lTmpaInt{123}
+\expValue\lTmpaInt
+\end{demohigh}
+
+The most interesting feature is that you can compose these functions.
+For example, you can easily get the \verb!v! variant of \verb!expl3! by
+simply composing \cs{expName} and \cs{expValue} functions:
+
+\begin{demohigh}
+\intSet\lTmpaInt{123}
+\expValue{\expName{lTmpaInt}}
+\end{demohigh}
+
+\end{document}

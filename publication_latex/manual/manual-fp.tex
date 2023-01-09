@@ -1,0 +1,553 @@
+% -*- coding: utf-8 -*-
+% !TEX program = lualatex
+\documentclass[oneside]{book}
+
+\input{manual.sty}
+\CodeHigh{lite}
+
+\begin{document}
+
+\chapter{Floating Point Numbers (\texttt{Fp})}
+
+\section{Constant and Scratch Floating Points}
+
+\begin{variable}{\cZeroFp, \cMinusZeroFp}
+Zero, with either sign.
+\end{variable}
+
+\begin{variable}{\cOneFp}
+One as an \texttt{fp}: useful for comparisons in some places.
+\end{variable}
+
+\begin{variable}{\cInfFp,\cMinusInfFp}
+Infinity, with either sign. These can be input directly in a
+floating point expression as \texttt{inf} and \texttt{-inf}.
+\end{variable}
+
+\begin{variable}{\cEFp}
+The value of the base of the natural logarithm, $\mathrm{e} = \exp(1)$.
+\end{variable}
+
+\begin{variable}{\cPiFp}
+The value of $\pi$.  This can be input directly in a floating point
+expression as \texttt{pi}.
+\end{variable}
+
+\begin{variable}{\cOneDegreeFp}
+The value of $1^{\circ}$ in radians. Multiply an angle given in
+degrees by this value to obtain a result in radians.  Note that
+trigonometric functions expecting an argument in radians or in
+degrees are both available.  Within floating point expressions, this
+can be accessed as \texttt{deg}.
+\end{variable}
+
+\begin{variable}{\lTmpaFp,\lTmpbFp,\lTmpcFp,\lTmpiFp,\lTmpjFp,\lTmpkFp}
+Scratch floating point numbers for local assignment. These are never used by
+the \verb!functional! package, and so are safe for use with any
+function. However, they may be overwritten by other
+code and so should only be used for short-term storage.
+\end{variable}
+
+\begin{variable}{\gTmpaFp,\gTmpbFp,\gTmpcFp,\gTmpiFp,\gTmpjFp,\gTmpkFp}
+Scratch floating point numbers for global assignment. These are never used by
+the \verb!functional! package, and so are safe for use with any
+function. However, they may be overwritten by other
+code and so should only be used for short-term storage.
+\end{variable}
+
+\section{The Syntax of Floating Point Expressions}
+
+A decimal floating point number is one which is stored as a significand and a
+separate exponent. The module implements expandably a wide set of
+arithmetic, trigonometric, and other operations on decimal floating point
+numbers, to be used within floating point expressions. Floating point
+expressions support the following operations with their usual
+precedence.
+\begin{itemize}
+\item Basic arithmetic: addition $x+y$, subtraction $x-y$,
+multiplication $x*y$, division $x/y$, square root $\sqrt{x}$,
+and parentheses.
+\item Comparison operators: $x\mathop{\mathtt{<}}y$,
+$x\mathop{\mathtt{<=}}y$, $x\mathop{\mathtt{>?}}y$,
+$x\mathop{\mathtt{!=}}y$ \emph{etc.}
+\item Boolean logic: sign $\operatorname{sign} x$,
+negation $\mathop{!}x$, conjunction
+$x\mathop{\&\&}y$, disjunction $x\mathop{\vert\vert}y$, ternary
+operator $x\mathop{?}y\mathop{:}z$.
+\item Exponentials: $\exp x$, $\ln x$, $x^y$, $\operatorname{logb} x$.
+\item Integer factorial: $\operatorname{fact} x$.
+\item Trigonometry: $\sin x$, $\cos x$, $\tan x$, $\cot x$, $\sec
+x$, $\csc x$ expecting their arguments in radians, and
+$\operatorname{sind} x$, $\operatorname{cosd} x$,
+$\operatorname{tand} x$, $\operatorname{cotd} x$,
+$\operatorname{secd} x$, $\operatorname{cscd} x$ expecting their
+arguments in degrees.
+\item Inverse trigonometric functions: $\operatorname{asin} x$,
+$\operatorname{acos} x$, $\operatorname{atan} x$,
+$\operatorname{acot} x$, $\operatorname{asec} x$,
+$\operatorname{acsc} x$ giving a result in radians, and
+$\operatorname{asind} x$, $\operatorname{acosd} x$,
+$\operatorname{atand} x$, $\operatorname{acotd} x$,
+$\operatorname{asecd} x$, $\operatorname{acscd} x$ giving a result
+in degrees.
+%\item [\emph{(not yet)}] Hyperbolic functions and their inverse
+%functions: $\sinh x$, $\cosh x$, $\tanh x$, $\coth x$,
+%$\operatorname{sech} x$, $\operatorname{csch}$, and
+%$\operatorname{asinh} x$, $\operatorname{acosh} x$,
+%$\operatorname{atanh} x$, $\operatorname{acoth} x$,
+%$\operatorname{asech} x$, $\operatorname{acsch} x$.
+\item Extrema: $\max(x_{1},x_{2},\ldots)$, $\min(x_{1},x_{2},\ldots)$,
+$\operatorname{abs}(x)$.
+\item Rounding functions, controlled by two optional
+values,  $n$ (number of places, $0$ by default) and
+$t$ (behavior on a tie, $\nan$ by default):
+\begin{itemize}
+\item $\operatorname{trunc}(x,n)$ rounds towards zero,
+\item $\operatorname{floor}(x,n)$ rounds towards $-\infty$,
+\item $\operatorname{ceil}(x,n)$ rounds towards $+\infty$,
+\item $\operatorname{round}(x,n,t)$ rounds to the closest value, with
+ties rounded to an even value by default, towards zero if $t=0$,
+towards $+\infty$ if $t>0$ and towards $-\infty$ if $t<0$.
+\end{itemize}
+%And \emph{(not yet)} modulo, and \enquote{quantize}.
+\item Random numbers: $\mathop{rand}()$, $\mathop{randint}(m,n)$.
+\item Constants: \texttt{pi}, \texttt{deg} (one degree in radians).
+\item Dimensions, automatically expressed in points, \emph{e.g.},
+\texttt{pc} is $12$.
+\item Automatic conversion (no need for \cs{intUse}, etc) of
+integer, dimension, and skip variables to floating point numbers,
+expressing dimensions in points and ignoring the stretch and
+shrink components of skips.
+\item Tuples: $(x_1,\ldots{},x_n)$ that can be stored in variables,
+added together, multiplied or divided by a floating point number,
+and nested.
+\end{itemize}
+Floating point numbers can be given either explicitly (in a form such
+as \verb|1.234e-34|, or \verb|-.0001|), or as a stored floating point variable,
+which is automatically replaced by its current value.
+A \enquote{floating point} is a floating point number or a tuple thereof.
+%See section \ref{sec:l3fp:fp-floats} for a description of what a floating point is,
+%section \ref{sec:l3fp:fp-precedence} for details about how an expression is
+%parsed, and section \ref{sec:l3fp:fp-operations} to know what the various
+%operations do.  Some operations may raise exceptions (error messages),
+%described in section \ref{sec:l3fp:fp-exceptions}.
+
+An example of use could be the following.
+\begin{demohigh}
+\LaTeX{} can now compute: $ \frac{\sin(3.5)}{2} + 2\cdot 10^{-3}
+= \fpEval {sin(3.5)/2 + 2e-3} $.
+\end{demohigh}
+
+The operation \texttt{round} can be used to limit the result's
+precision. Adding $+0$ avoids the possibly undesirable output \verb|-0|,
+replacing it by \verb|+0|.
+
+%However, the \pkg{l3fp} module is mostly meant
+%as an underlying tool for higher-level commands.  For example, one
+%could provide a function to typeset nicely the result of floating
+%point computations.
+%\begin{verbatim}
+%\documentclass{article}
+%\usepackage{xparse, siunitx}
+%\ExplSyntaxOn
+%\NewDocumentCommand { \calcnum } { m }
+%{ \num { \fp_to_scientific:n {#1} } }
+%\ExplSyntaxOff
+%\begin{document}
+%\calcnum { 2 pi * sin ( 2.3 ^ 5 ) }
+%\end{document}
+%\end{verbatim}
+%See the documentation of \pkg{siunitx} for various options of
+%\cs{num}.
+
+\section{Using Floating Point Expressions}
+
+\begin{function}{\fpEval}
+\begin{syntax}
+\cs{fpEval} \Arg{floating point expression}
+\end{syntax}
+Evaluates the \meta{floating point expression} and returns the
+result as a decimal number with no
+exponent.  Leading or trailing zeros may be inserted to compensate
+for the exponent.  Non-significant trailing zeros are trimmed, and
+integers are expressed without a decimal separator.  The values
+$\pm\infty$ and \nan{} trigger an \enquote{invalid operation}
+exception.
+For a tuple, each item is converted using \cs{fpEval} and they are combined as
+\verb|(|\meta{fp_1}\verb*|, |\meta{fp_2}\verb*|, |\ldots{}\meta{fp_n}\verb|)|
+if $n>1$ and \verb|(|\meta{fp_1}\verb|,)| or \verb|()| for fewer items.
+%This function is identical to \cs{fp_to_decimal:n}.
+For example
+\begin{demohigh}
+\fpEval {(1.2+3.4)*(5.6-7.8)/9}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\fpMathAdd}
+\begin{syntax}
+\cs{fpMathAdd} \Arg{fpexpr_1} \Arg{fpexpr_2}
+\end{syntax}
+Adds \Arg{fpexpr_1} and \Arg{fpexpr_2},
+and returns the result. For example
+\begin{demohigh}
+\fpMathAdd {2.8} {3.7}
+\fpMathAdd {3.8-1} {2.7+1}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\fpMathSub}
+\begin{syntax}
+\cs{fpMathSub} \Arg{fpexpr_1} \Arg{fpexpr_2}
+\end{syntax}
+Subtracts \Arg{fpexpr_2} from \Arg{fpexpr_1},
+and returns the result. For example
+\begin{demohigh}
+\fpMathSub {2.8} {3.7}
+\fpMathSub {3.8-1} {2.7+1}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\fpMathMult}
+\begin{syntax}
+\cs{fpMathMult} \Arg{fpexpr_1} \Arg{fpexpr_2}
+\end{syntax}
+Multiplies \Arg{fpexpr_1} by \Arg{fpexpr_2},
+and returns the result. For example
+\begin{demohigh}
+\fpMathMult {2.8} {3.7}
+\fpMathMult {3.8-1} {2.7+1}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\fpMathDiv}
+\begin{syntax}
+\cs{fpMathDiv} \Arg{fpexpr_1} \Arg{fpexpr_2}
+\end{syntax}
+Divides \Arg{fpexpr_1} by \Arg{fpexpr_2},
+and returns the result. For example
+\begin{demohigh}
+\fpMathDiv {2.8} {3.7}
+\fpMathDiv {3.8-1} {2.7+1}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\fpMathSign}
+\begin{syntax}
+\cs{fpMathSign} \Arg{fpexpr}
+\end{syntax}
+Evaluates the \meta{fpexpr} and returns the value
+using \cs{fpEval}\verb|{sign(|\meta{result}\verb|)}|: $+1$ for positive
+numbers and for $+\infty$, $-1$ for negative numbers and for
+$-\infty$, $\pm 0$ for $\pm 0$.  If the operand is a tuple or is
+\nan{}, then \enquote{invalid operation} occurs and the result
+is $0$. For example
+\begin{demohigh}
+\fpMathSign {3.5}
+\fpMathSign {-2.7}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\fpMathAbs}
+\begin{syntax}
+\cs{fpMathAbs} \Arg{floating point expression}
+\end{syntax}
+Evaluates the \meta{floating point expression} as described for
+\cs{fpEval} and returns the absolute value.
+If the argument is $\pm\infty$, \nan{} or a tuple,
+\enquote{invalid operation} occurs.  Within floating point
+expressions, \verb|abs()| can be used; it accepts $\pm\infty$ and \nan{}
+as arguments.
+\end{function}
+
+\begin{function}{\fpMathMax,\fpMathMin}
+\begin{syntax}
+\cs{fpMathMax} \Arg{fp expression_1} \Arg{fp expression_2}
+\cs{fpMathMin} \Arg{fp expression_1} \Arg{fp expression_2}
+\end{syntax}
+Evaluates the \meta{floating point expressions} as described for \cs{fpEval}
+and returns the resulting larger (\texttt{max}) or smaller (\texttt{min}) value.
+If the argument is a tuple, \enquote{invalid operation} occurs,
+but no other case raises exceptions. Within floating point expressions,
+\verb|max()| and \verb|min()| can be used.
+\end{function}
+
+\section{Creating and Using Floating Points}
+
+\begin{function}{\fpNew}
+\begin{syntax}
+\cs{fpNew} \meta{fp var}
+\end{syntax}
+Creates a new \meta{fp var} or raises an error if the name is
+already taken. The declaration is global. The \meta{fp~var} is
+initially $+0$.
+\end{function}
+
+\begin{function}{\fpConst}
+\begin{syntax}
+\cs{fpConst} \meta{fp var} \Arg{floating point expression}
+\end{syntax}
+Creates a new constant \meta{fp var} or raises an error if the name
+is already taken. The \meta{fp var} is set globally equal to
+the result of evaluating the \meta{floating point expression}.
+For example
+\begin{demohigh}
+\fpConst \cMyPiFp {3.1415926}
+\fpUse \cMyPiFp
+\end{demohigh}
+\end{function}
+
+\begin{function}{\fpUse}
+\begin{syntax}
+\cs{fpUse} \meta{fp var}
+\end{syntax}
+Recovers the value of the \meta{fp var} and returns the value as a
+decimal number with no exponent.
+%Leading or trailing zeros may be inserted to compensate for the
+%exponent.  Non-significant trailing zeros are trimmed.  Integers are
+%expressed without a decimal separator.  The values $\pm\infty$
+%and \nan{} trigger an \enquote{invalid operation} exception.
+%For a tuple, each item is converted using \cs{fp_to_decimal:n} and they are combined as
+%|(|\meta{fp_1}\verb*|, |\meta{fp_2}\verb*|, |\ldots{}\meta{fp_n}|)|
+%if $n>1$ and |(|\meta{fp_1}|,)| or |()| for fewer items.
+%This function is identical to \cs{fp_to_decimal:N}.
+\end{function}
+
+\section{Viewing Floating Points}
+
+\begin{function}{\fpLog}
+\begin{syntax}
+\cs{fpLog} \Arg{floating point expression}
+\end{syntax}
+Evaluates the \meta{floating point expression} and writes the
+result in the log file.
+\end{function}
+
+\begin{function}{\fpVarLog}
+\begin{syntax}
+\cs{fpVarLog} \meta{fp var}
+\end{syntax}
+Writes the value of \meta{fp var} in the log file.
+\end{function}
+
+\begin{function}{\fpShow}
+\begin{syntax}
+\cs{fpShow} \Arg{floating point expression}
+\end{syntax}
+Evaluates the \meta{floating point expression} and displays the
+result in the terminal.
+\end{function}
+
+\begin{function}{\fpVarShow}
+\begin{syntax}
+\cs{fpVarShow} \meta{fp var}
+\end{syntax}
+Displays the value of \meta{fp var} in the terminal.
+\end{function}
+
+\section{Setting Floating Point Variables}
+
+\begin{function}{\fpSet}
+\begin{syntax}
+\cs{fpSet} \meta{fp var} \Arg{floating point expression}
+\end{syntax}
+Sets \meta{fp var} equal to the result of computing the
+\meta{floating point expression}. For example
+\begin{demohigh}
+\fpSet \lTmpaFp {4/7}
+\fpUse \lTmpaFp
+\end{demohigh}
+\end{function}
+
+\begin{function}{\fpSetEq}
+\begin{syntax}
+\cs{fpSetEq} \meta{fp var_1} \meta{fp var_2}
+\end{syntax}
+Sets the floating point variable \meta{fp var_1} equal to the current
+value of \meta{fp var_2}.
+\end{function}
+
+\begin{function}{\fpZero}
+\begin{syntax}
+\cs{fpZero} \meta{fp var}
+\end{syntax}
+Sets the \meta{fp var} to $+0$. For example
+\begin{demohigh}
+\fpSet \lTmpaFp {5.3}
+\fpZero \lTmpaFp
+\fpUse \lTmpaFp
+\end{demohigh}
+\end{function}
+
+\begin{function}{\fpZeroNew}
+\begin{syntax}
+\cs{fpZeroNew} \meta{fp var}
+\end{syntax}
+Ensures that the \meta{fp var} exists globally
+by applying \cs{fpNew} if necessary, then applies
+\cs{fpZero} to leave the \meta{fp var} set to $+0$.
+\end{function}
+
+\begin{function}{\fpAdd}
+\begin{syntax}
+\cs{fpAdd} \meta{fp var} \Arg{floating point expression}
+\end{syntax}
+Adds the result of computing the \meta{floating point expression} to
+the \meta{fp var}.
+This also applies if \meta{fp var} and \meta{floating point
+expression} evaluate to tuples of the same size. For example
+\begin{demohigh}
+\fpSet \lTmpaFp {5.3}
+\fpAdd \lTmpaFp {2.11}
+\fpUse \lTmpaFp
+\end{demohigh}
+\end{function}
+
+\begin{function}{\fpSub}
+\begin{syntax}
+\cs{fpSub} \meta{fp var} \Arg{floating point expression}
+\end{syntax}
+Subtracts the result of computing the \meta{floating point
+expression} from the \meta{fp var}.
+This also applies if \meta{fp var} and \meta{floating point
+expression} evaluate to tuples of the same size. For example
+\begin{demohigh}
+\fpSet \lTmpaFp {5.3}
+\fpSub \lTmpaFp {2.11}
+\fpUse \lTmpaFp
+\end{demohigh}
+\end{function}
+
+\section{Floating Point Step Functions}
+
+%\begin{function}{\fpStepFunction}
+%\begin{syntax}
+%\cs{fpStepFunction} \Arg{initial value} \Arg{step} \Arg{final value} \meta{function}
+%\end{syntax}
+%This function first evaluates the \meta{initial value}, \meta{step}
+%and \meta{final value}, each of which should be a floating point
+%expression evaluating to a floating point number, not a tuple.
+%The \meta{function} is then placed in front of each \meta{value}
+%from the \meta{initial value} to the \meta{final value} in turn
+%(using \meta{step} between each \meta{value}).  The \meta{step} must
+%be non-zero.  If the \meta{step} is positive, the loop stops when
+%the \meta{value} becomes larger than the \meta{final value}.  If the
+%\meta{step} is negative, the loop stops when the \meta{value}
+%becomes smaller than the \meta{final value}. The \meta{function}
+%should absorb one numerical argument. For example
+%\begin{verbatim}
+%\cs_set:Npn \my_func:n #1 { [I saw #1] \quad }
+%\fp_step_function:nnnN { 1.0 } { 0.1 } { 1.5 } \my_func:n
+%\end{verbatim}
+%would print
+%\begin{quote}
+%[I saw 1.0] \quad
+%[I saw 1.1] \quad
+%[I saw 1.2] \quad
+%[I saw 1.3] \quad
+%[I saw 1.4] \quad
+%[I saw 1.5] \quad
+%\end{quote}
+%\begin{texnote}
+%Due to rounding, it may happen that adding the \meta{step} to the
+%\meta{value} does not change the \meta{value}; such cases give an
+%error, as they would otherwise lead to an infinite loop.
+%\end{texnote}
+%\end{function}
+
+\begin{function}{\fpStepInline}
+\begin{syntax}
+\cs{fpStepInline} \Arg{initial value} \Arg{step} \Arg{final value} \Arg{code}
+\end{syntax}
+This function first evaluates the \meta{initial value}, \meta{step}
+and \meta{final value}, all of which should be floating point
+expressions evaluating to a floating point number, not a tuple.
+Then for each \meta{value} from the \meta{initial value} to the
+\meta{final value} in turn (using \meta{step} between each
+\meta{value}), the \meta{code} is inserted into the input stream
+with \verb|#1| replaced by the current \meta{value}. Thus the
+\meta{code} should define a function of one argument (\verb|#1|).
+\begin{demohigh}
+\IgnoreSpacesOn
+\tlClear \lTmpaTl
+\fpStepInline {1} {0.1} {1.5} {
+  \tlPutRight \lTmpaTl {[#1]}
+}
+\tlUse \lTmpaTl
+\IgnoreSpacesOff
+\end{demohigh}
+\end{function}
+
+\begin{function}{\fpStepVariable}
+\begin{syntax}
+\cs{fpStepVariable} \Arg{initial value} \Arg{step} \Arg{final value} \meta{tl var} \Arg{code}
+\end{syntax}
+This function first evaluates the \meta{initial value}, \meta{step}
+and \meta{final value}, all of which should be floating point
+expressions evaluating to a floating point number, not a tuple.
+Then for each \meta{value} from the \meta{initial value} to the
+\meta{final value} in turn (using \meta{step} between each
+\meta{value}), the \meta{code} is inserted into the input stream,
+with the \meta{tl var} defined as the current \meta{value}.  Thus
+the \meta{code} should make use of the \meta{tl var}.
+%For example
+%\begin{demohigh}
+%\IgnoreSpacesOn
+%\tlClear\lTmpaTl
+%\fpStepVariable{1}{0.1}{1.5}\lTmpiTl{
+%  \tlPutRight\lTmpaTl{\expValue\lTmpiTl}
+%  \tlPutRight\lTmpaTl{~}
+%}
+%\prgReturn{\expValue\lTmpaTl}
+%\IgnoreSpacesOff
+%\end{demohigh}
+\end{function}
+
+\section{Float Point Conditionals}
+
+\begin{function}{\fpIfExist,\fpIfExistT,\fpIfExistF,\fpIfExistTF}
+\begin{syntax}
+\cs{fpIfExist} \meta{fp var}
+\cs{fpIfExistT} \meta{fp var} \Arg{true code}
+\cs{fpIfExistF} \meta{fp var} \Arg{false code}
+\cs{fpIfExistTF} \meta{fp var} \Arg{true code} \Arg{false code}
+\end{syntax}
+Tests whether the \meta{fp var} is currently defined.  This does not
+check that the \meta{fp var} really is a floating point variable.
+For example
+\begin{demohigh}
+\fpIfExistTF \lTmpaFp {\prgReturn{Yes}} {\prgReturn{No}}
+\fpIfExistTF \lMyUndefinedFp {\prgReturn{Yes}} {\prgReturn{No}}
+\end{demohigh}
+\end{function}
+
+\begin{function}{\fpCompare,\fpCompareT,\fpCompareF,\fpCompareTF}
+\begin{syntax}
+\cs{fpCompare} \Arg{fpexpr_1} \meta{relation} \Arg{fpexpr_2}
+\cs{fpCompareT} \Arg{fpexpr_1} \meta{relation} \Arg{fpexpr_2} \Arg{true code}
+\cs{fpCompareF} \Arg{fpexpr_1} \meta{relation} \Arg{fpexpr_2} \Arg{false code}
+\cs{fpCompareTF} \Arg{fpexpr_1} \meta{relation} \Arg{fpexpr_2} \Arg{true code} \Arg{false code}
+\end{syntax}
+Compares the \meta{fpexpr_1} and the \meta{fpexpr_2}, and returns
+\texttt{true} if the \meta{relation} is obeyed. For example
+\begin{demohigh}
+\fpCompareTF {1} > {0.9999} {\prgReturn{Greater}} {\prgReturn{Less}}
+\fpCompareTF {1} > {1.0001} {\prgReturn{Greater}} {\prgReturn{Less}}
+\end{demohigh}
+Two floating points
+$x$ and $y$ may obey four mutually exclusive relations:
+$x<y$, $x=y$, $x>y$, or $x?y$ (\enquote{not ordered}).  The last
+case occurs exactly if one or both operands is \nan{} or is a tuple,
+unless they are equal tuples.  Note that a \nan{} is distinct from
+any value, even another \nan{}, hence $x=x$ is not true for
+a \nan{}.  To test if a value is \nan{}, compare it to an arbitrary
+number with the \enquote{not ordered} relation.\par
+%\begin{demohigh}
+%\fpCompareTF{0/0}?{0}{\prgReturn{Is~a~Nan}}{\prgReturn{Isn't~a~NaN}}
+%\end{demohigh}
+Tuples are equal if they have the same number of items and items
+compare equal (in particular there must be no \nan{}).
+At present any other comparison with tuples yields \verb|?| (not ordered).
+This is experimental.
+\end{function}
+
+\end{document}

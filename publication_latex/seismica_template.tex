@@ -17,7 +17,7 @@
 % onecolumn only if issue with breakmath
 % invited prints "invited" in the banner and headers
 
-\documentclass[report,breakmath,proof]{seismica}
+\documentclass[report,breakmath]{seismica}
 %\documentclass[breakmath]{seismica}
 
 %% If report, specify the type to appear in header (comment or uncomment). if not specified, will only show 'report'
@@ -46,12 +46,12 @@
 \shorttitle{A template for Seismica} % used for header
 
 \author[1]{A. Author1
-	\orcid{0000-0002-1825-0097}
-	\thanks{Corresponding author: bla@som.ac.edu}}
+	\thanks{Corresponding author: bla@som.ac.edu}
+	\orcid{0000-0002-1825-0097}}
 \author[1]{B. author2 
-	\orcid{0000-0002-1825-0097}}
+	\orcid{0000-0002-1825-097}}
 \author[2]{C. Author3
-	\orcid{0000-0002-1825-0097}}
+	\orcid{0000-0002-1825-007}}
 \affil[1]{affil Author 1 and 2 }
 \affil[2]{affil author 3}
 
@@ -62,15 +62,28 @@
 \setotherlanguages{french}
 
 \begin{document}
-	
+
 	% up to 3 abstracts to include in {}
 	% English asbtract is first
 	\makeseistitle
 	{%
 	\begin{summary}{Abstract}
-Text goes here
+Replace text
 	\end{summary}
+	\begin{summary}{Non-technical summary}
+	The text goes here. Again, no longer than 200 words.
+\end{summary}
 	}
+
+ %%%% In case there are too many abstracts and need a page break, use this:
+%\addsummaries{
+%		\begin{summary}{Additional abstract} 
+%			The text goes here. Again, no longer than 200 words.
+%		\end{summary}
+%		\begin{summary}{Additional abstract} 
+%		The text goes here. Again, no longer than 200 words.
+%	\end{summary}
+%}  %% don't forget this one!
 	
 	\section{Introduction}
 	
@@ -111,7 +124,24 @@ Text goes here
 	\end{seistable}
 	\caption{Use the command seistable for tables, instead of tabular}
 \end{table}
-	
+
+	\subsection{Code}
+
+Code examples should be concise and descriptive. They should introduce core functionality or specific syntax and should be included using the \code{lstlisting} environment. Note that lines longer than 45 characters will be broken when using the prepress option. Extended examples or use cases should be uploaded separately. Individual words of code can be written inline, for example:
+
+To improve stability of the inversion, the \code{Model} object accepts the \code{strict} keyword, which disables piecewise linear approximation of the target function (Listing~\ref{code}).
+
+\begin{lstlisting}[caption=Example use of \code{Model}, label=code, language=Python]
+#2 4 6 8 0 2 4 6 8 0 2 4 6 8 0 2 4 6 8 0 2 4|
+import mymodule as mm
+
+model = mm.Model(strict=True)
+mdls = model.perturb()
+
+for mdl in mdls:
+	var = mdl.get_variance()
+\end{lstlisting}
+
 \begin{acknowledgements}
 	Thank all relevant parties and acknowledge funding sources, if any.
 \end{acknowledgements}

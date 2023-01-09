@@ -1,0 +1,141 @@
+\documentclass{article}
+
+\input{regression-test}
+\AtBeginDocument{\START}
+%\AtEndDocument{\END}
+
+\usepackage{functional}
+\Functional{tracing=true}
+
+\begin{document}
+
+\BEGINTEST{Testing \propNew}
+\propNew \lFooSomeProp
+\propSetFromKeyval \lFooSomeProp {key1=one,key2=two,key3=three}
+\propVarLog \lFooSomeProp
+\ENDTEST
+
+\BEGINTEST{Testing \propConstFromKeyval}
+\propConstFromKeyval \cFooSomeProp {key1=one,key2=two,key3=three}
+\propVarLog \cFooSomeProp
+\ENDTEST
+
+\BEGINTEST{Testing \propToKeyval}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two,key3=three}
+\propToKeyval \lTmpaProp
+\ENDTEST
+
+\BEGINTEST{Testing \propVarLog}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two,key3=three}
+\propVarLog \lTmpaProp
+\ENDTEST
+
+\BEGINTEST{Testing \propSetFromKeyval}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two,key3=three}
+\propVarLog \lTmpaProp
+\ENDTEST
+
+\BEGINTEST{Testing \propSetEq}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two,key3=three}
+\propSetEq \lTmpbProp \lTmpaProp
+\propVarLog \lTmpbProp
+\ENDTEST
+
+\BEGINTEST{Testing \propConcat}
+\propSetFromKeyval \lTmpbProp {key1=one,key2=two}
+\propSetFromKeyval \lTmpcProp {key3=three,key4=four}
+\propConcat \lTmpaProp \lTmpbProp \lTmpcProp
+\propVarLog \lTmpaProp
+\ENDTEST
+
+\BEGINTEST{Testing \propClear}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two}
+\propClear \lTmpaProp
+\propVarLog \lTmpaProp
+\ENDTEST
+
+\BEGINTEST{Testing \propClearNew}
+\propClearNew \lFooSomeProp
+\propSetFromKeyval \lFooSomeProp {key1=one,key2=two}
+\propVarLog \lFooSomeProp
+\ENDTEST
+
+\BEGINTEST{Testing \propPut}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two}
+\propPut \lTmpaProp {key1} {newone}
+\propVarLog \lTmpaProp
+\ENDTEST
+
+\BEGINTEST{Testing \propPutIfNew}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two}
+\propPutIfNew \lTmpaProp {key1} {newone}
+\propVarLog \lTmpaProp
+\ENDTEST
+
+\BEGINTEST{Testing \propPutFromKeyval}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two}
+\propPutFromKeyval \lTmpaProp {key1=newone,key3=three}
+\propVarLog \lTmpaProp
+\ENDTEST
+
+\BEGINTEST{Testing \propVarRemove}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two,key3=three}
+\propVarRemove \lTmpaProp {key2}
+\propVarLog \lTmpaProp
+\ENDTEST
+
+\BEGINTEST{Testing \propVarCount }
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two,key3=three}
+\propVarCount \lTmpaProp
+\ENDTEST
+
+\BEGINTEST{Testing \propVarItem}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two,key3=three}
+\tlSet \lTmpaTl {\propVarItem \lTmpaProp {key2}}
+\tlUse \lTmpaTl
+\ENDTEST
+
+\BEGINTEST{Testing \propGet}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two,key3=three}
+\propGetTF \lTmpaProp {key2} \lTmpaTl {\prgReturn{Yes}} {\prgReturn{No}}
+\tlUse \lTmpaTl
+\propVarCount \lTmpaProp
+\ENDTEST
+
+\BEGINTEST{Testing \propPop}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two,key3=three}
+\propPopTF \lTmpaProp {key2} \lTmpaTl {\prgReturn{Yes}} {\prgReturn{No}}
+\tlUse \lTmpaTl
+\propVarCount \lTmpaProp
+\ENDTEST
+
+\BEGINTEST{Testing \propVarMapInline}
+\IgnoreSpacesOn
+\propSetFromKeyval \lTmpkProp {key1=one,key2=two,key3=three}
+\tlClear \lTmpaTl
+\propVarMapInline \lTmpkProp {
+  \tlPutRight \lTmpaTl {(#1=#2)}
+}
+\prgReturn {\tlUse\lTmpaTl}
+\IgnoreSpacesOff
+\ENDTEST
+
+\BEGINTEST{Testing \propIfExist}
+\propIfExistTF \lTmpaProp {\prgReturn{Yes}} {\prgReturn{No}}
+\propIfExistTF \lFooUndefinedProp {\prgReturn{Yes}} {\prgReturn{No}}
+\ENDTEST
+
+\BEGINTEST{Testing \propVarIfEmpty}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two}
+\propVarIfEmptyTF \lTmpaProp {\prgReturn{Empty}} {\prgReturn{NonEmpty}}
+\propClear \lTmpaProp
+\propVarIfEmptyTF \lTmpaProp {\prgReturn{Empty}} {\prgReturn{NonEmpty}}
+\ENDTEST
+
+\BEGINTEST{Testing \propVarIfIn}
+\propSetFromKeyval \lTmpaProp {key1=one,key2=two}
+\propVarIfInTF \lTmpaProp {key1} {\prgReturn{Yes}} {\prgReturn{Not}}
+\propVarIfInTF \lTmpaProp {key3} {\prgReturn{Yes}} {\prgReturn{Not}}
+\ENDTEST
+
+\end{document}
