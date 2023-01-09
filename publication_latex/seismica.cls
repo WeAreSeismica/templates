@@ -177,8 +177,7 @@ hyperfootnotes=false]{hyperref}
 
 % package academicons
 \newcommand{\orcid}[1]{
-	\href{https://orcid.org/#1}{\textcolor[HTML]{A6CE39}{\aiOrcid}} 
-}
+	\href{https://orcid.org/#1}{\textcolor[HTML]{A6CE39}{\aiOrcid}}}
 
 % Credit
 \DTLgnewdb{credits}
