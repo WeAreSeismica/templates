@@ -708,11 +708,9 @@ FUNCTION {article}
       if$
     }
   if$
-  format.issn output
   format.doi output
   format.url output
   new.block
-  note output
   fin.entry
 }
 
@@ -749,7 +747,6 @@ FUNCTION {book}
   format.doi output
   format.url output
   new.block
-  note output
   fin.entry
 }
 
@@ -874,7 +871,6 @@ FUNCTION {inproceedings}
   format.doi output
   format.url output
   new.block
-  note output
   fin.entry
 }
 
