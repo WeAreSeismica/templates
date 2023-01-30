@@ -103,6 +103,11 @@ hyperfootnotes=false]{hyperref}
 	\AfterEndEnvironment{dmath}{\end{nolinenumbers}}
 \BeforeBeginEnvironment{dmath*}{\begin{nolinenumbers}}
 	\AfterEndEnvironment{dmath*}{\end{nolinenumbers}}
+%% patches \eq@setnumber to use \refstepcounter instead of \stepcounter, from https://tex.stackexchange.com/questions/241118/autoref-to-dmath-from-breqn-package-generates-wrong-link-text
+\patchcmd\eq@setnumber{\stepcounter}{\refstepcounter}{}{%
+	\errmessage{Patching \noexpand\eq@setnumber failed}%
+}
+% break equations
 \renewenvironment{equation}{%
 	\begin{dmath}}{%
 \end{dmath}}
@@ -300,7 +305,7 @@ hyperfootnotes=false]{hyperref}
 	#1
 \end{abswidth}
 \vspace{0.7cm}
-\saythanks
+%\saythanks
 }
 \newcommand*{\addsummaries}[1]{%
 \begin{abswidth}
