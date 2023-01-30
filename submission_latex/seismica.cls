@@ -291,7 +291,7 @@ hyperfootnotes=false]{hyperref}
 \setlength{\absrightindent}{0pt}
 \renewcommand{\abstractname}{}   
 \renewcommand{\absnamepos}{empty} 
-\addto\captionsenglish{\renewcommand{\abstractname}{}} % necessary to remove abstract title... don't know why
+\renewcommand{\abstractname}{}  % necessary to remove abstract title... don't know why
 
 \if@onecolumn
 \newcommand*{\makeseistitle}[1]{%
@@ -300,7 +300,7 @@ hyperfootnotes=false]{hyperref}
 	#1
 \end{abswidth}
 \vspace{0.7cm}
-\thanks
+\saythanks
 }
 \newcommand*{\addsummaries}[1]{%
 \begin{abswidth}
