@@ -85,18 +85,23 @@ hyperfootnotes=false]{hyperref}
 % fonts and math
 \RequirePackage{amsmath}
 \RequirePackage{lmodern}
-\RequirePackage[opentype,default,tabular,lining]{sourcesanspro}
-\RequirePackage[opentype,default,tabular,lining]{sourceserifpro}
-\RequirePackage[opentype,default,lining]{sourcecodepro}
 \if@breakmath
 \RequirePackage{breqn}
+%% patches \eq@setnumber to use \refstepcounter instead of \stepcounter, from https://tex.stackexchange.com/questions/241118/autoref-to-dmath-from-breqn-package-generates-wrong-link-text
+\patchcmd\eq@setnumber{\stepcounter}{\refstepcounter}{}{%
+	\errmessage{Patching \noexpand\eq@setnumber failed}%
+}
+% break equations
 \renewenvironment{equation}{%
 	\begin{dmath}}{%
 \end{dmath}}
-\newcommand{\mathbfup}[1]{\mathord{\textnormal{\textbf{#1}}}}
-% \else
-% 	\RequirePackage{unicode-math} % in conflict with breqn
 \fi
+\newcommand{\mathbfup}[1]{\mathord{\textnormal{\textbf{#1}}}}
+
+\RequirePackage[autostyle=false, style=english]{csquotes}
+\RequirePackage[opentype,default,tabular,lining]{sourcesanspro}
+\RequirePackage[opentype,default,tabular,lining]{sourceserifpro}
+\RequirePackage[opentype,lining]{sourcecodepro}
 
 \newcommand{\sff}{\sourcesanspro}
 \newcommand{\rmf}{\sourceserifpro}
