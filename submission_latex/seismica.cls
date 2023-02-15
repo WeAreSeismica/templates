@@ -73,6 +73,8 @@ hyperfootnotes=false]{hyperref}
 \hypersetup{colorlinks,linkcolor=linkblue}
 \hypersetup{colorlinks,citecolor=linkblue}
 \hypersetup{colorlinks,urlcolor=gray}
+\RequirePackage{url}
+\def\UrlBreaks{\do\/\do-\do_}
 
 \RequirePackage{graphicx}
 \RequirePackage{titlesec}
