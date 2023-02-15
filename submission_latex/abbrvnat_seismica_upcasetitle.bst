@@ -275,7 +275,11 @@ FUNCTION {format.issn}
 { "" }
 
 FUNCTION {format.url}
-{ "" }
+{ url empty$
+    { "" }
+    { new.block "\url{" url * "}" * }
+  if$
+}
 
 FUNCTION {format.doi}
 { doi empty$
@@ -709,7 +713,7 @@ FUNCTION {article}
     }
   if$
   format.doi output
-  format.url output
+  %format.url output
   new.block
   fin.entry
 }
@@ -745,7 +749,7 @@ FUNCTION {book}
   format.date "year" output.check
   format.isbn output
   format.doi output
-  format.url output
+  %format.url output
   new.block
   fin.entry
 }
@@ -762,7 +766,7 @@ FUNCTION {booklet}
   format.date output
   format.isbn output
   format.doi output
-  format.url output
+  %format.url output
   new.block
   note output
   fin.entry
@@ -801,7 +805,7 @@ FUNCTION {inbook}
   format.date "year" output.check
   format.isbn output
   format.doi output
-  format.url output
+  %format.url output
   new.block
   note output
   fin.entry
@@ -831,7 +835,7 @@ FUNCTION {incollection}
   if$
   format.isbn output
   format.doi output
-  format.url output
+  %format.url output
   new.block
   note output
   fin.entry
@@ -869,7 +873,7 @@ FUNCTION {inproceedings}
   if$
   format.isbn output
   format.doi output
-  format.url output
+  %format.url output
   new.block
   fin.entry
 }
@@ -959,7 +963,21 @@ FUNCTION {proceedings}
   publisher output
   format.isbn output
   format.doi output
+  %format.url output
+  new.block
+  note output
+  fin.entry
+}
+
+FUNCTION {software}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  new.block
+  format.title "title" output.check
+  new.block
   format.url output
+  format.doi output
   new.block
   note output
   fin.entry
