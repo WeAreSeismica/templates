@@ -52,6 +52,8 @@ hyperfootnotes=false]{hyperref}
 \hypersetup{colorlinks,linkcolor=seismicacolor1light}
 \hypersetup{colorlinks,citecolor=seismicacolor1light}
 \hypersetup{colorlinks,urlcolor=gray}
+\RequirePackage{url}
+\def\UrlBreaks{\do\/\do-\do_}
 
 \RequirePackage{polyglossia}
 \RequirePackage{fontspec}
