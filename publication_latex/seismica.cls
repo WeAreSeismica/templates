@@ -247,7 +247,7 @@ hyperfootnotes=false]{hyperref}
 	\printifnotempty{Production Editor}{\\}{\@prodedname}{\\}
 	\printifnotempty{Handling Editor}{\\}{\@handedname}{\\}
 	\printifnotempty{Copy \& Layout Editor}{\\}{\@copyedname}{\par}
-	\printifnotempty{Reviewed by}{\\}{\@reviewerdname}{\par}
+	\printifnotempty{Reviewed by}{\\}{\@reviewername}{\par}
 	\printifnotempty{Translator}{\\}{\@translatorname}{\par}
 	\printifnotempty{Received}{\\}{\@receiveddate}{\\}
 	\printifnotempty{Accepted}{\\}{\@accepteddate}{\\}
