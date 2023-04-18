@@ -222,6 +222,8 @@ hyperfootnotes=false]{hyperref}
 \handedname{}
 \def\copyedname#1{\def\@copyedname{#1}}
 \copyedname{}
+\def\translatorname#1{\def\@translatorname{#1}}
+\translatorname{}
 \def\suppmat#1{\def\@suppmat{#1}}
 \suppmat{}
 
@@ -248,7 +250,8 @@ hyperfootnotes=false]{hyperref}
 \newcommand{\more@metadata}{%
 	\printifnotempty{Production Editor}{\\}{\@prodedname}{\\}
 	\printifnotempty{Handling Editor}{\\}{\@handedname}{\\}
-	\printifnotempty{Copy \& Layout Editor}{\\}{\@copyedname}{\par}
+	\printifnotempty{Copy \& Layout Editor}{\\}{\@copyedname}{\\}
+	\printifnotempty{Translator}{\\}{\@translatorname}{\par}
 	\printifnotempty{Received}{\\}{\@receiveddate}{\\}
 	\printifnotempty{Accepted}{\\}{\@accepteddate}{\\}
 	\printifnotempty{Published}{\\}{\@publisheddate}{\par}
