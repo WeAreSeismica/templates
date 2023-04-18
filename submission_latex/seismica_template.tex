@@ -63,6 +63,14 @@
 %\setotherlanguages{french,thai}  % replace with your language(s), per polyglossia
 %% if an additional font is needed for the abstract, load it with:
 %\newfontfamily\thaifont[Script=Thai]{Noto Serif Thai}
+
+%% If you are using Arabic, do not include it in \setotherlanguages{} as it is not supported 
+%% by polyglossia. Instead, with the [languages] option at the top, you can use these commands
+%% within the text:
+%%\begin{Arabic} and \end{Arabic} around paragraphs in Arabic
+%%\n{} to wrap any digits within Arabic text that should read left-to-right
+%%\textarabic{} for Arabic text embedded in a left-to-right paragraph
+
 %% also see https://www.overleaf.com/latex/examples/how-to-write-multilingual-text-with-different-scripts-in-latex/wfdxqhcyyjxz for reference
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -58,6 +58,12 @@ hyperfootnotes=false]{hyperref}
 \RequirePackage{polyglossia}
 \RequirePackage{fontspec}
 \setmainlanguage[]{english}
+%% extra options for Arabic (not supported by polyglossia)
+\newfontfamily\arabicfont[Script=Arabic]{Arial} %{Noto Naskh Arabic}
+\newcommand{\textarabic}[1]{\bgroup\textdir TRT\arabicfont #1\egroup} % Arabic inside LTR
+\newcommand{\n}[1]{\bgroup\textdir TLT #1\egroup} % for digits inside Arabic text
+\newenvironment{Arabic}{\textdir TRT\pardir TRT\arabicfont}{} % Arabic paragraph
+
 \RequirePackage{graphicx}
 \RequirePackage{titlesec}
 \RequirePackage{titling}
