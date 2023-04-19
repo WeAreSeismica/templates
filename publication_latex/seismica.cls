@@ -62,7 +62,7 @@ hyperfootnotes=false]{hyperref}
 \newfontfamily\arabicfont[Script=Arabic]{Arial} %{Noto Naskh Arabic}
 \newcommand{\textarabic}[1]{\bgroup\textdir TRT\arabicfont #1\egroup} % Arabic inside LTR
 \newcommand{\n}[1]{\bgroup\textdir TLT #1\egroup} % for digits inside Arabic text
-\newenvironment{Arabic}{\textdir TRT\pardir TRT\arabicfont}{} % Arabic paragraph
+\newenvironment{Arabic}{\textdir TRT\pardir TRT\arabicfont}{\hfill} % Arabic paragraph
 
 \RequirePackage{graphicx}
 \RequirePackage{titlesec}
@@ -254,7 +254,7 @@ hyperfootnotes=false]{hyperref}
 	\printifnotempty{Handling Editor}{\\}{\@handedname}{\\}
 	\printifnotempty{Copy \& Layout Editor}{\\}{\@copyedname}{\par}
 	\printifnotempty{Reviewed by}{\\}{\@reviewername}{\par}
-	\printifnotempty{Translator}{\\}{\@translatorname}{\par}
+	\printifnotempty{Translated by}{\\}{\@translatorname}{\par}
 	\printifnotempty{Received}{\\}{\@receiveddate}{\\}
 	\printifnotempty{Accepted}{\\}{\@accepteddate}{\\}
 	\printifnotempty{Published}{\\}{\@publisheddate}{\par}
