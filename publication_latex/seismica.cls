@@ -546,13 +546,24 @@ hyperfootnotes=false]{hyperref}
 	\fi
 	\ifnum0=`{\fi}}
 
-
-\newenvironment{seistable}[1][*{50}{l}]{%
+\let\tableorig\table
+\def\table@i[#1]{\tableorig[#1]
+	\centering
+	\sflight\small
 	\setlength{\arrayrulewidth}{0.5pt}
 	\newlength{\thickarrayrulewidth}
 	\setlength{\thickarrayrulewidth}{1.5\arrayrulewidth}
-	\arrayrulecolor{gray}
+	\arrayrulecolor{gray}}  % with optional argument
+\def\table@ii{\tableorig
+	\centering
 	\sflight\small
+	\setlength{\arrayrulewidth}{0.5pt}
+	\newlength{\thickarrayrulewidth}
+	\setlength{\thickarrayrulewidth}{1.5\arrayrulewidth}
+	\arrayrulecolor{gray}}  % without optional argument
+\def\table{\@ifnextchar[\table@i \table@ii}
+
+\newenvironment{seistable}[1][*{50}{l}]{%
 	\begin{center}
 		\begin{tabular}{#1}\thickhline\rule{0pt}{2ex} }{%
 			\thickhline\end{tabular}\end{center}\vspace*{-0.7cm}}

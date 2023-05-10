@@ -77,9 +77,11 @@
 	{%
 	\begin{summary}{Abstract}
 Replace text
+\vspace{1.5cm} % because abstract is too short
 	\end{summary}
 	\begin{summary}{Non-technical summary}
 	The text goes here. Again, no longer than 200 words.
+	\vspace{1.5cm} % because abstract is too short
 \end{summary}
  	}
 
@@ -122,16 +124,18 @@ Refer to equation \ref{eq1}.
 \end{equation}
 	
 \begin{table}
-	\begin{seistable}
+	\begin{tabular}{lll}
+		\thickhline
 		Animal    & Description & Price (\$) \\
-		\hline
+		\hline\rule{0pt}{2ex}
 		Gnat      & per gram    & 13.65      \\
 		& each        & 0.01       \\
 		Gnu       & stuffed     & 92.50      \\
 		Emu       & stuffed     & 33.33      \\
 		Armadillo & frozen      & 8.99       \\
-	\end{seistable}
-	\caption{Use the command seistable for tables, instead of tabular}
+		\thickhline
+	\end{tabular}
+	\caption{In tables, you can use \code{\textbackslash hline} or \code{\textbackslash thickhline} for horizontal rules. Also, you can add a \code{\textbackslash rule{0pt}{2ex}} after \code{hlines} to add an extra vertical space.}
 \end{table}
 
 	\subsection{Code}
