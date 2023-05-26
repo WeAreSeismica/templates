@@ -14,6 +14,10 @@
 \@reportfalse
 \DeclareOption{report}{\@reporttrue}
 
+\newif\if@opinion
+\@opinionfalse
+\DeclareOption{opinion}{\@opiniontrue}
+
 \newif\if@invited
 \@invitedfalse
 \DeclareOption{invited}{\@invitedtrue}
@@ -42,6 +46,7 @@
 \definecolor{seismicacolor1}{RGB}{18,52,103}
 \definecolor{seismicacolor2}{RGB}{77,185,123}
 \definecolor{seismicacolor3}{RGB}{222,60,75}
+\definecolor{seismicacolor4}{RGB}{205,204,36}
 \definecolor{codebackcolor}{RGB}{243,243,243}
 \RequirePackage[unicode,
 bookmarks=true,
@@ -189,8 +194,13 @@ hyperfootnotes=false]{hyperref}
 \renewcommand\AB@affilsepx{, \protect\Affilfont}
 
 % package academicons
+\if@nion
+\newcommand{\orcid}[1]{
+\href{https://orcid.org/#1}{\textcolor{seismicacolor4}{\aiOrcid}}}
+\else
 \newcommand{\orcid}[1]{
 	\href{https://orcid.org/#1}{\textcolor[HTML]{A6CE39}{\aiOrcid}}}
+\fi
 
 % Credit
 \DTLgnewdb{credits}
@@ -300,7 +310,11 @@ hyperfootnotes=false]{hyperref}
 \if@report
 \newcommand{\banner}{banner_report}
 \else
-\newcommand{\banner}{banner}
+	\if@opinion
+	\newcommand{\banner}{banner_opinion}
+	\else
+	\newcommand{\banner}{banner}
+	\fi
 \fi
 
 \def\dois#1{\def\@dois{#1}}
@@ -335,15 +349,30 @@ hyperfootnotes=false]{hyperref}
 		\vspace*{1.7cm}
 	}
 	\else
+	\if@opinion
 	\renewcommand\maketitlehooka{%
 		\vspace{-1.5cm}
 		\includegraphics[width=\textwidth]{\banner}
 		
-		{\vspace*{-1.3cm} \hspace{0.2cm} 
+		{\vspace*{-1.75cm} \hspace{0.2cm} 
+			\sff \color{white} \bfseries \textit{OPINION}}
+		
+		{\vspace*{0.03cm} \hspace{0.2cm} 
 			\href{https://doi.org/\@dois}{\sff \color{white} \small doi:\@dois} }
 		
 		\vspace*{1.7cm}
 	}
+		\else
+		\renewcommand\maketitlehooka{%
+			\vspace{-1.5cm}
+			\includegraphics[width=\textwidth]{\banner}
+			
+			{\vspace*{-1.3cm} \hspace{0.2cm} 
+				\href{https://doi.org/\@dois}{\sff \color{white} \small doi:\@dois} }
+			
+			\vspace*{1.7cm}
+		}
+		\fi
 	\fi
 \fi
 
@@ -481,7 +510,11 @@ hyperfootnotes=false]{hyperref}
 	\if@invited
 	\newcommand{\articletype}{INVITED RESEARCH ARTICLE}
 	\else
-	\newcommand{\articletype}{RESEARCH ARTICLE}
+		\if@opinion
+		\newcommand{\articletype}{\color{seismicacolor4}OPINION}
+		\else
+		\newcommand{\articletype}{RESEARCH ARTICLE}
+		\fi
 	\fi
 \fi
 
