@@ -194,7 +194,7 @@ hyperfootnotes=false]{hyperref}
 \renewcommand\AB@affilsepx{, \protect\Affilfont}
 
 % package academicons
-\if@nion
+\if@opinion
 \newcommand{\orcid}[1]{
 \href{https://orcid.org/#1}{\textcolor{seismicacolor4}{\aiOrcid}}}
 \else
