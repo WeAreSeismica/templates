@@ -925,6 +925,7 @@ FUNCTION {misc}
   format.date output
   format.issn output
   format.url output
+  format.doi output
   new.block
   note output
   fin.entry
