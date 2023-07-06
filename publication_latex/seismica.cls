@@ -311,7 +311,7 @@ hyperfootnotes=false]{hyperref}
 \newcommand{\banner}{banner_report}
 \else
 	\if@opinion
-	\newcommand{\banner}{banner_opinion}
+	\newcommand{\banner}{banner}
 	\else
 	\newcommand{\banner}{banner}
 	\fi
@@ -355,7 +355,7 @@ hyperfootnotes=false]{hyperref}
 		\includegraphics[width=\textwidth]{\banner}
 		
 		{\vspace*{-1.75cm} \hspace{0.2cm} 
-			\sff \color{white} \bfseries \textit{OPINION}}
+			\sff \color{white} \bfseries \textit{REVIEWED OPINION}}
 		
 		{\vspace*{0.03cm} \hspace{0.2cm} 
 			\href{https://doi.org/\@dois}{\sff \color{white} \small doi:\@dois} }
@@ -511,7 +511,7 @@ hyperfootnotes=false]{hyperref}
 	\newcommand{\articletype}{INVITED RESEARCH ARTICLE}
 	\else
 		\if@opinion
-		\newcommand{\articletype}{\color{seismicacolor4}OPINION}
+		\newcommand{\articletype}{REVIEWED OPINION}
 		\else
 		\newcommand{\articletype}{RESEARCH ARTICLE}
 		\fi
