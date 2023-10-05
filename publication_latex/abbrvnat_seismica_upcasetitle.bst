@@ -907,7 +907,8 @@ FUNCTION {manual}
   address output
   format.edition output
   format.date output
-  format.url output
+  %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -924,7 +925,8 @@ FUNCTION {mastersthesis}
   school "school" output.check
   address output
   format.date "year" output.check
-  format.url output
+  %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -960,7 +962,8 @@ FUNCTION {phdthesis}
   school "school" output.check
   address output
   format.date "year" output.check
-  format.url output
+  %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -1014,7 +1017,8 @@ FUNCTION {techreport}
   institution "institution" output.check
   address output
   format.date "year" output.check
-  format.url output
+  %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
