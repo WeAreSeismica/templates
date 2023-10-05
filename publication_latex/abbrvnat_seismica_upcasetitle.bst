@@ -288,6 +288,16 @@ FUNCTION {format.doi}
   if$
 }
 
+FUNCTION {format.doiurl}
+{ doi empty$
+    {url empty$
+        { "" }
+        {new.block "\url{" url * "}" * }
+        if$}
+    { new.block "\doi{" doi * "}" * }
+    if$
+}
+
 FUNCTION {format.title}
 { 
 %title empty$
@@ -712,8 +722,9 @@ FUNCTION {article}
       if$
     }
   if$
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   fin.entry
 }
@@ -748,8 +759,9 @@ FUNCTION {book}
   format.edition output
   format.date "year" output.check
   format.isbn output
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   fin.entry
 }
@@ -765,8 +777,9 @@ FUNCTION {booklet}
   address output
   format.date output
   format.isbn output
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -804,8 +817,9 @@ FUNCTION {inbook}
   format.edition output
   format.date "year" output.check
   format.isbn output
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -834,8 +848,9 @@ FUNCTION {incollection}
     }
   if$
   format.isbn output
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -872,8 +887,9 @@ FUNCTION {inproceedings}
     }
   if$
   format.isbn output
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   fin.entry
 }
@@ -891,7 +907,8 @@ FUNCTION {manual}
   address output
   format.edition output
   format.date output
-  format.url output
+  %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -908,7 +925,8 @@ FUNCTION {mastersthesis}
   school "school" output.check
   address output
   format.date "year" output.check
-  format.url output
+  %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -924,8 +942,9 @@ FUNCTION {misc}
   howpublished output
   format.date output
   format.issn output
-  format.url output
-  format.doi output
+  %format.url output
+  %format.doi output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -943,7 +962,8 @@ FUNCTION {phdthesis}
   school "school" output.check
   address output
   format.date "year" output.check
-  format.url output
+  %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -963,8 +983,9 @@ FUNCTION {proceedings}
   organization output
   publisher output
   format.isbn output
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -977,8 +998,9 @@ FUNCTION {software}
   new.block
   format.title "title" output.check
   new.block
-  format.url output
-  format.doi output
+  %format.url output
+  %format.doi output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -995,7 +1017,8 @@ FUNCTION {techreport}
   institution "institution" output.check
   address output
   format.date "year" output.check
-  format.url output
+  %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry

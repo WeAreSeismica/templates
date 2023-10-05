@@ -1,4 +1,4 @@
-% Documentclass seismica.cls last updated - 2023-07-15
+% Documentclass seismica.cls last updated - 2023-10-05
 % for Seismica, a community-driven, Diamond Open Access journal publishing peer-reviewed research in seismology and earthquake science.
 % Current version with inputs from:
 % Théa Ragon, Hannah Mark, Wasja Bloch, Thomas Lecocq
