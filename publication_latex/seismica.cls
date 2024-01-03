@@ -74,6 +74,8 @@ hyperfootnotes=false]{hyperref}
 \RequirePackage{titling}
 \RequirePackage{abstract}
 \RequirePackage{fancyhdr}
+\RequirePackage{pdflscape}
+\RequirePackage{tikz}
 \RequirePackage{bookmark}
 \RequirePackage{caption} 
 %\RequirePackage[natbibapa,sectionbib,doi]{apacite}   ### TO DO!! Conflict with... ???
@@ -522,6 +524,7 @@ hyperfootnotes=false]{hyperref}
 \newcommand{\shorttitle}[1]{\gdef\shorttitle@internal{#1}}
 \newcommand{\insertshorttitle}{\shorttitle@internal}
 
+%% header/footer style for the all pages after page 1, portrait
 \pagestyle{fancy}
 \fancyhf{}
 \fancyfoot{}
@@ -531,12 +534,38 @@ hyperfootnotes=false]{hyperref}
 %\fancyhead[R]{\footnotesize \@author[1]}
 \renewcommand{\headrule}{}
 
+%% same style (portait, pages 2+) as a fancypage for resets after landscape pages
+\fancypagestyle{plainReset}{%
+    \fancyhf{}
+    \fancyfoot{}
+    \fancyfoot[L]{\sff\bfseries\footnotesize \thepage}
+    \fancyfoot[R]{\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA}~|~volume \@thevolume.\@thenumber~|~\@theyear}
+    \fancyhead[L]{\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA} | {\scshape \bfseries \articletype} | \insertshorttitle}
+    %\fancyhead[R]{\footnotesize \@author[1]}
+    \renewcommand{\headrule}{}
+}
+
+%% style for first page header/footer, with ISSN
 \fancypagestyle{plain}{%
 	\fancyhead{}
 	\renewcommand{\headrule}{}
 	\fancyfoot{}
 	\fancyfoot[L]{\sff\bfseries\footnotesize \thepage}
 	\fancyfoot[R]{\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA}~|~ISSN 2816-9387~|~volume \@thevolume.\@thenumber~|~\@theyear}
+}
+
+%% style for landscape page header/footer
+\fancypagestyle{lscapedplain}{%
+  \fancyhf{}
+  \fancyfoot{%
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[text width=5cm,align=flush right,rotate=90] at ([xshift=-1cm,yshift=11cm]current page.east) {\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA}~|~volume \@thevolume.\@thenumber~|~\@theyear};
+      \node[text width=3cm,align=flush left,rotate=90] at ([xshift=-1cm,yshift=-11.8cm]current page.east) {\sff\bfseries\footnotesize \thepage};
+    \end{tikzpicture}}
+  \fancyhead{%
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[text width=20cm, align=flush left,rotate=90] at ([xshift=1cm,yshift=-3.35cm]current page.west) {\sflight \footnotesize {\scshape \bfseries \color{seismicacolor1light} SEISMICA} | {\scshape \bfseries \articletype} | \insertshorttitle};
+    \end{tikzpicture}}
 }
 
 %

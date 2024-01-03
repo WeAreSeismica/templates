@@ -155,6 +155,28 @@ for mdl in mdls:
 	var = mdl.get_variance()
 \end{lstlisting}
 
+\section{Page formatting}
+If you need to add a landscape-format page, for a table or figure, there are header/footer styles in the template. Adding a landscape page will mess with tex's page-filling algorithm since it will insert the rotated page exactly where it appears in the text, so you will need to manually move text before/after to maximize page fill.
+
+%% add these lines (uncommented) before the landscape content
+%\onecolumn
+%\thispagestyle{lscapedplain}
+%\pagestyle{lscapedplain}
+%\begin{landscape}
+
+%% [add your landscape content here - if a figure*, use height=\textwidth (or .9\textwidth) instead of width to set size.
+
+%% add these lines (uncommented) after the landscape content to reset to portrait mode
+%\end{landscape}
+%\restoregeometry
+%\thispagestyle{plainReset}
+%\pagestyle{plainReset}
+
+% If you want a caption for a full-page landscape figure to be on the next page but still have the same number, you can use
+%\addcounter{figure}{-1}
+% before adding another figure environment with just the caption following the landscape page. Note that this will not play well with the XML conversion.
+
+
 \begin{acknowledgements}
 	Thank all relevant parties and acknowledge funding sources, if any.
 \end{acknowledgements}
