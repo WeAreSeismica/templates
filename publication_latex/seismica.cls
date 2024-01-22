@@ -484,7 +484,7 @@ hyperfootnotes=false]{hyperref}
 %\titlespacing\subsubsection{0pt}{8pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
 
 \if@report
-\setcounter{secnumdepth}{0}
+\setcounter{secnumdepth}{3}
 \else
 \setcounter{secnumdepth}{3}
 \fi
