@@ -499,14 +499,15 @@ hyperfootnotes=false]{hyperref}
 %-------------------------------------------------------------------------------
 %                Configuration for header and footer
 %-------------------------------------------------------------------------------
-\def\reportheader#1{\def\@reportheader{#1}}
-\reportheader{}
+\def\reporttype#1{\def\@reporttype{#1}}
+\reporttype{}
+
 
 \if@report
-	\ifx\reportheader\prodedname %% check if reportheader empty
+	\ifx\reporttype\prodedname %% check if reporttype empty
 	\newcommand{\articletype}{\color{seismicacolor2}REPORT}
 	\else
-	\newcommand{\articletype}{{\color{seismicacolor2}\MakeUppercase{\@reportheader}}}
+	\newcommand{\articletype}{{\color{seismicacolor2}\MakeUppercase{\@reporttype}}}
 	\fi
 \else 
 	\if@invited
