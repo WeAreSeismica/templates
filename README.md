@@ -10,9 +10,16 @@ Using our template is not required for initial submission but is required if you
 ## Submission\_latex
 Contains Latex submission templates, and should be mirrored on Overleaf. It compiles with pdflatex.
 
-The template includes the class file `seismica.cls`, the bib style file `abbrvnat_seismica_upcasetitle.bst` which describes citation formatting, the first page banner image `banner.png`, a placeholder image `empty.png`, and a sample article `seismica_template.tex` and bibfile `mybibfile.bib`. Authors should use the sample article and bibfile as a base for formatting their articles. 
+The template includes:
+- the class file `seismica.cls`
+- the bib style file `abbrvnat_seismica_upcasetitle.bst` which describes citation formatting
+- the first page banner image `banner.png`
+- a placeholder image `empty.png`
+- a sample article `seismica_template.tex` and bibfile `mybibfile.bib`. 
 
-Note that the sample article file contains some instructions on how to use this template (and how *not* to use it). You can also look at Seismica's [Author Guidelines](https://seismica.library.mcgill.ca/author-guidelines) and our [templates page](https://seismica.library.mcgill.ca/templates/) for more guidance on puttiing together your manuscript.
+Authors should use the sample article and bibfile as a base for formatting their articles. 
+
+The sample article file contains some instructions on how to use this template (and how *not* to use it). You can also look at Seismica's [Author Guidelines](https://seismica.library.mcgill.ca/author-guidelines) and our [templates page](https://seismica.library.mcgill.ca/templates/) for more guidance on putting together your manuscript.
 
 
 ## Publication\_latex
