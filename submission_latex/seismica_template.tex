@@ -212,6 +212,8 @@
 
     \paragraph{Why is linking to labeled section headings not recommended?} The XML `Full text' for published articles cannot handle linking to sections at present.
 
+    \paragraph{What's the best way to track changes for revisions?} There are lots of TeX packages for this and you're welcome to use whatever you like \textit{as long as you remove all signs of that package before sending in production files for an accepted article}. Alternatively, you can use a tool like \texttt{latexdiff} to find and format tracked changes between an initial tex file and a revised tex file -- this way, you will end up with a clean (revised) tex file for production with no excess packages.
+
     \paragraph{Why are there so many rules about this template?} Trust us, there are reasons! The first, of course, is that changing things within this (pdfLaTeX) template can create conflicts with our (LuaLaTeX) publication template. The second reason is that we publish articles in both PDF and XML formats (the `Full text' version) and it is much more difficult to make the XML version of your article if certain conventions aren't followed.
 		
 		%% Will not be printed if anonymous option ON
