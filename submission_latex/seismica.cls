@@ -309,6 +309,10 @@ hyperfootnotes=false]{hyperref}
 \renewcommand{\absnamepos}{empty} 
 \renewcommand{\abstractname}{}  % necessary to remove abstract title... don't know why
 
+\if@preprint
+\addto\captionsenglish{\renewcommand{\abstractname}{}} % necessary to remove abstract title... don't know why
+\fi
+
 \if@onecolumn
 \newcommand*{\makeseistitle}[1]{%
 \maketitle

@@ -79,7 +79,12 @@
 %%\n{} to wrap any digits within Arabic text that should read left-to-right
 %%\textarabic{} for Arabic text embedded in a left-to-right paragraph
 
-%% For Chinese and Japanese characters, you may need to use XeLaTeX and the zxjatype package.
+%% For Japanese characters,do not include it in \setotherlanguages{} as it is not supported 
+%% by polyglossia. Instead, with the [languages] option at the top, you can use these commands
+%% in the preamble:
+%%\RequirePackage{luatexja}
+%%\RequirePackage[haranoaji,deluxe,nfssonly,jis2004]{luatexja-preset}
+%%\renewcommand{\kanjifamilydefault}{\gtdefault}
 
 %% also see https://www.overleaf.com/latex/examples/how-to-write-multilingual-text-with-different-scripts-in-latex/wfdxqhcyyjxz for reference
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
