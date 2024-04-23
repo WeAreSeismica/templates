@@ -19,7 +19,7 @@
 \documentclass[]{seismica}
 
 \title{Your article title goes here}
-%\shorttitle{Your short title goes here} % used for header, not mandatory
+%\shorttitle{Your short title goes here} % used for header, not mandatory but recommended
 
 %% If this is a REPORT, select a report type within: 
 %\reporttype{Null Results Report} % (null-results/failed experiments)
@@ -66,7 +66,7 @@
 %% If your article includes abstracts in other languages, uncomment the lines below and fill in
 %%      the appropriate sections. You will need to use the [languages] option at the top,
 %%      and will need to use lualatex instead of pdflatex to compile the document.
-%% We will use luatex, polyglossia and fontspec for the compilation of the accepted version. 
+%% We use luatex, polyglossia and fontspec for the compilation of the accepted version. 
 %% Feel free to use any polyglossia command.
 %\setotherlanguages{french,thai}  % replace with your language(s), per polyglossia
 %% if an additional font is needed for the abstract, load it with:
@@ -78,6 +78,8 @@
 %%\begin{Arabic} and \end{Arabic} around paragraphs in Arabic
 %%\n{} to wrap any digits within Arabic text that should read left-to-right
 %%\textarabic{} for Arabic text embedded in a left-to-right paragraph
+
+%% For Chinese and Japanese characters, you may need to use XeLaTeX and the zxjatype package.
 
 %% also see https://www.overleaf.com/latex/examples/how-to-write-multilingual-text-with-different-scripts-in-latex/wfdxqhcyyjxz for reference
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -127,14 +129,16 @@
 	Section names are at the discretion of the authors. A simple structure for an article would include an Introduction, Methods and Data, Results, Discussion, and Conclusions, but authors are encouraged to choose a structure that best presents their work.
 	
 	\subsection{Bibliographic citations}
-	In the text of an article, citations may either be in-line, as in the case of citing \citet{metropolis_monte_1949}, or in parentheses \citep[e.g.,][]{metropolis_monte_1949}, as appropriate. All citations in the text must be listed in the references section, and all listed references must be cited at least once in the text.
+	In the text of an article, citations may either be in-line, as in the case of citing \citet{metropolis_monte_1949}, or in parentheses \citep[e.g.,][]{metropolis_monte_1949}, as appropriate. All citations in the text must be listed in the references section, and all listed references must be cited at least once in the text. 
+
+        There are other ways to format citations in TeX -- for example using \texttt{\textbackslash citeauthor\{\}} and \texttt{\textbackslash citeyear\{\}}. We ask that you stick to \texttt{\textbackslash citep} and \texttt{\textbackslash citet} as shown in the preceding paragraph.
 	
 	\subsection{Headings}
 	\subsubsection{Subsubsection}
 	Three levels of section headings is the maximum\footnote{Seriously, the maximum} - no subsubsubsections, please! Note that footnotes are permitted, as in the previous sentence, though we encourage authors to really think about whether a footnote is necessary or if the information it contains could be included in the main text.
 	
 	\subsection{Figures and Tables}
-	Figures should be labeled, captioned, and referenced within the text (e.g., Fig.~\ref{fig:1} and Figs~\ref{fig:1}a, b, \ref{fig:2}c). When an article is accepted, separate full-resolution files must be uploaded for each figure. While Figure \ref{fig:1} is a one-column figure, Figure \ref{fig:2} is a full-width figure.
+	Figures should be labeled, captioned, and referenced within the text (e.g., Fig.~\ref{fig:1} and Figs~\ref{fig:1}a, b, \ref{fig:2}c). When an article is accepted, separate full-resolution files must be uploaded for each figure. While Figure \ref{fig:1} is a one-column figure, Figure \ref{fig:2} is a full-width figure. Use the \texttt{\textbackslash ref} command to link to your labeled figures, tables, and equations. Labeling and linking to section headings is not recommended.
 	
 	%% Accepted articles will be typeset in a 2-column format. 
 	%% Figures can be either be 1-column wide or page-wide. One column is 8.6 cm wide.
@@ -193,6 +197,24 @@
 			for mdl in mdls:
 			var = mdl.get_variance()
 		\end{lstlisting}
+
+
+    \section{Frequently asked TeX template questions}
+    \paragraph{Can I modify the cls file?} Please do not do this! Modifying the class file may make your article incompatible with our publication template, which will delay publication if your article is accepted.
+
+    (If you want to adapt our cls file for your own purposes outside of submitting articles to Seismica, feel free to do so with attribution.)
+
+    \paragraph{Can I add packages to the template?} Mostly, no (for the same reason that we ask you not to alter the class file--modifications can cause errors later on). If you want to use \texttt{siunitx} that should be ok as long as you do not place any \texttt{\textbackslash SI} commands in math environments. There may be some other packages that do not conflict. However, we know for a fact that using \texttt{tikz} to make graphics will cause problems.
+
+    \paragraph{Is it ok to use custom macros?} If you have defined a \texttt{\textbackslash newcommand}, perhaps to substitute for a phrase or abbreviation that you don't want to type over and over again in your paper, that's ok \textit{until} the article is accepted for publication. Please find/replace all of those macros before you send us your tex file for copyediting and production, and remove the \texttt{\textbackslash newcommand}s.
+
+    \paragraph{I use a citation manager plugin in a TeX editor and don't think much about bibfiles. Can I just export my entire reference library as .bib and send that in for copyediting?} Please do not do this. It is likely that your plugin/citation manager has an option to create a bibliography only for works cited in your document instead. Sending us a bibfile with (possibly thousands of) extra items in it that are not cited in your paper tends to cause errors in the layout/production process. It also adds extra work for your copyeditor as we do need to separately produce a list of the works cited in your paper, not including all the extra stuff in your reference library.
+
+    \paragraph{Why is linking to labeled section headings not recommended?} The XML `Full text' for published articles cannot handle linking to sections at present.
+
+    \paragraph{What's the best way to track changes for revisions?} There are lots of TeX packages for this and you're welcome to use whatever you like \textit{as long as you remove all signs of that package before sending in production files for an accepted article}. Alternatively, you can use a tool like \texttt{latexdiff} to find and format tracked changes between an initial tex file and a revised tex file -- this way, you will end up with a clean (revised) tex file for production with no excess packages.
+
+    \paragraph{Why are there so many rules about this template?} Trust us, there are reasons! The first, of course, is that changing things within this (pdfLaTeX) template can create conflicts with our (LuaLaTeX) publication template. The second reason is that we publish articles in both PDF and XML formats (the `Full text' version) and it is much more difficult to make the XML version of your article if certain conventions aren't followed.
 		
 		%% Will not be printed if anonymous option ON
 		\begin{acknowledgements}
