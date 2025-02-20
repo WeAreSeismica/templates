@@ -635,6 +635,18 @@ FUNCTION {format.tr.number}
   if$
 }
 
+
+FUNCTION {format.ofr.number}
+{ type empty$
+    { "Open-file Report" }
+    'type
+  if$
+  number empty$
+    { "t" change.case$ }
+    { number tie.or.space.connect }
+  if$
+}
+
 FUNCTION {format.article.crossref}
 { key empty$
     { journal empty$
@@ -1014,6 +1026,25 @@ FUNCTION {techreport}
   format.title "title" output.check
   new.block
   format.tr.number output.nonnull
+  institution "institution" output.check
+  address output
+  format.date "year" output.check
+  %format.url output
+  format.doiurl output
+  new.block
+  note output
+  fin.entry
+}
+
+
+FUNCTION {openfilereport}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  new.block
+  format.title "title" output.check
+  new.block
+  format.ofr.number output.nonnull
   institution "institution" output.check
   address output
   format.date "year" output.check
