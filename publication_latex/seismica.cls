@@ -35,6 +35,8 @@
 
 \if@onecolumn
 \LoadClass[10pt,twoside,a4paper,onecolumn]{article}
+\RequirePackage{setspace}
+\spacing{1.1}
 \else
 \LoadClass[10pt,twoside,a4paper,twocolumn]{article}
 \fi
@@ -364,6 +366,20 @@ hyperfootnotes=false]{hyperref}
 		
 		\vspace*{1.7cm}
 	}
+
+		\else
+                \if@onecolumn
+		\renewcommand\maketitlehooka{%
+                        \begin{spacing}{1}
+			\vspace{-1.5cm} \hspace{-0.6cm}
+			\includegraphics[width=\textwidth]{\banner}
+			
+			{\vspace*{-1.3cm} %\hspace{0.2cm} 
+				\href{https://doi.org/\@dois}{\sff \color{white} \small doi:\@dois} }
+			
+			\vspace*{0.75cm}
+                        \end{spacing}
+		}
 		\else
 		\renewcommand\maketitlehooka{%
 			\vspace{-1.5cm}
@@ -411,20 +427,23 @@ hyperfootnotes=false]{hyperref}
 
 \if@onecolumn
 \newcommand*{\makeseistitle}[1]{%
+        \begin{spacing}{1}
 	\maketitle
 	\begin{abswidth}
-			\zsavepos{loc:beg_abstract}
+	\zsavepos{loc:beg_abstract}
 		#1
 	\end{abswidth}
+        \end{spacing}
+	\vspace*{-0.1cm}  % NOTE need to test this with multiple abstracts
 	\thanks
-	\vspace*{0.7cm}
 }
 \newcommand*{\addsummaries}[1]{%
+        \begin{spacing}{1}
 	\begin{abswidth}
 		#1
 	\end{abswidth}
-
-	\vspace*{0.7cm}
+        \end{spacing}
+	\vspace*{0.1cm}  % NOTE this has not been tested, needs adjustment probably for spacing
 }
 \else
 \newcommand*{\makeseistitle}[1]{%
