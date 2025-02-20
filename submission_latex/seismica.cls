@@ -36,13 +36,20 @@
 \@reportfalse
 \DeclareOption{report}{\@reporttrue}
 
+\newif\if@supplement
+\@supplementfalse
+\DeclareOption{supplement}{\@supplementtrue}
+
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax
 
 % Review option by default
 \if@preprint
 \else
+\if@supplement
+\else
 \@reviewtrue
+\fi
 \fi
 
 \if@review
@@ -273,8 +280,13 @@ hyperfootnotes=false]{hyperref}
 {\vspace*{-1.6cm} \hspace{0.1cm} 
 	\href{https://seismica.org/}{\color{black} \sffamily\small Non-peer reviewed {\bfseries\manustype} submitted to} }
 \else
+\if@supplement
+{\vspace*{-1.3cm} \hspace{0.1cm} 
+	\href{https://seismica.org/}{\color{black} \sffamily\small Supplementary material for a {\bfseries\manustype} in} }
+\else
 {\vspace*{-1.3cm} \hspace{0.1cm} 
 	\href{https://seismica.org/}{\color{black} \sffamily\small Non-peer reviewed {\bfseries\manustype} submitted to} }
+\fi
 \fi
 \vspace*{1.7cm}
 }
@@ -371,6 +383,10 @@ hyperfootnotes=false]{hyperref}
 \excludecomment{acknowledgements}
 \fi
 
+\if@supplement
+\renewcommand{\thesection}{S\arabic{section}}
+\fi
+
 %-------------------------------------------------------------------------------
 %                Configuration for header and footer
 %-------------------------------------------------------------------------------
@@ -400,7 +416,11 @@ hyperfootnotes=false]{hyperref}
 \fancyhf{}
 \fancyfoot{}
 \fancyfoot[L]{\sffamily\bfseries\footnotesize \thepage}
+\if@supplement
+\fancyhead[L]{\sffamily\footnotesize This is supplementary material for a {\bfseries\manustype} in {\scshape \bfseries\href{https://seismica.org/}{\color{seismicacolor1}SEISMICA}} }
+\else
 \fancyhead[L]{\sffamily\footnotesize This is a non-peer reviewed {\bfseries\manustype} submitted to {\scshape \bfseries\href{https://seismica.org/}{\color{seismicacolor1}SEISMICA}} }
+\fi
 \fancyhead[R]{\sffamily\footnotesize \color{seismicacolor1}\insertshorttitle}
 \renewcommand{\headrule}{}
 
@@ -434,6 +454,12 @@ singlelinecheck=false, oneside}
 \fi
 
 \renewcommand{\theequation}{\color{gray}\arabic{equation}}
+
+% supplemental figures and tables
+\if@supplement
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+\fi
 
 %%-------------------------------------------------------------------------------
 %%                Configuration for references
