@@ -1,4 +1,4 @@
-%% File: `abbrvnat.bst'
+%% File: `abbrvnat.bst' last updated - 2023-07-15
 %% A modification of `abbrv.bst' for use with natbib package
 %%
 %% Copyright 1993-2007 Patrick W Daly
@@ -286,6 +286,16 @@ FUNCTION {format.doi}
     { "" }
     { new.block "\doi{" doi * "}" * }
   if$
+}
+
+FUNCTION {format.doiurl}
+{ doi empty$
+    {url empty$
+        { "" }
+        {new.block "\url{" url * "}" * }
+        if$}
+    { new.block "\doi{" doi * "}" * }
+    if$
 }
 
 FUNCTION {format.title}
@@ -625,6 +635,18 @@ FUNCTION {format.tr.number}
   if$
 }
 
+
+FUNCTION {format.ofr.number}
+{ type empty$
+    { "Open-file Report" }
+    'type
+  if$
+  number empty$
+    { "t" change.case$ }
+    { number tie.or.space.connect }
+  if$
+}
+
 FUNCTION {format.article.crossref}
 { key empty$
     { journal empty$
@@ -712,8 +734,9 @@ FUNCTION {article}
       if$
     }
   if$
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   fin.entry
 }
@@ -748,8 +771,9 @@ FUNCTION {book}
   format.edition output
   format.date "year" output.check
   format.isbn output
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   fin.entry
 }
@@ -765,8 +789,9 @@ FUNCTION {booklet}
   address output
   format.date output
   format.isbn output
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -804,8 +829,9 @@ FUNCTION {inbook}
   format.edition output
   format.date "year" output.check
   format.isbn output
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -834,8 +860,9 @@ FUNCTION {incollection}
     }
   if$
   format.isbn output
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -872,8 +899,9 @@ FUNCTION {inproceedings}
     }
   if$
   format.isbn output
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   fin.entry
 }
@@ -891,7 +919,8 @@ FUNCTION {manual}
   address output
   format.edition output
   format.date output
-  format.url output
+  %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -908,7 +937,8 @@ FUNCTION {mastersthesis}
   school "school" output.check
   address output
   format.date "year" output.check
-  format.url output
+  %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -924,7 +954,9 @@ FUNCTION {misc}
   howpublished output
   format.date output
   format.issn output
-  format.url output
+  %format.url output
+  %format.doi output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -942,7 +974,8 @@ FUNCTION {phdthesis}
   school "school" output.check
   address output
   format.date "year" output.check
-  format.url output
+  %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -962,8 +995,9 @@ FUNCTION {proceedings}
   organization output
   publisher output
   format.isbn output
-  format.doi output
+  %format.doi output
   %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -976,8 +1010,9 @@ FUNCTION {software}
   new.block
   format.title "title" output.check
   new.block
-  format.url output
-  format.doi output
+  %format.url output
+  %format.doi output
+  format.doiurl output
   new.block
   note output
   fin.entry
@@ -994,7 +1029,27 @@ FUNCTION {techreport}
   institution "institution" output.check
   address output
   format.date "year" output.check
-  format.url output
+  %format.url output
+  format.doiurl output
+  new.block
+  note output
+  fin.entry
+}
+
+
+FUNCTION {openfilereport}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output
+  new.block
+  format.title "title" output.check
+  new.block
+  format.ofr.number output.nonnull
+  institution "institution" output.check
+  address output
+  format.date "year" output.check
+  %format.url output
+  format.doiurl output
   new.block
   note output
   fin.entry
