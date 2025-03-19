@@ -427,47 +427,63 @@ hyperfootnotes=false]{hyperref}
 
 \if@onecolumn
 \newcommand*{\makeseistitle}[1]{%
-        \begin{spacing}{1}
 	\maketitle
 	\begin{abswidth}
-	\zsavepos{loc:beg_abstract}
+			\zsavepos{loc:beg_abstract}
 		#1
 	\end{abswidth}
-        \end{spacing}
-	\vspace*{-0.1cm}  % NOTE need to test this with multiple abstracts
 	\thanks
-}
-\newcommand*{\addsummaries}[1]{%
-        \begin{spacing}{1}
-	\begin{abswidth}
-		#1
-	\end{abswidth}
-        \end{spacing}
-	\vspace*{0.1cm}  % NOTE this has not been tested, needs adjustment probably for spacing
-}
-\else
-\newcommand*{\makeseistitle}[1]{%
-	\twocolumn[
-	\maketitle
-	\begin{abswidth}
-	\begin{onecolabstract}
-	\zsavepos{loc:beg_abstract}		
-		#1
-	\end{onecolabstract}
-	\end{abswidth}
 	\vspace*{0.7cm}
-	]
-	\saythanks
 }
 \newcommand*{\addsummaries}[1]{%
-	\twocolumn[
 	\begin{abswidth}
 		#1
 	\end{abswidth}
 
 	\vspace*{0.7cm}
-	]
 }
+\else
+	\if@addsummaries
+	\newcommand*{\makeseistitle}[1]{%
+		\twocolumn[
+		\maketitle
+		\begin{abswidth}
+			\begin{onecolabstract}
+				\zsavepos{loc:beg_abstract}		
+				#1
+			\end{onecolabstract}
+		\end{abswidth}
+		\vspace*{0.7cm}
+		]
+	}
+	\newcommand*{\addsummaries}[1]{%
+		\twocolumn[
+		\begin{abswidth}
+		\begin{onecolabstract}
+			#1
+		\end{onecolabstract}
+		\end{abswidth}
+		\vspace*{0.7cm}
+		]
+		\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+		\@thanks
+		\renewcommand*{\thefootnote}{\arabic{footnote}}
+	}
+	\else
+	\newcommand*{\makeseistitle}[1]{%
+		\twocolumn[
+		\maketitle
+		\begin{abswidth}
+		\begin{onecolabstract}
+		\zsavepos{loc:beg_abstract}		
+			#1
+		\end{onecolabstract}
+		\end{abswidth}
+		\vspace*{0.7cm}
+		]
+		\saythanks
+	}
+	\fi
 \fi
 
 
