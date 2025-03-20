@@ -56,6 +56,10 @@
 \@onecolumntrue
 \fi
 
+\if@supplement
+\@onecolumntrue
+\fi
+
 \if@onecolumn
 \LoadClass[10pt,twoside,a4paper,onecolumn]{article}
 \else
