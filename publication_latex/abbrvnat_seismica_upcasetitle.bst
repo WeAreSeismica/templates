@@ -648,6 +648,17 @@ FUNCTION {format.tr.number}
   if$
 }
 
+FUNCTION {format.preprint.number}
+{ type empty$
+    { "Unpublished" }
+    'type
+  if$
+  number empty$
+    { "t" change.case$ }
+    { number tie.or.space.connect }
+  if$
+}
+
 FUNCTION {format.article.crossref}
 { key empty$
     { journal empty$
@@ -1030,9 +1041,11 @@ FUNCTION {unpublished}
   new.block
   format.title "title" output.check
   new.block
+  format.preprint.number output.nonnull
   note "note" output.check
   format.date output
-  format.url output
+  new.block
+  format.doiurl output
   fin.entry
 }
 
