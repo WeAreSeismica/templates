@@ -1,6 +1,9 @@
 %% File: `abbrvnat.bst' last updated - 2023-07-15
 %% A modification of `abbrv.bst' for use with natbib package
 %%
+%% modified for Seismica
+%% last updated 2025-03-31 hfmark
+%%
 %% Copyright 1993-2007 Patrick W Daly
 %% Max-Planck-Institut f\"ur Sonnensystemforschung
 %% Max-Planck-Str. 2
@@ -76,7 +79,7 @@ ENTRY
   {}
   { label extra.label sort.label short.list }
 
-INTEGERS { output.state before.all mid.sentence after.sentence after.block }
+INTEGERS { output.state before.all mid.sentence mid.string after.sentence after.block }
 
 FUNCTION {init.state.consts}
 { #0 'before.all :=
@@ -98,7 +101,11 @@ FUNCTION {output.nonnull}
         }
         { output.state before.all =
             'write$
-            { add.period$ " " * write$ }
+            { output.state mid.string =
+                { " " * write$ }
+                { add.period$ " " * write$ }
+            if$
+            }
           if$
         }
       if$
@@ -299,12 +306,10 @@ FUNCTION {format.doiurl}
 }
 
 FUNCTION {format.title}
-{ 
-%title empty$
-%    { "" }
-%    { title "t" change.case$ }
-%  if$
-title
+{ title empty$
+    { "" }
+    { title }
+if$
 }
 
 FUNCTION {format.full.names}
@@ -624,21 +629,17 @@ FUNCTION {format.thesis.type}
   if$
 }
 
-FUNCTION {format.tr.number}
-{ type empty$
-    { "Technical Report" }
-    'type
-  if$
-  number empty$
-    { "t" change.case$ }
-    { number tie.or.space.connect }
+FUNCTION {format.misc.type}
+{ type field.or.null
+  duplicate$ empty$ 'skip$
+    { mid.string 'output.state :=
+    " [" swap$  * "]" *  }
   if$
 }
 
-
-FUNCTION {format.ofr.number}
+FUNCTION {format.tr.number}
 { type empty$
-    { "Open-file Report" }
+    { "Technical Report" }
     'type
   if$
   number empty$
@@ -950,6 +951,7 @@ FUNCTION {misc}
   author format.key output
   title howpublished new.block.checkb
   format.title output
+  format.misc.type output
   howpublished new.block.checka
   howpublished output
   format.date output
@@ -1003,21 +1005,6 @@ FUNCTION {proceedings}
   fin.entry
 }
 
-FUNCTION {software}
-{ output.bibitem
-  format.authors "author" output.check
-  author format.key output
-  new.block
-  format.title "title" output.check
-  new.block
-  %format.url output
-  %format.doi output
-  format.doiurl output
-  new.block
-  note output
-  fin.entry
-}
-
 FUNCTION {techreport}
 { output.bibitem
   format.authors "author" output.check
@@ -1026,25 +1013,6 @@ FUNCTION {techreport}
   format.title "title" output.check
   new.block
   format.tr.number output.nonnull
-  institution "institution" output.check
-  address output
-  format.date "year" output.check
-  %format.url output
-  format.doiurl output
-  new.block
-  note output
-  fin.entry
-}
-
-
-FUNCTION {openfilereport}
-{ output.bibitem
-  format.authors "author" output.check
-  author format.key output
-  new.block
-  format.title "title" output.check
-  new.block
-  format.ofr.number output.nonnull
   institution "institution" output.check
   address output
   format.date "year" output.check
