@@ -1,8 +1,7 @@
-%% File: `abbrvnat.bst' last updated - 2023-07-15
+%% File: `abbrvnat.bst' last updated - 2025-04-03
 %% A modification of `abbrv.bst' for use with natbib package
 %%
 %% modified for Seismica
-%% last updated 2025-03-31 hfmark
 %%
 %% Copyright 1993-2007 Patrick W Daly
 %% Max-Planck-Institut f\"ur Sonnensystemforschung
@@ -288,10 +287,82 @@ FUNCTION {format.url}
   if$
 }
 
+FUNCTION { strip.doi }
+{ % Borrowed from Association for Computing Machinery typesetting materials
+  %
+  % Strip any Web address prefix to recover the bare DOI, leaving the
+  % result on the output stack, as recommended by CrossRef DOI
+  % documentation.
+  % For example, reduce "http://doi.acm.org/10.1145/1534530.1534545" to
+  % "10.1145/1534530.1534545".  A suitable URL is later typeset and
+  % displayed as the LAST item in the reference list entry.  Publisher Web
+  % sites wrap this with a suitable link to a real URL to resolve the DOI,
+  % and the master https://doi.org/ address is preferred, since publisher-
+  % specific URLs can disappear in response to economic events.  All
+  % journals are encouraged by the DOI authorities to use that typeset
+  % format and link procedures for uniformity across all publications that
+  % include DOIs in reference lists.
+  % The numeric prefix is guaranteed to start with "10.", so we use
+  % that as a test.
+  % 2017-02-04 Added stripping of https:// (Boris Veytsman)
+  doi #1 #3 substring$ "10." =
+    { doi }
+    {
+      doi 't :=  % get modifiable copy of DOI
+
+      % Change https:// to http:// to strip both prefixes (BV)
+
+      t #1 #8 substring$ "https://" =
+        { "http://"  t #9 t text.length$ #8 - substring$ * 't := }
+        { }
+      if$
+
+      t #1 #7 substring$ "http://" =
+        {
+            t #8 t text.length$ #7 - substring$ 't :=
+
+            "INTERNAL STYLE-FILE ERROR" 's :=
+
+            % search for next "/" and assign its suffix to s
+
+            { t text.length$ }
+            {
+              t #1 #1 substring$ "/" =
+                {
+                  % save rest of string as true DOI (should be 10.xxxx/yyyy)
+                  t #2 t text.length$ #1 - substring$ 's :=
+                  "" 't :=    % empty string t terminates the loop
+                }
+                {
+                  % discard first character and continue loop: t <= substring(t,2,last)
+                  t #2 t text.length$ #1 - substring$ 't :=
+                }
+              if$
+            }
+            while$
+
+            % check for valid DOI (should be 10.xxxx/yyyy)
+            s #1 #3 substring$ "10." =
+              { }
+              { "unrecognized DOI substring " s * " in DOI value [" * doi * "]" * warning$ }
+            if$
+
+            s   % push the stripped DOI on the output stack
+
+        }
+        {
+          "unrecognized DOI value [" doi * "]" * warning$
+          doi   % push the unrecognized original DOI on the output stack
+        }
+      if$
+    }
+  if$
+}
+
 FUNCTION {format.doi}
 { doi empty$
     { "" }
-    { new.block "\doi{" doi * "}" * }
+    { new.block "\doi{" strip.doi * "}" * }
   if$
 }
 
@@ -301,7 +372,7 @@ FUNCTION {format.doiurl}
         { "" }
         {new.block "\url{" url * "}" * }
         if$}
-    { new.block "\doi{" doi * "}" * }
+    { new.block "\doi{" strip.doi * "}" * }
     if$
 }
 
