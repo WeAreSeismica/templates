@@ -443,7 +443,6 @@ hyperfootnotes=false]{hyperref}
 	\vspace*{0.7cm}
 }
 \else
-	\if@addsummaries
 	\newcommand*{\makeseistitle}[1]{%
 		\twocolumn[
 		\maketitle
@@ -469,21 +468,6 @@ hyperfootnotes=false]{hyperref}
 		\@thanks
 		\renewcommand*{\thefootnote}{\arabic{footnote}}
 	}
-	\else
-	\newcommand*{\makeseistitle}[1]{%
-		\twocolumn[
-		\maketitle
-		\begin{abswidth}
-		\begin{onecolabstract}
-		\zsavepos{loc:beg_abstract}		
-			#1
-		\end{onecolabstract}
-		\end{abswidth}
-		\vspace*{0.7cm}
-		]
-		\saythanks
-	}
-	\fi
 \fi
 
 
