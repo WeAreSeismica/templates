@@ -454,6 +454,9 @@ hyperfootnotes=false]{hyperref}
 		\end{abswidth}
 		\vspace*{0.7cm}
 		]
+        \renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+		\@thanks
+		\renewcommand*{\thefootnote}{\arabic{footnote}}
 	}
 	\newcommand*{\addsummaries}[1]{%
 		\twocolumn[
@@ -464,9 +467,6 @@ hyperfootnotes=false]{hyperref}
 		\end{abswidth}
 		\vspace*{0.7cm}
 		]
-		\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
-		\@thanks
-		\renewcommand*{\thefootnote}{\arabic{footnote}}
 	}
 \fi
 
