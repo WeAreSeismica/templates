@@ -1,4 +1,4 @@
-% Documentclass seismica.cls last updated - 2023-10-05
+% Documentclass seismica.cls last updated - 2025-10-24
 % for Seismica, a community-driven, Diamond Open Access journal publishing peer-reviewed research in seismology and earthquake science.
 % Current version with inputs from:
 % Théa Ragon, Hannah Mark, Wasja Bloch, Thomas Lecocq
@@ -621,34 +621,33 @@ hyperfootnotes=false]{hyperref}
 %%-------------------------------------------------------------------------------
 \def\thickhline{%
 	\noalign{\ifnum0=`}\fi\color{gray}\hrule \@height \thickarrayrulewidth \futurelet
-	\reserved@a\@xthickhline}
+	\reserved@a\@xthickhline
+}
 \def\@xthickhline{\ifx\reserved@a\thickhline
 	\vskip\doublerulesep
 	\vskip-\thickarrayrulewidth
 	\fi
-	\ifnum0=`{\fi}}
+	\ifnum0=`{\fi}
+}
 
-\let\tableorig\table
-\def\table@i[#1]{\tableorig[#1]
-	\centering
-	\sflight\small
-	\setlength{\arrayrulewidth}{0.5pt}
-	\newlength{\thickarrayrulewidth}
-	\setlength{\thickarrayrulewidth}{1.5\arrayrulewidth}
-	\arrayrulecolor{gray}}  % with optional argument
-\def\table@ii{\tableorig
-	\centering
-	\sflight\small
-	\setlength{\arrayrulewidth}{0.5pt}
-	\newlength{\thickarrayrulewidth}
-	\setlength{\thickarrayrulewidth}{1.5\arrayrulewidth}
-	\arrayrulecolor{gray}}  % without optional argument
-\def\table{\@ifnextchar[\table@i \table@ii}
+\setlength{\arrayrulewidth}{0.5pt}
+\newlength{\thickarrayrulewidth}
+\setlength{\thickarrayrulewidth}{1.5\arrayrulewidth}
 
-\newenvironment{seistable}[1][*{50}{l}]{%
-	\begin{center}
-		\begin{tabular}{#1}\thickhline\rule{0pt}{2ex} }{%
-			\thickhline\end{tabular}\end{center}\vspace*{-0.7cm}}
+\newcommand{\mytablestyle}{%
+  \rowcolors{2}{gray!0}{gray!10}%
+  \renewcommand{\arraystretch}{1.2}%
+  \centering
+  \sflight\small
+  \arrayrulecolor{gray}%
+}
+
+\patchcmd{\@xfloat} % apply this to any float
+  {\@floatboxreset}%
+  {\@floatboxreset\mytablestyle}%
+  {}% success
+  {\PackageWarning{seismica}{Patching \string\@xfloat\ failed, style not applied}
+}% failure
 
 %%-------------------------------------------------------------------------------
 %%                Configuration for footnotes
