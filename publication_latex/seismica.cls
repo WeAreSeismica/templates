@@ -559,7 +559,14 @@ hyperfootnotes=false]{hyperref}
 
 \def\shorttitle@internal{}
 \newcommand{\shorttitle}[1]{\gdef\shorttitle@internal{#1}}
-\newcommand{\insertshorttitle}{\shorttitle@internal}
+
+\newcommand{\insertshorttitle}{%
+  \ifx\shorttitle@internal\@empty
+    \@title
+  \else
+    \shorttitle@internal
+  \fi
+}
 
 %% header/footer style for the all pages after page 1, portrait
 \pagestyle{fancy}
