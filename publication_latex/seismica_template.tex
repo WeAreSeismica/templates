@@ -1,8 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Seismica
-% LuaLaTeX Template
-% Version 1 (2022)
-%
+% LuaLaTeX Template, version 2025
 %
 % Important note:
 % This template must be compiled with LuaLaTeX, the below lines will ensure this
@@ -11,21 +9,29 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% Options available: report, breakmath, proof, onecolumn, invited, opinion
+% Options available: report, breakmath, proof, onecolumn, invited, opinion, languages
 % breakmath breaks the equations that are too long
 % proof prints a proof watermark
 % onecolumn only if issue with breakmath
 % invited prints "invited" in the banner and headers
-% opinion prints "reviewed opinion" in the banner and headers
+% languages loads additional languages to babel. English is set as the default main language.
 
-\documentclass[breakmath]{seismica}
-%\documentclass[breakmath]{seismica}
+\documentclass[breakmath,report,languages={french,japanese,arabic}]{seismica}
+%\documentclass[breakmath,opinion,proof]{seismica}
 
 %% If report, specify the type to appear in header (comment or uncomment). if not specified, will only show 'report'
 %\reporttype{Fast Report}
 %\reporttype{Null Results Report}
 %\reporttype{Software Report}
 %\reporttype{Data Report}
+
+% Languages
+% Specific fonts need to be imported for languages that do not use latin alphabet.
+% For each language, you can have a look at the babel doc (https://texdoc.org/serve/babel/0, section 1.7) and click on the reference mark (※) to open a specific site for each language with examples.
+\babelfont[japanese]{rm}{Harano Aji Mincho}
+\babelfont[japanese]{sf}{Harano Aji Mincho}
+\babelfont[arabic]{rm}{FreeSerif}
+\babelfont[arabic]{sf}{FreeSerif}
 
 % Metadata by SCE team only
 \dois{10.26443/seismica.v2i1.N}
@@ -62,38 +68,40 @@
 \credit{Writing}{Charlie, Doris}
 \credit{Writing - review \& editing}{Emilio, Francis}
 
-\setotherlanguages{french}
-%% Do not put arabic in \setotherlanguages{} as it is not supported by polyglossia
-%% Instead, use these commands within the text:
-%%\begin{Arabic} and \end{Arabic} around paragraphs in Arabic
-%%\n{} to wrap any digits within Arabic text that should read left-to-right
-%%\textarabic{} for Arabic text embedded in a left-to-right paragraph
 
 \begin{document}
 
-	% up to 3 abstracts to include in {}
-	% English asbtract is first
-	\makeseistitle
-	{%
+% English asbtract is first
+\makeseistitle{%
 	\begin{summary}{Abstract}
-Replace text
-\vspace{1.5cm} % because abstract is too short
+	Replace text
+	\vspace{1.5cm} % because abstract is too short
 	\end{summary}
 	\begin{summary}{Non-technical summary}
 	The text goes here. Again, no longer than 200 words.
 	\vspace{1.5cm} % because abstract is too short
-\end{summary}
- 	}
+	\end{summary}
+}
 
  %%%% In case there are too many abstracts and need a page break, use this:
-%\addsummaries{
-%		\begin{summary}{Additional abstract} 
-%			The text goes here. Again, no longer than 200 words.
-%		\end{summary}
-%		\begin{summary}{Additional abstract} 
-%		The text goes here. Again, no longer than 200 words.
-%	\end{summary}
-%}  %% don't forget this one!
+\addsummaries{
+    \begin{selectlanguage}{japanese} 
+        \begin{summary}{要約}
+        日本語
+            従来の短期地震活動モデル（例えば時間的疫病型余震列（ETAS）モデル）は、地震カタログデータのみに依存し、地殻変形などの外部強制メカニズムを組み込んでいない。本研究では、GNSS測定から得られたひずみ速度情報を統合することでETASモデルを拡張する
+        \end{summary}
+    \end{selectlanguage}
+    \begin{selectlanguage}{french} 
+        \begin{summary}{Résumé} 
+        Texte en francais
+        \end{summary}
+    \end{selectlanguage}
+    \begin{selectlanguage}{arabic} 
+        \begin{summary}{ملخص} 
+        تعتمد نماذج النشاط الزلزالي القصير المدى الكلاسيكية، مثل نموذج تسلسل الهزات الارتدادية من النوع الوبائي (ETAS)، بشكل حصري على بيانات كتالوج الزلازل ولا تدمج آليات التأثير الخارجية مثل تشوه القشرة الأرضية. في هذه الدراسة، قمنا بتوسيع نموذج ETAS من خلال دمج معلومات معدل الإجهاد المستمدة من قياسات GNSS، مما يسمح بتغير المعدل الأساسي بمرور الوقت من خلال تداخل قائم على البيانات مع نواة استجابة مقدرة تجريبياً.
+        \end{summary}
+    \end{selectlanguage}
+}  %% don't forget this one!
 	
 	\section{Introduction}
 	

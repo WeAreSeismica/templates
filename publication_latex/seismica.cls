@@ -1,4 +1,4 @@
-% Documentclass seismica.cls last updated - 2025-10-24
+% Documentclass seismica.cls last updated - 2023-10-05
 % for Seismica, a community-driven, Diamond Open Access journal publishing peer-reviewed research in seismology and earthquake science.
 % Current version with inputs from:
 % Théa Ragon, Hannah Mark, Wasja Bloch, Thomas Lecocq
@@ -29,6 +29,23 @@
 \newif\if@proof
 \@prooffalse
 \DeclareOption{proof}{\@prooftrue}
+
+\newif\if@languages
+\@languagesfalse
+\def\@languageslist{}
+
+\DeclareOption{languages}{%
+  \@languagestrue
+  \@ifnextchar={%
+    \@getlanguages
+  }{%
+    \def\@languageslist{}%
+  }%
+}
+
+\def\@getlanguages=#1{%
+  \def\@languageslist{#1}%
+}
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax
@@ -62,15 +79,19 @@ hyperfootnotes=false]{hyperref}
 \RequirePackage{url}
 \def\UrlBreaks{\do\/\do-\do_}
 
-\RequirePackage{polyglossia}
+% Language & biblio
+\if@languages
+  \RequirePackage[main=english,\@languageslist]{babel}
+\else
+  \RequirePackage[main=english]{babel}
+\fi
 \RequirePackage{fontspec}
-\setmainlanguage[]{english}
-%% extra options for Arabic (not supported by polyglossia)
-\newfontfamily\arabicfont[Script=Arabic]{Arial} %{Noto Naskh Arabic}
-\newcommand{\textarabic}[1]{\bgroup\textdir TRT\arabicfont #1\egroup} % Arabic inside LTR
-\newcommand{\n}[1]{\bgroup\textdir TLT #1\egroup} % for digits inside Arabic text
-\newenvironment{Arabic}{\textdir TRT\pardir TRT\arabicfont}{\hfill} % Arabic paragraph
+%\RequirePackage[natbibapa,sectionbib,doi]{apacite}   ### TO DO!! Conflict with... ???
+%\bibliographystyle{apacite}
+\RequirePackage[round]{natbib}
+\bibliographystyle{abbrvnat_seismica_upcasetitle}
 
+% Floats & other
 \RequirePackage{graphicx}
 \RequirePackage{titlesec}
 \RequirePackage{titling}
@@ -80,11 +101,6 @@ hyperfootnotes=false]{hyperref}
 \RequirePackage{tikz}
 \RequirePackage{bookmark}
 \RequirePackage{caption} 
-%\RequirePackage[natbibapa,sectionbib,doi]{apacite}   ### TO DO!! Conflict with... ???
-%\bibliographystyle{apacite}
-\RequirePackage[round]{natbib}
-\bibliographystyle{abbrvnat_seismica_upcasetitle}
-%\bibliographystyle{abbrvnat_seismica}
 \RequirePackage{doi}
 \RequirePackage{academicons}
 \RequirePackage[noblocks]{authblk}
@@ -99,9 +115,10 @@ hyperfootnotes=false]{hyperref}
 \RequirePackage[autostyle=false, style=english]{csquotes}
 \RequirePackage{newunicodechar}
 
-% fonts and math
+% Fonts and math
 \RequirePackage{amsmath}
 \RequirePackage{lmodern}
+\RequirePackage{siunitx}
 \if@breakmath
 \RequirePackage{breqn}
 %% patches \eq@setnumber to use \refstepcounter instead of \stepcounter, from https://tex.stackexchange.com/questions/241118/autoref-to-dmath-from-breqn-package-generates-wrong-link-text
@@ -404,15 +421,15 @@ hyperfootnotes=false]{hyperref}
 %                Configuration for asbtract
 %-------------------------------------------------------------------------------
 
-\newcommand*{\abstracttitlestyle}[1]{{\sff \large \bfseries #1}}
+\newcommand*{\abstracttitlestyle}[1]{{\large \bfseries \sffamily #1}}
 
 \let\oldthanks\thanks
 \renewcommand{\thanks}[1]{\oldthanks{\small \sflight #1}}
 
 \newenvironment{summary}[1]
-{
+{\sffamily
 	\par
-	\noindent \abstracttitlestyle{#1} \hspace{0.2cm}\sffamily
+	\noindent \abstracttitlestyle{#1} \hspace{0.2cm}
 }{
 	\vspace{0.3cm}}%
 
