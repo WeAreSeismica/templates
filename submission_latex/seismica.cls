@@ -1,11 +1,12 @@
 % Documentclass seismica.cls
+% for article submission
 % for Seismica, a community-driven, Diamond Open Access journal publishing peer-reviewed research in seismology and earthquake science.
 % Current version with inputs from:
 % Théa Ragon, Hannah Mark, Wasja Bloch, Thomas Lecocq
 
-
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{seismica}[2022 LaTeX2e document class]
+\RequirePackage{xkeyval}
 
 \newif\if@review
 \@reviewfalse
@@ -24,10 +25,6 @@
 \@breakmathfalse
 \DeclareOption{breakmath}{\@breakmathtrue}
 
-\newif\if@languages
-\@languagesfalse
-\DeclareOption{languages}{\@languagestrue}
-
 \newif\if@preprint
 \@preprintfalse
 \DeclareOption{preprint}{\@preprinttrue}
@@ -40,8 +37,28 @@
 \@supplementfalse
 \DeclareOption{supplement}{\@supplementtrue}
 
+% Languages
+\newif\if@languages
+\@languagesfalse
+
+\def\@languageslist{}
+\def\@getlanguages=#1{%
+  \def\@languageslist{#1}%
+}
+
+\DeclareOptionX{languages}[]{
+  \@languagestrue
+  \@ifnextchar={%
+    \@getlanguages
+  }{%
+    \def\@languageslist{}%
+  }%
+}
+
+\DeclareOptionX*{\PassOptionsToClass{\CurrentOption}{article}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax
+\ProcessOptionsX\relax
 
 % Review option by default
 \if@preprint
@@ -65,6 +82,8 @@
 \else
 \LoadClass[10pt,twoside,a4paper,twocolumn]{article}
 \fi
+
+\let\@unusedoptionlist\@empty % to prevent "unused global option" warning
 
 \RequirePackage[headsep=0.7cm,
 top=2cm,
@@ -91,6 +110,14 @@ hyperfootnotes=false]{hyperref}
 \RequirePackage{url}
 \def\UrlBreaks{\do\/\do-\do_}
 
+\if@languages
+    \RequirePackage[main=english,\@languageslist]{babel}
+    \RequirePackage{fontspec}
+\fi
+\RequirePackage[round]{natbib}
+\IfFileExists{abbrvnat_seismica_upcasetitle.bst}{\bibliographystyle{abbrvnat_seismica_upcasetitle}}{\bibliographystyle{abbrvnat}}
+
+% Floats & other
 \RequirePackage{graphicx}
 \RequirePackage{titlesec}
 \RequirePackage{titling}
@@ -98,22 +125,21 @@ hyperfootnotes=false]{hyperref}
 \RequirePackage{fancyhdr}
 \RequirePackage{bookmark}
 \RequirePackage{caption} 
-\RequirePackage[round]{natbib}
-\IfFileExists{abbrvnat_seismica_upcasetitle.bst}{\bibliographystyle{abbrvnat_seismica_upcasetitle}}{\bibliographystyle{abbrvnat}}
 \RequirePackage{doi}
-%\RequirePackage{orcidlink}
 \RequirePackage[noblocks]{authblk}
 \setcounter{Maxaffil}{0}
 \RequirePackage{datatool}
 \RequirePackage{etoolbox}
 \RequirePackage{comment}
-\RequirePackage{physics}
 \RequirePackage{listings}
 \RequirePackage{changepage}
 \RequirePackage{setspace}
+\RequirePackage{newunicodechar}
 
-% fonts and math
+% Fonts and math
 \RequirePackage{amsmath}
+\RequirePackage{lmodern}
+\RequirePackage{siunitx}
 \if@breakmath
 \RequirePackage{breqn}
 \BeforeBeginEnvironment{dmath}{\begin{nolinenumbers}}
@@ -131,39 +157,30 @@ hyperfootnotes=false]{hyperref}
 \fi
 \newcommand{\mathbfup}[1]{\mathord{\textnormal{\textbf{#1}}}}
 
-\RequirePackage[mathlines]{lineno} %% loaded here because incompatibility with breqn
+\RequirePackage[mathlines]{lineno} %% loaded here because incompatibility with breqn, need to be loaded before csquotes
 \if@review
 \linenumbers
 \doublespacing
 \fi
 
+% Language
 \if@languages
-\RequirePackage{polyglossia}
-\RequirePackage{fontspec}
-\setmainlanguage[]{english}
-\RequirePackage[autostyle=false, style=english]{csquotes}
-\RequirePackage[opentype,default,tabular,lining]{sourcesanspro}
-\RequirePackage[opentype,default,tabular,lining]{sourceserifpro}
-\RequirePackage[opentype,lining]{sourcecodepro}
-%% extra options for Arabic (not supported by polyglossia)
-\newfontfamily\arabicfont[Script=Arabic]{Arial} %{Noto Naskh Arabic}
-\newcommand{\textarabic}[1]{\bgroup\textdir TRT\arabicfont #1\egroup} % Arabic inside LTR
-\newcommand{\n}[1]{\bgroup\textdir TLT #1\egroup} % for digits inside Arabic text
-\newenvironment{Arabic}{\textdir TRT\pardir TRT\arabicfont}{} % Arabic paragraph
+    \RequirePackage[opentype,default,tabular,lining]{sourcesanspro}
+    \RequirePackage[opentype,default,tabular,lining]{sourceserifpro}
+    \RequirePackage[opentype,lining]{sourcecodepro}
 \else
-\RequirePackage[regular]{sourcesanspro}
-\RequirePackage[regular]{sourcecodepro}
-\RequirePackage[default,regular]{sourceserifpro}
-\RequirePackage[T1]{fontenc}
-\RequirePackage[autostyle=false, style=english]{csquotes}
+    \RequirePackage[T1]{fontenc}
+    \RequirePackage[regular]{sourcesanspro}
+    \RequirePackage[regular]{sourcecodepro}
+    \RequirePackage[default,regular]{sourceserifpro}
 \fi
+\RequirePackage[autostyle=false, style=english]{csquotes}
 
 \newcommand{\sff}{\sourcesanspro}
 \newcommand{\rmf}{\sourceserifpro}
 \newcommand{\sflight}{\sourcesansprolight}
 \newcommand{\rmlight}{\sourceserifprolight}
 \urlstyle{sf}
-
 
 %-------------------------------------------------------------------------------
 %                Configuration for authors
@@ -240,6 +257,7 @@ hyperfootnotes=false]{hyperref}
 }
 
 \pretitle{
+    \nolinenumbers
 	\begin{flushleft}
 		\fontsize{21pt}{1em}\sffamily\bfseries
 	}
@@ -277,7 +295,11 @@ hyperfootnotes=false]{hyperref}
 
 
 \renewcommand\maketitlehooka{%
+\nolinenumbers
 \vspace{-1.5cm}
+
+\if@onecolumn \hspace{-0.7cm}
+\fi
 \href{https://seismica.org/}{\includegraphics[width=\textwidth]{\banner}}
 
 \if@review
@@ -292,7 +314,10 @@ hyperfootnotes=false]{hyperref}
 	\href{https://seismica.org/}{\color{black} \sffamily\small Non-peer reviewed {\bfseries\manustype} submitted to} }
 \fi
 \fi
-\vspace*{1.7cm}
+
+\if@onecolumn \vspace*{1.7cm}
+\else \vspace*{1.7cm}
+\fi
 }
 
 \renewcommand\maketitlehookd{%
@@ -323,7 +348,6 @@ hyperfootnotes=false]{hyperref}
 \setlength{\absrightindent}{0pt}
 \renewcommand{\abstractname}{}   
 \renewcommand{\absnamepos}{empty} 
-\renewcommand{\abstractname}{}  % necessary to remove abstract title... don't know why
 
 \if@preprint
 \addto\captionsenglish{\renewcommand{\abstractname}{}} % necessary to remove abstract title... don't know why
@@ -414,7 +438,14 @@ hyperfootnotes=false]{hyperref}
 
 \def\shorttitle@internal{}
 \newcommand{\shorttitle}[1]{\gdef\shorttitle@internal{#1}}
-\newcommand{\insertshorttitle}{\shorttitle@internal}
+
+\newcommand{\insertshorttitle}{%
+  \ifx\shorttitle@internal\@empty
+    \@title
+  \else
+    \shorttitle@internal
+  \fi
+}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -466,6 +497,41 @@ singlelinecheck=false, oneside}
 \fi
 
 %%-------------------------------------------------------------------------------
+%%                Configuration for tables
+%%-------------------------------------------------------------------------------
+\def\thickhline{%
+	\noalign{\ifnum0=`}\fi\color{gray}\hrule \@height \thickarrayrulewidth \futurelet
+	\reserved@a\@xthickhline
+}
+\def\@xthickhline{\ifx\reserved@a\thickhline
+	\vskip\doublerulesep
+	\vskip-\thickarrayrulewidth
+	\fi
+	\ifnum0=`{\fi}
+}
+
+\setlength{\arrayrulewidth}{0.5pt}
+\newlength{\thickarrayrulewidth}
+\setlength{\thickarrayrulewidth}{1.5\arrayrulewidth}
+
+\newcommand{\mytablestyle}{
+  \rowcolors{2}{gray!0}{gray!10}
+  \renewcommand{\arraystretch}{1.2}
+  \arrayrulecolor{gray}
+}
+
+\newcommand{\seismicatablestyle}{
+\centering
+\sffamily
+\small
+}
+
+\AtBeginDocument{%
+\AddToHook{env/table/begin}{\mytablestyle}
+\AddToHook{env/table*/begin}{\mytablestyle}
+}
+
+%%-------------------------------------------------------------------------------
 %%                Configuration for references
 %%-------------------------------------------------------------------------------
 
@@ -477,6 +543,10 @@ singlelinecheck=false, oneside}
 %%-------------------------------------------------------------------------------
 %%                Configuration for code
 %%-------------------------------------------------------------------------------
+
+\if@supplement
+\renewcommand{\thelstlisting}{S\arabic{lstlisting}}
+\fi
 
 % in-line code words
 \def\code#1{\fontsize{9}{10}\colorbox{codebackcolor}{\texttt{#1}}}

@@ -1113,7 +1113,7 @@ FUNCTION {unpublished}
   format.title "title" output.check
   new.block
   format.preprint.number output.nonnull
-  note "note" output.check
+  %note "note" output.check
   format.date output
   new.block
   format.doiurl output

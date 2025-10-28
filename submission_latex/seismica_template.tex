@@ -2,7 +2,8 @@
 % Seismica Submission Template
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Options available: 
+%-----------------------------------------
+%% OPTIONS available: 
 %%					anonymous
 %%					breakmath
 %%					languages
@@ -15,24 +16,37 @@
 %% languages: see below, use to add abstract(s) in additional languages
 %% preprint: removes line numbers, switch to two-columns
 %% report: if this is a report
-%% supplement: for supplements - no line numbers, two-column, and numbering is S1, S2, etc. Note that we do not typeset supplements.
+%% supplement: for supplements - no line numbers, two-column, and numbering is S1, S2, etc. Note that we do not edit supplements. You'll have to upload a PDF version.
 
-\documentclass[languages={french,japanese,arabic}]{seismica}
-%\documentclass[breakmath,report]{seismica}
-%\documentclass[]{seismica}
+\documentclass[breakmath]{seismica}
+%\documentclass[languages={french,japanese,arabic}]{seismica}  % Example with other languages
 
 \title{Your article title goes here}
 %\shorttitle{Your short title goes here} % used for header, not mandatory but recommended
 
-%% REPORT, select a report type within: 
+%-----------------------------------------
+%% if REPORT, select a report type within: 
 %\reporttype{Null Results Report} % (null-results/failed experiments)
 %\reporttype{Software Report}
 %\reporttype{Data Report} %  (e.g., Large Community dataset initiatives, Instrument Deployments, and Field Campaigns)
 %\reporttype{Fast Report}
 
+%-----------------------------------------
 %% LANGUAGUES
+%% We use Luatex and Babel to compile other languages. You can find the documentation here: https://texdoc.org/serve/babel/0.
+%% If your article includes abstracts in other languages, you can uncomment the associated lines and modify according to your needs.
+%% Proceed as follow:
+%% 1) specify additional languages in the `languages` class option (e.g., \documentclass[languages={french,japanese,arabic}]{seismica})
+%% 2) For languages that do not use Latin alphabet, you'll need to upload dedicated fonts with `\babelfont` (see below)
+%% 3) Use the selectlanguage` environment to add paragraphs in non-English language (see example in ABSTRACT section)
 
+% \babelfont[japanese]{rm}{Harano Aji Mincho}
+% \babelfont[japanese]{sf}{Harano Aji Mincho}
+% \babelfont[arabic]{rm}{FreeSerif}
+% \babelfont[arabic]{sf}{FreeSerif}
 
+%-----------------------------------------
+%% AUTHORS
 %% Will not be printed if anonymous option ON
 \author[1]{Name Surname
 	\orcid{1111-1111-1111-1111}
@@ -66,185 +80,161 @@
 %\credit{Funding acquisition}{people}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Abstracts in other languages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% If your article includes abstracts in other languages, uncomment the lines below and fill in
-%%      the appropriate sections. You will need to use the [languages] option at the top,
-%%      and will need to use lualatex instead of pdflatex to compile the document.
-%% We use luatex, polyglossia and fontspec for the compilation of the accepted version. 
-%% Feel free to use any polyglossia command.
-%\setotherlanguages{french,thai}  % replace with your language(s), per polyglossia
-%% if an additional font is needed for the abstract, load it with:
-%\newfontfamily\thaifont[Script=Thai]{Noto Serif Thai}
-
-%% If you are using Arabic, do not include it in \setotherlanguages{} as it is not supported 
-%% by polyglossia. Instead, with the [languages] option at the top, you can use these commands
-%% within the text:
-%%\begin{Arabic} and \end{Arabic} around paragraphs in Arabic
-%%\n{} to wrap any digits within Arabic text that should read left-to-right
-%%\textarabic{} for Arabic text embedded in a left-to-right paragraph
-
-%% For Japanese characters,do not include it in \setotherlanguages{} as it is not supported 
-%% by polyglossia. Instead, with the [languages] option at the top, you can use these commands
-%% in the preamble:
-%%\RequirePackage{luatexja}
-%%\RequirePackage[haranoaji,deluxe,nfssonly,jis2004]{luatexja-preset}
-%%\renewcommand{\kanjifamilydefault}{\gtdefault}
-
-%% also see https://www.overleaf.com/latex/examples/how-to-write-multilingual-text-with-different-scripts-in-latex/wfdxqhcyyjxz for reference
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Several abstracts
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% the command \makeseistitle does not allow page breaks in preprint mode. If you have
-%%		many abstracts, you can use the command \addsummaries. It will induce a pagebreak.
 
 \begin{document}
 
-%% if this is a supplement and includes code, uncomment the next line:
-%\renewcommand{\thelstlisting}{S\arabic{lstlisting}}
-	
-	%% Your article can include up to 3 abstracts. The first is the English language abstract.
-	%% For other languages in the second and third optional abstracts, you might have to define 
-	%%      additional font(s) in preamble above
-	%% You can also include a non-technical summary in addition to the abstract(s)
-        %% For supplements, you can use \makeseistitle{} without any summaries/abstracts in it.
-	\makeseistitle{
-		\begin{summary}{Abstract}
-			The text for the first abstract goes here. This should be in English, no longer than 200 words, and should not include references.
-		\end{summary}
-		%	 \begin{thai}
-			%	 \begin{summary}{นามธรรม}
-				%	คอรัปชันจุ๊ยโปรดิวเซอร์ สถาปัตย์จ๊าบ แจ็กพ็อต ม้าหินอ่อน ซากุระคันถธุระ ฟีดสตาร์ท งี้ บอยคอตอิ่มแปร้สังโฆคำสาปแฟนซี ศิลปวัฒนธรรมไฟลท์จิ๊กโก๋กับดัก เจลพล็อตมาม่าซากุระดีลเลอร์ ซีนดัมพ์ แฮปปี้ เอ๊าะอุรังคธาตุซิม ฟินิกซ์เทรลเล่อร์อวอร์ด แคนยอนสมาพันธ์ ครัวซองฮัมอาข่าเอ็กซ์เพรส 
-				%	 \end{summary}
-			%	 \end{thai}
-		%	\begin{summary}{Non-technical summary}
-			%	The text goes here. Again, no longer than 200 words.
-			%	\end{summary}
-	}  %% don't forget this one!
-	
-	%%%% In preprint mode, in case you have too many abstracts and need a page break, use this:
-	%\addsummaries{
-		%	\begin{french}
-			%	\begin{summary}{Résumé} 
-				%	The text goes here. Again, no longer than 200 words.
-				%	\end{summary}
-			%	\end{french}
-		%	\begin{summary}{Non-technical summary}
-			%	The text goes here. Again, no longer than 200 words.
-			%	\end{summary}
-		%}  %% don't forget this one!
-	
-	\section{Section name}
-	
-	All articles must include an abstract, author ORCIDs and author contributions (in the preamble of this tex file), a data and code availability statement, and a list of references. 
-	
-	Section names are at the discretion of the authors. A simple structure for an article would include an Introduction, Methods and Data, Results, Discussion, and Conclusions, but authors are encouraged to choose a structure that best presents their work.
-	
-	\subsection{Bibliographic citations}
-	In the text of an article, citations may either be in-line, as in the case of citing \citet{metropolis_monte_1949}, or in parentheses \citep[e.g.,][]{metropolis_monte_1949}, as appropriate. All citations in the text must be listed in the references section, and all listed references must be cited at least once in the text. Examples of preprint \citep{van_den_ende_creating_2021}, software \citep{rf_software}, and report \citep{mueller_documentation_2003} citations can be found in the .bib file accompanying this template, and can be adapted for other code, datasets, seismic networks, unpublished works, reports, and more.
+%-----------------------------------------
+%% ABSTRACTS
+%% The first abstract should be the English language abstract.
+%% For other languages in the other optional abstracts, you might have to define additional font(s) in preamble above (see the language section)
+%% You can also include a non-technical summary in addition to the abstract(s)
+%% For supplements, you can use \makeseistitle{} without any summaries/abstracts in it.
+%% Several abstracts: the command \makeseistitle does not allow page breaks in preprint mode. If you have many abstracts, you can use the command \addsummaries (see below). It will induce a pagebreak.
 
-        There are other ways to format citations in TeX -- for example using \texttt{\textbackslash citeauthor\{\}} and \texttt{\textbackslash citeyear\{\}}. We ask that you stick to \texttt{\textbackslash citep} and \texttt{\textbackslash citet} as shown in the preceding paragraph.
+\makeseistitle{
+	\begin{summary}{Abstract}
+	The text for the first abstract goes here. This should be in English, no longer than 200 words, and should not include references.
+	\end{summary}
+	% Abstract in Japanese, uncomment and modify if using an other language
+	% \begin{selectlanguage}{japanese} 
+	% 	\begin{summary}{要約}
+	% 	これは私の科学論文の要約です
+	% 	\end{summary}
+	% \end{selectlanguage}
+% 	% Abstract in Arabic
+% 	\begin{selectlanguage}{arabic} 
+% 		\begin{summary}{ملخص} 
+% 		هذا ملخص لمقالتي العلمية
+% 		\end{summary}
+% 	\end{selectlanguage}
+% 	% Plain language summary
+	\begin{summary}{Non-technical summary}
+	The text goes here. Again, no longer than 200 words.
+	\end{summary}
+}%% don't forget this one!
 	
-	\subsection{Headings}
-	\subsubsection{Subsubsection}
-	Three levels of section headings is the maximum\footnote{Seriously, the maximum} - no subsubsubsections, please! Note that footnotes are permitted, as in the previous sentence, though we encourage authors to really think about whether a footnote is necessary or if the information it contains could be included in the main text.
-	
-	\subsection{Figures and Tables}
-	Figures should be labeled, captioned, and referenced within the text (e.g., Fig.~\ref{fig:1} and Figs~\ref{fig:1}a, b, \ref{fig:2}c). When an article is accepted, separate full-resolution files must be uploaded for each figure. While Figure \ref{fig:1} is a one-column figure, Figure \ref{fig:2} is a full-width figure. Use the \texttt{\textbackslash ref} command to link to your labeled figures, tables, and equations. Labeling and linking to section headings is not recommended.
-	
-	%% Accepted articles will be typeset in a 2-column format. 
-	%% Figures can be either be 1-column wide or page-wide. One column is 8.6 cm wide.
-	%% Here, Figure 1 is a 1-column figure.
-	\begin{figure}[ht!]
-		\includegraphics[width=8.6cm]{empty} 
-		\caption{This is an example of a figure caption.}
-		\label{fig:1}
-	\end{figure}
-	
-	%% This is a page-wide figure (18 cm width). 
-	\begin{figure*}[ht!]
-		\centering
-		\includegraphics[width=\textwidth]{empty} 
-		\caption{This is a caption on wider figure.}
-		\label{fig:2}
-	\end{figure*}
-	
-	
-	Tables can also be included, with captions.
-	%% Use \begin{table*} for a page-wide table
-		\begin{table}[ht!]
-			\begin{tabular}{llll}
-				Event ID    & Location & Magnitude & A random number \\
-				\hline
-				1 & Here & 2.5 & 17 \\
-				2 & There & 4.1 & 1350 \\
-			\end{tabular}
-			\caption{Caption}
-			\label{tab:1}
-		\end{table}
-		
-		Tab.~\ref{tab:1} (use Tabs if several tables) is an example of a relatively simple table. We strongly encourage authors to put tables in Supplementary Materials, and/or into a csv or similar format, upload them to a data repository such as zenodo, and reference them in the section on data availability instead of including them in the article itself. 
-		
-		\subsection{Equations and maths}
-		Equations can be included in the text, and should be labeled so they can be referenced. One example is Equation \ref{eq1}:
-		\begin{equation} \label{eq1}
-			\mathrm{G} = \frac{1}{2}(2\cos z) + (1/2)(2\cos z+j\sin z-j\sin z) + (1/2)(\cos z+j\sin z+\cos z-j\sin z) -  (1/2)(e^{jz}+e^{-jz})  
-		\end{equation}
-		
-		Please type vectors and matrices in bold: $\mathbf{X} = \left[x_1,x_2,\ldots,x_n \right]^T$.
-		
-		\subsection{Code}
-		
-		Code examples should be concise and descriptive. They should introduce core functionality or specific syntax and should be included using the \code{lstlisting} environment. Note that lines longer than 45 characters will be broken when using the prepress option. Extended examples or use cases should be uploaded separately. Individual words of code can be written inline, for example:
-		
-		To improve stability of the inversion, the \code{Model} object accepts the \code{strict} keyword, which disables piecewise linear approximation of the target function (Listing~\ref{code}).
-		
-		\begin{lstlisting}[caption=Example use of \code{Model}, label=code, language=Python]
-			#2 4 6 8 0 2 4 6 8 0 2 4 6 8 0 2 4 6 8 0 2 4|
-			import mymodule as mm
-			
-			model = mm.Model(strict=True)
-			mdls = model.perturb()
-			
-			for mdl in mdls:
-			var = mdl.get_variance()
-		\end{lstlisting}
+%%%% In case you have too many abstracts and need a page break, use this:
+% \addsummaries{
+% 	\begin{selectlanguage}{french} 
+% 		\begin{summary}{Résumé} 
+% 		Texte en francais
+% 		\end{summary}
+% 	\end{selectlanguage}
+% 	\begin{summary}{Non-technical summary}
+% 	The text goes here. Again, no longer than 200 words.
+% 	\end{summary}
+% }%% don't forget this one!
 
 
-    \section{Frequently asked TeX template questions}
-    \paragraph{Can I modify the cls file?} Please do not do this! Modifying the class file may make your article incompatible with our publication template, which will delay publication if your article is accepted.
+\section{Section name}
 
-    (If you want to adapt our cls file for your own purposes outside of submitting articles to Seismica, feel free to do so with attribution.)
+All articles must include an abstract, author ORCIDs and author contributions (in the preamble of this tex file), a data and code availability statement, and a list of references. 
 
-    \paragraph{Can I add packages to the template?} Mostly, no (for the same reason that we ask you not to alter the class file--modifications can cause errors later on). If you want to use \texttt{siunitx} that should be ok as long as you do not place any \texttt{\textbackslash SI} commands in math environments. There may be some other packages that do not conflict. However, we know for a fact that using \texttt{tikz} to make graphics will cause problems.
+Section names are at the discretion of the authors. A simple structure for an article would include an Introduction, Methods and Data, Results, Discussion, and Conclusions, but authors are encouraged to choose a structure that best presents their work.
 
-    \paragraph{Is it ok to use custom macros?} If you have defined a \texttt{\textbackslash newcommand}, perhaps to substitute for a phrase or abbreviation that you don't want to type over and over again in your paper, that's ok \textit{until} the article is accepted for publication. Please find/replace all of those macros before you send us your tex file for copyediting and production, and remove the \texttt{\textbackslash newcommand}s.
+\subsection{Bibliographic citations}
+In the text of an article, citations may either be in-line, as in the case of citing \citet{metropolis_monte_1949}, or in parentheses \citep[e.g.,][]{metropolis_monte_1949}, as appropriate. All citations in the text must be listed in the references section, and all listed references must be cited at least once in the text. Examples of preprint \citep{van_den_ende_creating_2021}, software \citep{rf_software}, and report \citep{mueller_documentation_2003} citations can be found in the .bib file accompanying this template, and can be adapted for other code, datasets, seismic networks, unpublished works, reports, and more.
 
-    \paragraph{I use a citation manager plugin in a TeX editor and don't think much about bibfiles. Can I just export my entire reference library as .bib and send that in for copyediting?} Please do not do this. It is likely that your plugin/citation manager has an option to create a bibliography only for works cited in your document instead. Sending us a bibfile with (possibly thousands of) extra items in it that are not cited in your paper tends to cause errors in the layout/production process. It also adds extra work for your copyeditor as we do need to separately produce a list of the works cited in your paper, not including all the extra stuff in your reference library.
+There are other ways to format citations in TeX -- for example using \texttt{\textbackslash citeauthor\{\}} and \texttt{\textbackslash citeyear\{\}}. We ask that you stick to \texttt{\textbackslash citep} and \texttt{\textbackslash citet} as shown in the preceding paragraph.
 
-    \paragraph{Why is linking to labeled section headings not recommended?} The XML `Full text' for published articles cannot handle linking to sections at present.
+\subsection{Headings}
+\subsubsection{Subsubsection}
+Three levels of section headings is the maximum\footnote{Seriously, the maximum} - no subsubsubsections, please! Note that footnotes are permitted, as in the previous sentence, though we encourage authors to really think about whether a footnote is necessary or if the information it contains could be included in the main text.
 
-    \paragraph{What's the best way to track changes for revisions?} There are lots of TeX packages for this and you're welcome to use whatever you like \textit{as long as you remove all signs of that package before sending in production files for an accepted article}. Alternatively, you can use a tool like \texttt{latexdiff} to find and format tracked changes between an initial tex file and a revised tex file -- this way, you will end up with a clean (revised) tex file for production with no excess packages.
+\subsection{Figures and Tables}
+Figures should be labeled, captioned, and referenced within the text (e.g., Fig.~\ref{fig:1} and Figs~\ref{fig:1}a, b, \ref{fig:2}c). When an article is accepted, separate full-resolution files must be uploaded for each figure. While Figure \ref{fig:1} is a page-width figure, Figure \ref{fig:2} is a column-width figure. You can see the difference with the \texttt{preprint} mode. Use the \texttt{\textbackslash ref} command to link to your labeled figures, tables, and equations. Labeling and linking to section headings is not recommended.
 
-    \paragraph{Why are there so many rules about this template?} Trust us, there are reasons! The first, of course, is that changing things within this (pdfLaTeX) template can create conflicts with our (LuaLaTeX) publication template. The second reason is that we publish articles in both PDF and XML formats (the `Full text' version) and it is much more difficult to make the XML version of your article if certain conventions aren't followed.
-		
-		%% Will not be printed if anonymous option ON
-		\begin{acknowledgements}
-			Thank all relevant parties and acknowledge funding sources, if any.
-		\end{acknowledgements}
-		
-		\section*{Data and code availability}
-		Authors should direct readers to an open access repositories where data and code used in the study are made available. Zenodo, figshare, and Dryad are examples of repositories where authors can archive their data and code. Citations for datasets and codes should be included in the references, including citations for any seismic networks from which data was used. Github is not considered a persistent repository, and we encourage authors to archive a snapshot of any github-hosted code on zenodo.
-		
-		\section*{Competing interests}
-		Declare any competing interests, financial or otherwise, pertaining to any of the authors. If there are none, state that the authors have no competing interests.
-		
-		%% If the article is accepted, a separate bibfile must be uploaded along with the compiled manuscript, source file, and separate figure files.
-		%% When available, DOI numbers must be provided for all references, including datasets and codes. 
-		\bibliography{mybibfile}
-		
-	\end{document}
+%% Accepted articles will be typeset in a 2-column format. 
+%% Figures can be either 1-column wide or page-wide.
+
+%% This is a page-wide figure (18 cm width). Should be used by default.
+\begin{figure*}[ht!]
+	\centering
+	\includegraphics[width=\textwidth]{empty} 
+	\caption{This is a caption.}
+	\label{fig:1}
+\end{figure*}
+
+%% Here, Figure 1 is a 1-column figure. One column is 8.6 cm wide.
+\begin{figure}[ht!]
+	\includegraphics[width=8.6cm]{empty} 
+	\caption{This is another caption.}
+	\label{fig:2}
+\end{figure}
+
+
+
+Tables can also be included, with captions. Complex tables should be in Supplementary Materials.
+%% Use \begin{table} for a column-wide table
+\begin{table*}[ht!]
+    \seismicatablestyle % this style will be used after acceptance
+	\begin{tabular}{m{2cm} m{2cm} m{2cm} m{4cm}} % m-type colums ( m{width} ) allow for text wrapping
+		Event ID    & Location & Magnitude & A random number \\
+		\hline
+		1 & Here & 2.5 & 17 \\
+		2 & There & 4.1 & 1350 \\
+	\end{tabular}
+	\caption{Simple tables are accepted. Complex tables should be in Supplementary Materials.}
+	\label{tab:1}
+\end{table*}
+
+Tab.~\ref{tab:1} (use Tabs if several tables) is an example of a relatively simple table. We strongly encourage authors to put tables in Supplementary Materials, and/or into a csv or similar format, upload them to a data repository such as zenodo, and reference them in the section on data availability instead of including them in the article itself. 
+
+\subsection{Equations and maths}
+Equations can be included in the text, and should be labeled so they can be referenced. One example is Equation \ref{eq1}:
+\begin{equation} \label{eq1}
+	\mathrm{G} = \frac{1}{2}(2\cos z) + (1/2)(2\cos z+j\sin z-j\sin z) + (1/2)(\cos z+j\sin z+\cos z-j\sin z) -  (1/2)(e^{jz}+e^{-jz})  
+\end{equation}
+
+Please type vectors and matrices in bold: $\mathbf{X} = \left[x_1,x_2,\ldots,x_n \right]^T$.
+
+\subsection{Code}
+Code examples should be concise and descriptive. They should introduce core functionality or specific syntax and should be included using the \code{lstlisting} environment. Note that lines longer than 45 characters will be broken when using the prepress option. Extended examples or use cases should be uploaded separately. Individual words of code can be written inline, for example:
+
+To improve stability of the inversion, the \code{Model} object accepts the \code{strict} keyword, which disables piecewise linear approximation of the target function (Listing~\ref{code}).
+
+\begin{lstlisting}[caption=Example use of \code{Model}, label=code, language=Python]
+	#2 4 6 8 0 2 4 6 8 0 2 4 6 8 0 2 4 6 8 0 2 4|
+	import mymodule as mm
 	
+	model = mm.Model(strict=True)
+	mdls = model.perturb()
+	
+	for mdl in mdls:
+	var = mdl.get_variance()
+\end{lstlisting}
+
+
+\section{Frequently asked TeX template questions}
+\paragraph{Can I modify the cls file?} Please do not do this! Modifying the class file may make your article incompatible with our publication template, which will delay publication if your article is accepted.
+
+(If you want to adapt our cls file for your own purposes outside of submitting articles to Seismica, feel free to do so with attribution.)
+
+\paragraph{Can I add packages to the template?} Mostly, no (for the same reason that we ask you not to alter the class file--modifications can cause errors later on). The package \texttt{siunitx} is already loaded by default. We know for a fact that using \texttt{tikz} to make graphics will cause problems.
+
+\paragraph{Is it ok to use custom macros?} If you have defined a \texttt{\textbackslash newcommand}, perhaps to substitute for a phrase or abbreviation that you don't want to type over and over again in your paper, that's ok \textit{until} the article is accepted for publication. Please find/replace all of those macros before you send us your tex file for copyediting and production, and remove the \texttt{\textbackslash newcommand}s.
+
+\paragraph{I use a citation manager plugin in a TeX editor and don't think much about bibfiles. Can I just export my entire reference library as .bib and send that in for copyediting?} Please do not do this. It is likely that your plugin/citation manager has an option to create a bibliography only for works cited in your document instead. Sending us a bibfile with (possibly thousands of) extra items in it that are not cited in your paper tends to cause errors in the layout/production process. It also adds extra work for your copyeditor as we do need to separately produce a list of the works cited in your paper, not including all the extra stuff in your reference library. You can use \texttt{bibtool} with your \texttt{.aux} file to make a clean bibfile. 
+
+\paragraph{Why is linking to labeled section headings not recommended?} The XML `Full text' for published articles cannot handle linking to sections at present.
+
+\paragraph{What's the best way to track changes for revisions?} There are lots of TeX packages for this and you're welcome to use whatever you like \textit{as long as you remove all signs of that package before sending in production files for an accepted article}. Alternatively, you can use a tool like \texttt{latexdiff} to find and format tracked changes between an initial tex file and a revised tex file -- this way, you will end up with a clean (revised) tex file for production with no excess packages.
+
+\paragraph{Why are there so many rules about this template?} Trust us, there are reasons! The first, of course, is that changing things within this (pdfLaTeX) template can create conflicts with our (LuaLaTeX) publication template. The second reason is that we publish articles in both PDF and XML formats (the `Full text' version) and it is much more difficult to make the XML version of your article if certain conventions aren't followed.
+
+%% Will not be printed if anonymous option ON
+\begin{acknowledgements}
+	Thank all relevant parties and acknowledge funding sources, if any.
+\end{acknowledgements}
+
+\section*{Data and code availability}
+Authors should direct readers to an open access repositories where data and code used in the study are made available. Zenodo, figshare, and Dryad are examples of repositories where authors can archive their data and code. Citations for datasets and codes should be included in the references, including citations for any seismic networks from which data was used. Github is not considered a persistent repository, and we encourage authors to archive a snapshot of any github-hosted code on zenodo.
+
+\section*{Competing interests}
+Declare any competing interests, financial or otherwise, pertaining to any of the authors. If there are none, state that the authors have no competing interests.
+
+%% If the article is accepted, a separate bibfile must be uploaded along with the compiled manuscript, source file, and separate figure files.
+%% When available, DOI numbers must be provided for all references, including datasets and codes. 
+\bibliography{mybibfile}
+
+\end{document}
