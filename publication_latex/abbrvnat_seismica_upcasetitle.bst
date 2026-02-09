@@ -969,11 +969,11 @@ FUNCTION {inproceedings}
           publisher output
           format.date "year" output.check
         }
-        { address output.nonnull
-          format.date "year" output.check
-          new.sentence
+        { organization publisher new.sentence.checkb
           organization output
           publisher output
+          address output.nonnull
+          format.date "year" output.check
         }
       if$
     }
@@ -986,6 +986,7 @@ FUNCTION {inproceedings}
   %format.url output
   format.doiurl output
   new.block
+  note output
   fin.entry
 }
 
@@ -1113,7 +1114,7 @@ FUNCTION {unpublished}
   format.title "title" output.check
   new.block
   format.preprint.number output.nonnull
-  note "note" output.check
+  %note "note" output.check
   format.date output
   new.block
   format.doiurl output
