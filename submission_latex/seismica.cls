@@ -544,9 +544,6 @@ singlelinecheck=false, oneside}
 %%                Configuration for code
 %%-------------------------------------------------------------------------------
 
-\if@supplement
-\renewcommand{\thelstlisting}{S\arabic{lstlisting}}
-\fi
 
 % in-line code words
 \def\code#1{\fontsize{9}{10}\colorbox{codebackcolor}{\texttt{#1}}}
@@ -566,6 +563,10 @@ emphstyle=\color{seismicacolor3},
 backgroundcolor=\color{codebackcolor},   
 rulecolor=\color{codebackcolor}
 }
+
+\if@supplement
+\renewcommand{\lstlistingname}{Listing S}
+\fi
 
 
 %%-------------------------------------------------------------------------------
